@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Горница · Панель управления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --ivory:#F6EFE1;--cream:#FAF5EB;--paper:#FFFDF8;
+  --ink:#1E140D;--ink-2:#3D2B1A;--ink-3:#7A6249;
+  --red:#C12B26;--red-dk:#8E1E1A;--blue:#1D3F6E;--blue-lt:#2E5FA3;--green:#2A6B3A;
+  --border:rgba(30,20,13,.1);--border-2:rgba(30,20,13,.055);
+  --serif:'Philosopher',Georgia,serif;--body:'PT Serif',Georgia,serif;
+  --ease:cubic-bezier(.16,1,.3,1);--sidebar:220px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+input,textarea,select{font:inherit;color:inherit}
+::selection{background:var(--red);color:var(--ivory)}
+/* AUTH */
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:var(--ink);display:flex;align-items:center;justify-content:center;padding:24px}
+#auth-overlay.hidden{display:none}
+.auth-box{background:var(--paper);width:100%;max-width:400px;padding:44px 36px}
+.auth-logo{font-family:var(--serif);font-weight:700;font-size:28px;color:var(--ink);margin-bottom:4px}
+.auth-logo span{color:var(--red)}
+.auth-sub{font-size:13px;color:var(--ink-3);margin-bottom:32px;font-style:italic}
+.auth-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.auth-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);background:var(--ivory);font-size:15px;outline:none;transition:border-color .15s;border-radius:2px;margin-bottom:18px}
+.auth-input:focus{border-color:var(--ink)}
+.auth-btn{width:100%;padding:14px;background:var(--red);color:var(--ivory);font-family:var(--body);font-weight:700;font-size:14px;border-radius:2px;cursor:pointer;transition:background .15s}
+.auth-btn:hover{background:var(--red-dk)}
+.auth-err{font-size:13px;color:var(--red);margin-top:10px;min-height:18px}
+.auth-hint{font-size:12px;color:var(--ink-3);margin-top:16px;line-height:1.55;opacity:.7}
+/* LAYOUT */
+#app{display:none;min-height:100vh}
+#app.visible{display:flex}
+.sidebar{width:var(--sidebar);background:var(--ink);color:var(--ivory);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-logo-name{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--ivory)}
+.sb-logo-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,239,225,.3);margin-top:2px}
+.sb-nav{padding:12px 0;flex:1}
+.sb-section{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(246,239,225,.25);padding:14px 20px 6px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-family:var(--body);font-size:13px;color:rgba(246,239,225,.5);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.sb-item:hover{color:rgba(246,239,225,.85);background:rgba(255,255,255,.04)}
+.sb-item.on{color:var(--ivory);background:rgba(255,255,255,.06);border-left-color:var(--red)}
+.sb-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.sb-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,.06)}
+.sb-user{font-size:12px;color:rgba(246,239,225,.3);margin-bottom:10px}
+.sb-logout{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(246,239,225,.4);cursor:pointer;transition:color .15s}
+.sb-logout:hover{color:var(--ivory)}
+.main{flex:1;overflow-x:hidden;min-width:0}
+/* TOPBAR */
+.topbar{background:var(--paper);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--ink)}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.btn-save{padding:9px 20px;background:var(--red);color:var(--ivory);font-family:var(--body);font-weight:700;font-size:13px;border-radius:2px;cursor:pointer;transition:all .15s}
+.btn-save:hover{background:var(--red-dk);transform:translateY(-1px)}
+.btn-save.saved{background:var(--green)}
+.btn-secondary{padding:9px 16px;border:1.5px solid var(--border);background:var(--paper);font-family:var(--body);font-size:13px;color:var(--ink-3);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn-secondary:hover{border-color:var(--ink-3);color:var(--ink)}
+.btn-danger{padding:9px 16px;border:1.5px solid rgba(193,43,38,.3);background:rgba(193,43,38,.04);font-family:var(--body);font-size:13px;color:var(--red);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn-danger:hover{background:rgba(193,43,38,.1)}
+/* PANELS */
+.panel{display:none;padding:32px}
+.panel.on{display:block}
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:28px}
+.dash-card{background:var(--paper);border:1.5px solid var(--border);padding:20px;cursor:pointer;transition:all .25s var(--ease);position:relative;overflow:hidden}
+.dash-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--red);transition:height .3s var(--ease)}
+.dash-card:hover::before{height:100%}
+.dash-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px -8px rgba(30,20,13,.12)}
+.dash-num{font-family:var(--serif);font-weight:700;font-size:34px;color:var(--ink);line-height:1}
+.dash-label{font-size:12px;color:var(--ink-3);margin-top:6px}
+.dash-hint{font-size:11px;color:var(--ink-3);opacity:.7;margin-top:3px}
+.dash-banner{background:var(--ink);color:var(--ivory);padding:28px;margin-bottom:20px}
+.dash-banner h2{font-family:var(--serif);font-weight:700;font-size:21px;margin-bottom:8px}
+.dash-banner p{font-size:13px;color:rgba(246,239,225,.55);line-height:1.6;max-width:580px}
+.dash-section-h{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+.quick-link{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1.5px solid var(--border);background:var(--paper);font-size:13px;color:var(--ink-3);border-radius:2px;cursor:pointer;transition:all .15s;margin:0 6px 6px 0}
+.quick-link:hover{border-color:var(--red);color:var(--red)}
+/* CLOUDINARY SETUP */
+.cloud-setup{background:var(--paper);border:1.5px solid var(--border);padding:24px;margin-bottom:20px}
+.cloud-setup-h{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:6px}
+.cloud-setup-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px;line-height:1.5}
+.cloud-status{display:flex;align-items:center;gap:8px;font-size:13px;padding:8px 14px;border-radius:2px;margin-bottom:16px}
+.cloud-status.ok{background:rgba(42,107,58,.08);color:var(--green);border:1px solid rgba(42,107,58,.2)}
+.cloud-status.warn{background:rgba(193,43,38,.06);color:var(--red);border:1px solid rgba(193,43,38,.15)}
+.cloud-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.cloud-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-2)}
+.cloud-step:last-child{border:none}
+.cloud-step-num{width:22px;height:22px;background:var(--red);color:var(--ivory);border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cloud-step-text{font-size:13px;color:var(--ink-2);line-height:1.5}
+.cloud-step-text a{color:var(--blue-lt);text-decoration:underline}
+/* SECTION HEAD */
+.section-head{margin-bottom:24px}
+.section-head h2{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--ink);margin-bottom:6px}
+.section-head p{font-size:13px;color:var(--ink-3);line-height:1.5}
+/* CARDS */
+.card-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.card-item{background:var(--paper);border:1.5px solid var(--border);border-radius:2px;overflow:hidden;transition:border-color .15s}
+.card-item:hover{border-color:rgba(30,20,13,.2)}
+.card-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+.card-title-wrap{flex:1;min-width:0}
+.card-title{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-subtitle{font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.card-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.card-toggle{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-3);transition:all .2s;border-radius:2px}
+.card-toggle:hover{background:var(--cream)}
+.card-toggle.open{transform:rotate(180deg)}
+.card-delete-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-3);transition:all .15s;border-radius:2px}
+.card-delete-btn:hover{background:rgba(193,43,38,.08);color:var(--red)}
+.card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border-2)}
+.card-body.open{display:block}
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-full{grid-column:1/-1}
+.form-row{margin-bottom:16px}
+.form-row:last-child{margin-bottom:0}
+.form-label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.zh-badge{font-size:10px;background:rgba(29,63,110,.1);color:var(--blue);padding:1px 5px;border-radius:2px;letter-spacing:0;text-transform:none;vertical-align:middle;margin-left:4px}
+.form-input{width:100%;padding:9px 11px;border:1.5px solid var(--border);background:var(--ivory);font-size:14px;outline:none;transition:border-color .15s;border-radius:2px}
+.form-input:focus{border-color:var(--ink)}
+.form-textarea{width:100%;padding:9px 11px;border:1.5px solid var(--border);background:var(--ivory);font-size:14px;outline:none;transition:border-color .15s;border-radius:2px;min-height:70px;resize:vertical;line-height:1.5}
+.form-textarea:focus{border-color:var(--ink)}
+.form-select{width:100%;padding:9px 11px;border:1.5px solid var(--border);background:var(--ivory);font-size:14px;outline:none;border-radius:2px;cursor:pointer}
+.form-hint{font-size:11px;color:var(--ink-3);margin-top:4px;line-height:1.4}
+.form-section-h{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:14px 0 8px;border-bottom:1px solid var(--border-2);margin-bottom:14px}
+/* PHOTO UPLOAD */
+.photo-zone{border:2px dashed var(--border);background:var(--ivory);padding:20px;text-align:center;cursor:pointer;transition:all .2s;border-radius:2px;position:relative;margin-bottom:10px}
+.photo-zone:hover,.photo-zone.drag{border-color:var(--red);background:rgba(193,43,38,.02)}
+.photo-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-zone-icon{font-size:24px;margin-bottom:6px}
+.photo-zone-text{font-size:13px;color:var(--ink-3)}
+.photo-zone-sub{font-size:11px;color:var(--ink-3);opacity:.6;margin-top:3px}
+.photo-uploading{font-size:12px;color:var(--blue-lt);margin-top:6px;display:none}
+.photo-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:4px}
+.photo-item{position:relative;aspect-ratio:1;border-radius:2px;overflow:hidden;background:var(--border);border:1px solid var(--border)}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-item-del{position:absolute;top:3px;right:3px;width:22px;height:22px;background:rgba(30,20,13,.75);color:var(--ivory);font-size:10px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.photo-item-del:hover{background:var(--red)}
+.photo-item-main{position:absolute;bottom:3px;left:3px;font-size:9px;background:var(--red);color:var(--ivory);padding:1px 5px;border-radius:2px;line-height:1.4}
+.cloud-warn{font-size:12px;color:var(--ink-3);padding:8px 12px;background:rgba(193,43,38,.04);border-left:2px solid rgba(193,43,38,.3);margin-bottom:10px;line-height:1.5}
+/* STEPS */
+.step-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.step-item{background:var(--cream);border:1px solid var(--border);padding:12px 14px;position:relative;border-radius:2px}
+.step-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.step-badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid var(--border);color:var(--ink-3)}
+.step-badge.tr{background:rgba(29,63,110,.05);color:var(--blue-lt);border-color:rgba(29,63,110,.15)}
+.step-rm{position:absolute;top:8px;right:8px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-3);cursor:pointer;transition:all .15s;border-radius:2px}
+.step-rm:hover{background:rgba(193,43,38,.1);color:var(--red)}
+/* TABS */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:9px 16px;font-family:var(--body);font-size:13px;color:var(--ink-3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink);border-bottom-color:var(--red);font-weight:700}
+/* ADD BTN */
+.btn-add{display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px dashed var(--border);background:var(--paper);font-size:13px;color:var(--ink-3);border-radius:2px;cursor:pointer;transition:all .15s;width:100%;justify-content:center;margin-top:6px}
+.btn-add:hover{border-color:var(--red);color:var(--red)}
+/* SETTINGS */
+.settings-card{background:var(--paper);border:1.5px solid var(--border);padding:24px;margin-bottom:14px;border-radius:2px}
+.settings-card-h{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+/* BADGE */
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:2px;border:1px solid var(--border);color:var(--ink-3);margin-right:4px}
+.badge.red{background:rgba(193,43,38,.06);color:var(--red);border-color:rgba(193,43,38,.2)}
+/* EMPTY */
+.empty{text-align:center;padding:44px 20px;color:var(--ink-3)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--ivory);padding:12px 22px;font-size:14px;border-radius:2px;opacity:0;pointer-events:none;transition:all .32s var(--ease);z-index:9999;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* RESPONSIVE */
+@media(max-width:900px){
+  :root{--sidebar:190px}
+  .panel{padding:20px 14px}
+  .topbar{padding:12px 14px}
+  .form-grid,.cloud-fields{grid-template-columns:1fr}
+  .form-full{grid-column:auto}
+  .dash-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:680px){
+  .sidebar{display:none}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=109262663','ym');
+    ym(109262663,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/109262663" style="position:absolute;left:-9999px;" alt=""></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">Горница <span>·</span> CMS</div>
+    <div class="auth-sub">Панель управления контентом</div>
+    <label class="auth-label">Пароль администратора</label>
+    <input class="auth-input" type="password" id="auth-pw" placeholder="Введите пароль" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="auth-btn" onclick="tryLogin()">Войти →</button>
+    <div class="auth-err" id="auth-err"></div>
+    <div class="auth-hint">По умолчанию: <b>gornitsa2026</b><br>Сменить можно в Настройках.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-name">Горница · CMS</div>
+      <div class="sb-logo-sub">Панель управления</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Главная</div>
+      <div class="sb-item on" onclick="showPanel('dashboard')"><span class="sb-icon">🏠</span>Дашборд</div>
+      <div class="sb-item" onclick="showPanel('settings')"><span class="sb-icon">⚙️</span>Настройки</div>
+      <div class="sb-section">Контент</div>
+      <div class="sb-item" onclick="showPanel('routes')"><span class="sb-icon">🗺</span>Маршруты</div>
+      <div class="sb-item" onclick="showPanel('places')"><span class="sb-icon">📍</span>Локации</div>
+      <div class="sb-item" onclick="showPanel('seafood')"><span class="sb-icon">🦀</span>Рыбный ряд</div>
+      <div class="sb-item" onclick="showPanel('meets')"><span class="sb-icon">🤝</span>Встречи</div>
+      <div class="sb-item" onclick="showPanel('news')"><span class="sb-icon">📰</span>Новости</div>
+      <div class="sb-section">Публикация</div>
+      <div class="sb-item" onclick="exportSite()" style="color:rgba(246,239,225,.85)"><span class="sb-icon">🚀</span>Скачать index.html</div>
+      <div class="sb-section">Данные</div>
+      <div class="sb-item" onclick="exportData()"><span class="sb-icon">💾</span>Экспорт JSON</div>
+      <div class="sb-item" onclick="importClick()"><span class="sb-icon">📂</span>Импорт JSON</div>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user">Администратор</div>
+      <div class="sb-logout" onclick="logout()">↩ Выйти</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Дашборд</div>
+      <div class="topbar-actions">
+        <button class="btn-secondary" onclick="openSite()">↗ Открыть сайт</button>
+        <button class="btn-save" id="save-btn" onclick="saveAll()">💾 Сохранить всё</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="panel on" id="panel-dashboard">
+      <div class="dash-banner">
+        <h2>Добро пожаловать в Горница CMS</h2>
+        <p>Отредактируйте контент → нажмите <b>«🚀 Скачать index.html»</b> → загрузите файл на Netlify. Только так изменения увидят все пользователи на всех устройствах.</p>
+      </div>
+      <div style="background:rgba(193,43,38,.08);border:1.5px solid rgba(193,43,38,.25);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
+        <div style="font-size:24px">🚀</div>
+        <div style="flex:1">
+          <div style="font-family:var(--serif);font-weight:700;font-size:15px;color:var(--red);margin-bottom:4px">Как опубликовать изменения</div>
+          <div style="font-size:13px;color:var(--ink-3);line-height:1.5">Внесите правки → нажмите кнопку ниже → скачается новый <code>index.html</code> с вашими данными → загрузите его на Netlify вместо старого.</div>
+        </div>
+        <button class="btn-save" onclick="exportSite()" style="flex-shrink:0;white-space:nowrap">🚀 Скачать index.html</button>
+      </div>
+      <div class="dash-section-h">Разделы</div>
+      <div class="dash-grid" id="dash-stats"></div>
+      <div class="dash-section-h" style="margin-top:10px">Быстрый доступ</div>
+      <div>
+        <span class="quick-link" onclick="showPanel('routes')">🗺 Маршруты</span>
+        <span class="quick-link" onclick="showPanel('places')">📍 Локации</span>
+        <span class="quick-link" onclick="showPanel('seafood')">🦀 Рыбный ряд</span>
+        <span class="quick-link" onclick="showPanel('meets')">🤝 Встречи</span>
+        <span class="quick-link" onclick="showPanel('news')">📰 Новости</span>
+        <span class="quick-link" onclick="showPanel('settings')">⚙️ Настройки</span>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel" id="panel-settings">
+      <div class="section-head"><h2>Настройки</h2><p>Cloudinary для фото, главная страница, пароль.</p></div>
+
+      <div class="cloud-setup">
+        <div class="cloud-setup-h">☁️ Cloudinary — хранилище фотографий</div>
+        <div class="cloud-setup-sub">Фото загружаются на Cloudinary и становятся доступны всем пользователям — на Android, iPhone, любом браузере. Бесплатный план: 25 ГБ, более чем достаточно.</div>
+        <div id="cloud-status" class="cloud-status warn">⚠ Cloudinary не настроен — загрузка фото недоступна</div>
+        <div class="cloud-fields">
+          <div class="form-row">
+            <label class="form-label">Cloud Name</label>
+            <input class="form-input" id="cloud-name" placeholder="например: my-gornitsa">
+            <div class="form-hint">Найдёте в Dashboard после регистрации</div>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Upload Preset</label>
+            <input class="form-input" id="cloud-preset" placeholder="например: gornitsa_upload">
+            <div class="form-hint">Settings → Upload → Add upload preset (Unsigned)</div>
+          </div>
+        </div>
+        <button class="btn-secondary" onclick="saveCloudConfig()" style="margin-bottom:20px">Сохранить настройки Cloudinary</button>
+        <div class="cloud-step"><div class="cloud-step-num">1</div><div class="cloud-step-text">Зарегистрируйтесь бесплатно на <a href="https://cloudinary.com" target="_blank">cloudinary.com</a></div></div>
+        <div class="cloud-step"><div class="cloud-step-num">2</div><div class="cloud-step-text">Скопируйте <b>Cloud Name</b> из вашего Dashboard (например: <code>my-gornitsa</code>)</div></div>
+        <div class="cloud-step"><div class="cloud-step-num">3</div><div class="cloud-step-text">Перейдите в <b>Settings → Upload</b>, нажмите <b>Add upload preset</b>, выберите <b>Unsigned</b>, сохраните и скопируйте имя пресета</div></div>
+        <div class="cloud-step"><div class="cloud-step-num">4</div><div class="cloud-step-text">Вставьте Cloud Name и Upload Preset в поля выше и нажмите «Сохранить настройки Cloudinary»</div></div>
+      </div>
+
+      <div class="settings-card">
+        <div class="settings-card-h">Главная страница</div>
+        <div class="form-row"><label class="form-label">Заголовок H1</label>
+          <input class="form-input" id="cfg-h1" placeholder="Живой Владивосток — в кармане"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="cfg-sub" placeholder="Куда пойти. Что съесть. С кем встретиться."></div>
+        <div class="form-hint">После изменения нажмите «Сохранить всё» вверху страницы</div>
+      </div>
+
+      <div class="settings-card">
+        <div class="settings-card-h">Смена пароля</div>
+        <div class="form-row"><label class="form-label">Новый пароль</label>
+          <input class="form-input" type="password" id="cfg-pw"></div>
+        <div class="form-row"><label class="form-label">Повторите</label>
+          <input class="form-input" type="password" id="cfg-pw2"></div>
+        <button class="btn-secondary" onclick="changePassword()">Сменить пароль</button>
+      </div>
+
+      <div class="settings-card">
+        <div class="settings-card-h">Сброс данных</div>
+        <p style="font-size:13px;color:var(--ink-3);margin-bottom:14px;line-height:1.55">Вернуть весь текстовый контент к исходному состоянию сайта. Фото на Cloudinary остаются, но ссылки из данных удалятся. Нельзя отменить.</p>
+        <button class="btn-danger" onclick="resetToDefaults()">⚠ Сбросить к исходным данным</button>
+      </div>
+    </div>
+
+    <!-- ROUTES -->
+    <div class="panel" id="panel-routes">
+      <div class="section-head"><h2>Маршруты</h2><p>16 маршрутов · Все данные из оригинального сайта · Нажмите на карточку чтобы развернуть</p></div>
+      <div id="routes-list" class="card-list"></div>
+      <button class="btn-add" onclick="addRoute()">＋ Добавить маршрут</button>
+    </div>
+
+    <!-- PLACES -->
+    <div class="panel" id="panel-places">
+      <div class="section-head"><h2>Локации</h2><p>15 локаций · Достопримечательности и места Владивостока</p></div>
+      <div id="places-list" class="card-list"></div>
+      <button class="btn-add" onclick="addPlace()">＋ Добавить локацию</button>
+    </div>
+
+    <!-- SEAFOOD -->
+    <div class="panel" id="panel-seafood">
+      <div class="section-head"><h2>Рыбный ряд</h2><p>10 позиций · Морепродукты с ценами и описаниями</p></div>
+      <div id="seafood-list" class="card-list"></div>
+      <button class="btn-add" onclick="addSeafood()">＋ Добавить позицию</button>
+    </div>
+
+    <!-- MEETS -->
+    <div class="panel" id="panel-meets">
+      <div class="section-head"><h2>Встречи</h2><p>12 встреч · Живые мероприятия от участников сообщества</p></div>
+      <div id="meets-list" class="card-list"></div>
+      <button class="btn-add" onclick="addMeet()">＋ Добавить встречу</button>
+    </div>
+
+    <!-- NEWS -->
+    <div class="panel" id="panel-news">
+      <div class="section-head"><h2>Новости и лента</h2><p>Карточки новостей и хроника событий</p></div>
+      <div class="tabs">
+        <div class="tab on" onclick="switchNewsTab('cards',this)">Карточки новостей</div>
+        <div class="tab" onclick="switchNewsTab('log',this)">Лента событий</div>
+      </div>
+      <div id="news-cards-section">
+        <div id="news-cards-list" class="card-list"></div>
+        <button class="btn-add" onclick="addNewsCard()">＋ Добавить карточку</button>
+      </div>
+      <div id="news-log-section" style="display:none">
+        <div id="news-log-list" class="card-list"></div>
+        <button class="btn-add" onclick="addNewsLog()">＋ Добавить запись</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT_ROUTES=[
+  {id:'Т-01',cat:'city',
+   title:'Светланская — дыхание города',
+   title_zh:'斯韦特兰斯卡亚大街 — 城市的脉搏',
+   folk:'Старая улица, как позвоночник. Четыре часа вдоль неё — и знаешь город.',
+   folk_zh:'这条古老的街道是城市的脊梁。沿着它走四个小时——你就懂了这座城市。',
+   dist:'4,2 км',time:'3 ч 30 м',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'От завтрака до обеда.',folkm_zh:'从早餐到午餐，刚刚好。',
+   tips:['Обувь, которую не жалко — булыжник скользкий после дождя','Кофе — в «Волшебном»','Фотоаппарат и терпение — город не спешит'],
+   tips_zh:['穿旧鞋——雨后的石板路很滑','咖啡——在「Волшебный」咖啡馆','带上相机和耐心——这座城市不急'],
+   alert:'В час пик (17:30–19:30) центр стоит. Выезжай до 16:00.',
+   alert_zh:'早高峰（17:30–19:30）市中心堵车严重，16:00前出发。',
+   steps:[
+    {tm:'10:00',pl:'Железнодорожный вокзал',pl_zh:'火车站',dc:'Начало Транссиба. Табличка «9 288 вёрст до Москвы». Посмотри, не торопясь.',dc_zh:'西伯利亚铁路的起点。牌子上写着「距莫斯科9288俄里」。慢慢看，不用赶。',tip:'На перроне стоит паровоз — настоящий, не макет.',tip_zh:'站台上停着一辆真正的蒸汽机车，不是模型。'},
+    {tr:'Пешком по Светланской · 15 мин',tr_zh:'沿斯韦特兰斯卡亚步行 · 15分钟'},
+    {tm:'10:30',pl:'ГУМ · Почтамт · Арсеньева',pl_zh:'百货商场·邮政局·阿尔谢尼耶夫博物馆',dc:'Купеческий Владивосток конца XIX века. Кирпич, лепнина, якоря на воротах.',dc_zh:'19世纪末的商人海参崴。红砖、灰泥装饰、门上的船锚。',tip:'Во дворе Почтамта — старинная афишная тумба.',tip_zh:'邮政局院子里有一根老式广告柱。'},
+    {tr:'Пешком · 20 мин',tr_zh:'步行 · 20分钟'},
+    {tm:'11:15',pl:'Корабельная набережная',pl_zh:'船舶滨海大道',dc:'Подлодка С-56, Триумфальная арка, вид на Золотой Рог.',dc_zh:'C-56潜艇、凯旋门、金角湾全景。',tip:'Если холодно — зайди в «Пятую точку» на чай.',tip_zh:'如果冷——去「Пятая точка」喝杯茶。'},
+    {tr:'Пешком · 25 мин',tr_zh:'步行 · 25分钟'},
+    {tm:'12:15',pl:'Токаревская кошка',pl_zh:'托卡廖夫沙嘴',dc:'Коса уходит в море, в конце — маяк. Дальше — только Японское море.',dc_zh:'沙嘴延伸入海，尽头是灯塔。再往前——只有日本海。',tip:'В отлив дойдёшь пешком. Смотри часы приливов.',tip_zh:'退潮时可以步行到达。注意潮汐时间表。',end:true}],
+   cross:[{type:'Ем',type_zh:'美食',label:'Гребешок на гриле',label_zh:'烤扇贝',sc:'seafood'},{type:'Встреча',type_zh:'活动',label:'Закат на Токаревской',label_zh:'托卡廖夫沙嘴看日落',sc:'meet'}]},
+
+  {id:'Т-02',cat:'sea',
+   title:'Мыс Тобизина — край Русского',
+   title_zh:'托比津角 — 俄罗斯岛的天涯海角',
+   folk:'Самая живописная точка на острове. Скалы острые, ветер сильный.',
+   folk_zh:'岛上风景最美的地方。悬崖陡峭，海风强劲。',
+   dist:'7,5 км',time:'5 часов',diff:'Средняя',diff_zh:'中等',
+   folkm:'Целый день, с термосом и чувством края земли.',folkm_zh:'整整一天，带上保温壶，感受天涯尽头的滋味。',
+   tips:['Маска и ласты — дно как аквариум','Купальник под ветровкой','Ботинки с толстой подошвой'],
+   tips_zh:['带面镜和蛙蹼——海底像水族馆一样美','风衣内穿泳衣','厚底登山鞋'],
+   alert:'Последний №15 с ДВФУ — 22:30. Держи запас в час.',
+   alert_zh:'从远东联邦大学最后一班15路——22:30。留出至少一小时余量。',
+   steps:[
+    {tm:'09:00',pl:'Остановка «Изумруд»',pl_zh:'「翡翠」公交站',dc:'Автобус №15 через Золотой и Русский мост.',dc_zh:'乘15路公交，经过金角大桥和俄罗斯岛大桥。'},
+    {tr:'Автобус №15 · 40 мин',tr_zh:'15路公交 · 40分钟'},
+    {tm:'09:40',pl:'Океанариум ДВФУ',pl_zh:'远东联邦大学海洋馆',dc:'Дальше — пешком или такси.',dc_zh:'之后步行或打车。'},
+    {tr:'Пешком · 35 мин',tr_zh:'步行 · 35分钟'},
+    {tm:'10:30',pl:'Бухта Аякс',pl_zh:'阿贾克斯湾',dc:'Прозрачная вода, скалы. Снорклинг — крабы, морские звёзды.',dc_zh:'清澈的水、礁石。浮潜——螃蟹、海星。',tip:'Заходи у правой скалы — там глубже и чище.',tip_zh:'从右侧礁石下水——那里更深更清澈。'},
+    {tr:'На мыс · 50 мин',tr_zh:'前往海角 · 50分钟'},
+    {tm:'12:00',pl:'Мыс Тобизина',pl_zh:'托比津角',dc:'Вертикальные скалы, открытое море. Самая южная точка острова Русский.',dc_zh:'垂直悬崖，开阔的海面。俄罗斯岛最南端。',tip:'Камни скользкие — фотографируй с середины.',tip_zh:'岩石很滑——在中间位置拍照。',end:true}],
+   cross:[{type:'Встреча',type_zh:'活动',label:'SUP для начинающих завтра',label_zh:'明天初学者SUP',sc:'meet'}]},
+
+  {id:'Т-03',cat:'history',
+   title:'Форты Владивостокской крепости',
+   title_zh:'符拉迪沃斯托克要塞炮台',
+   folk:'Подземный Владивосток. Казематы длинные, тёмные, холодные. Без фонаря не ходок.',
+   folk_zh:'地下海参崴。炮台隧道又长又暗又冷。没有手电筒别进去。',
+   dist:'8 км',time:'5 ч 30 м',diff:'Средняя',diff_zh:'中等',
+   folkm:'Серьёзный день. С запасом воды.',folkm_zh:'认真的一天。多带水。',
+   tips:['Фонарик — настоящий, не телефон','Резиновые сапоги если был дождь','Плотные брюки — кирпич царапает'],
+   tips_zh:['真正的手电筒——不是手机','如果下过雨带雨靴','厚实的裤子——砖头会划伤皮肤'],
+   alert:'После дождя казематы подтоплены. Резиновые сапоги — не шутка.',
+   alert_zh:'雨后炮台会积水。雨靴是认真的，不是开玩笑。',
+   steps:[
+    {tm:'10:00',pl:'Форт №7 (Поспелова)',pl_zh:'第7号炮台（波斯佩洛夫）',dc:'Лучше всех сохранился. Двор, батареи, три яруса казематов. Вход свободный.',dc_zh:'保存最完好。庭院、炮台、三层地下隧道。免费入场。',tip:'Правый ход от ворот — 80-метровый каземат. Без фонаря не идите.',tip_zh:'从大门右侧进去——80米长的地下隧道。没有手电筒别进。'},
+    {tr:'По гребню · 25 мин',tr_zh:'沿山脊行走 · 25分钟'},
+    {tm:'10:40',pl:'Батарея Патрокл',pl_zh:'帕特罗克尔炮台',dc:'Орудийные дворы с видом на бухту. В ясную погоду видны острова.',dc_zh:'俯瞰海湾的炮台庭院。晴天可以看到岛屿。',tip:'Правый дворик — лучшая панорама.',tip_zh:'右侧庭院——全景最佳。'},
+    {tr:'Лесом · 30 мин',tr_zh:'穿林而行 · 30分钟'},
+    {tm:'11:20',pl:'Форт №12 (Лазурный)',pl_zh:'第12号炮台（天蓝）',dc:'Самый живописный — растения проросли сквозь кирпич.',dc_zh:'最美丽的炮台——植物从砖缝中生长而出。'},
+    {tr:'Возврат · 40 мин',tr_zh:'返回 · 40分钟'},
+    {tm:'12:30',pl:'Рыбный ряд, Фокина',pl_zh:'福金街海鲜摊',dc:'Гребешок на гриле после пяти часов фортов — лучший финал.',dc_zh:'五个小时的炮台之旅后来一份烤扇贝——完美的收尾。',tip:'Прилавок №12.',tip_zh:'第12号摊位。',end:true}],
+   cross:[{type:'Ем',type_zh:'美食',label:'Гребешок на прилавке №12',label_zh:'第12摊烤扇贝',sc:'seafood'}]},
+
+  {id:'Т-04',cat:'nature',
+   title:'Сафари-парк «Приморский» — к тиграм',
+   title_zh:'「滨海」野生动物园——看老虎',
+   folk:'Тигров кормят в 11 и в 2. К 10 утра быть — или не ехать совсем.',
+   folk_zh:'老虎喂食在11点和14点。10点前到——否则别去。',
+   dist:'90 км',time:'6 часов',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Дальний, но семейный.',folkm_zh:'路远，但适合家庭出行。',
+   tips:['Фотоаппарат с зумом','В дождь животные активнее','Перекус в парке дорогой — берите свой'],
+   tips_zh:['带长焦相机','雨天动物更活跃','园内零食很贵——带自己的'],
+   alert:'Де-Фриз утром 07:30–09:30 — пробка +20–30 мин.',
+   alert_zh:'德弗里兹早高峰07:30–09:30堵车，额外加20–30分钟。',
+   steps:[
+    {tm:'08:00',pl:'Выезд из центра',pl_zh:'从市中心出发',dc:'Трасса А370 на Уссурийск. 85 км.',dc_zh:'А370公路前往乌苏里斯克方向，85公里。',tip:'Выезжай до 07:00 — пробка Де-Фриз.',tip_zh:'07:00前出发——德弗里兹堵车。'},
+    {tr:'По трассе · 1 ч 30 мин',tr_zh:'沿公路行驶 · 1小时30分钟'},
+    {tm:'10:00',pl:'Вход в парк',pl_zh:'公园入口',dc:'Берите полный билет — без него не интересно.',dc_zh:'买全票——否则没意思。'},
+    {tr:'По парку · 30 мин',tr_zh:'园内游览 · 30分钟'},
+    {tm:'11:00',pl:'Кормление тигров',pl_zh:'老虎喂食',dc:'Тигры выходят к вольерам, подходят близко.',dc_zh:'老虎走近围栏，可以近距离观看。',tip:'После 13:00 прячутся в тени.',tip_zh:'13:00后老虎躲到阴凉处。'},
+    {tm:'14:00',pl:'Кормление леопардов',pl_zh:'豹子喂食',dc:'Тоже стоит дождаться.',dc_zh:'同样值得等待。',end:true}],
+   cross:[]},
+
+  {id:'Т-05',cat:'sea',
+   title:'Токаревская кошка на закате',
+   title_zh:'托卡廖夫沙嘴日落',
+   folk:'Коса, маяк, отлив. Просто быть там — этого хватает.',
+   folk_zh:'沙嘴、灯塔、退潮。只是待在那里——就已经足够了。',
+   dist:'3 км',time:'2 ч 30 м',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Полчаса до заката — и всё остальное неважно.',folkm_zh:'日落前半小时到达——其他都不重要了。',
+   tips:['Термос — ветер всегда','Часы отлива — проверь заранее','Можно прийти одному — здесь это нормально'],
+   tips_zh:['带保温壶——这里总有风','退潮时间——提前查好','可以独自前来——这里很正常'],
+   alert:'Проверь часы отлива — коса затапливается в прилив.',
+   alert_zh:'查好退潮时间——涨潮时沙嘴会被淹没。',
+   steps:[
+    {tm:'17:00',pl:'Эгершельд',pl_zh:'埃格尔谢利德半岛',dc:'Полуостров. Светланская, но уже не центр.',dc_zh:'半岛。斯韦特兰斯卡亚大街的延伸，已不是市中心了。'},
+    {tr:'Пешком · 20 мин',tr_zh:'步行 · 20分钟'},
+    {tm:'17:25',pl:'Начало косы',pl_zh:'沙嘴起点',dc:'Узкая полоса суши уходит в море.',dc_zh:'一条狭窄的陆地延伸入海。',tip:'Часы отлива — проверь заранее.',tip_zh:'退潮时间——提前查好。'},
+    {tr:'По косе · 25 мин',tr_zh:'沿沙嘴行走 · 25分钟'},
+    {tm:'18:00',pl:'Маяк Токаревского',pl_zh:'托卡廖夫灯塔',dc:'Конец суши. Дальше — Японское море, Сахалин, Хоккайдо.',dc_zh:'陆地尽头。再往前——日本海、萨哈林岛、北海道。',tip:'Термос с чаем — обязательно.',tip_zh:'装满茶的保温壶——必备。',end:true},
+    {tm:'18:47',pl:'Закат',pl_zh:'日落',dc:'Солнце садится в воду за Русским мостом. Не фотография — тишина.',dc_zh:'太阳在俄罗斯岛大桥后方沉入水中。不是照片——是寂静。',end:true}],
+   cross:[{type:'Встреча',type_zh:'活动',label:'Закат на Токаревской — найти компанию',label_zh:'托卡廖夫沙嘴日落——寻找同伴',sc:'meet'},{type:'Ем',type_zh:'美食',label:'Свежий улов после заката',label_zh:'日落后的新鲜渔获',sc:'seafood'}]},
+
+  {id:'Т-06',cat:'history',
+   title:'Адмиральский сквер и подлодка С-56',
+   title_zh:'海军广场与C-56潜艇',
+   folk:'14 торпед. 10 потопленных. Внутрь — тесно, темно, и очень настоящее.',
+   folk_zh:'14枚鱼雷。击沉10艘船。进入内部——狭窄、黑暗、非常真实。',
+   dist:'2 км',time:'2 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Хороший старт перед длинным днём.',folkm_zh:'漫长一天的好开始。',
+   tips:['Взять детей — им нравится','Билет в музей недорогой','Утром лучшее освещение для фото'],
+   tips_zh:['带孩子来——他们会喜欢','博物馆票价不贵','早上拍照光线最好'],
+   alert:'',alert_zh:'',
+   steps:[
+    {tm:'11:00',pl:'Адмиральский сквер',pl_zh:'海军广场',dc:'Арка 1891 года, Андреевская часовня, Вечный огонь.',dc_zh:'1891年的凯旋门、圣安德烈小礼拜堂、长明火。'},
+    {tr:'Пешком · 5 мин',tr_zh:'步行 · 5分钟'},
+    {tm:'11:10',pl:'Подлодка С-56',pl_zh:'C-56潜艇',dc:'Мемориальный корабль-музей. Внутрь — тесно и очень настоящее.',dc_zh:'纪念舰船博物馆。进入内部——非常狭窄，非常真实。',tip:'Узкие проходы — чемоданы оставить снаружи.',tip_zh:'通道很窄——行李箱留在外面。'},
+    {tr:'По набережной Цесаревича · 10 мин',tr_zh:'沿皇太子滨海大道 · 10分钟'},
+    {tm:'11:40',pl:'Корабельная набережная, 10',pl_zh:'船舶滨海大道10号',dc:'Смотровая с бесплатным стационарным биноклем. Вид на Золотой Рог.',dc_zh:'免费固定双筒望远镜的观景台。金角湾全景。',tip:'Охрана не пускает с едой.',tip_zh:'保安不允许带食物进入。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Набережная Цесаревича',label_zh:'皇太子滨海大道',sc:'places'}]},
+
+  {id:'Т-07',cat:'view',
+   title:'Орлиное гнездо — 199 метров',
+   title_zh:'鹰巢山 — 海拔199米',
+   folk:'Самая высокая точка старого города. Телевышка горит ночью гирляндой.',
+   folk_zh:'老城区最高点。电视塔夜晚像彩灯一样闪烁。',
+   dist:'2,5 км',time:'2 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Хороша на закате.',folkm_zh:'日落时分最美。',
+   tips:['Ночью телевышка светится гирляндой','Ветер наверху — возьми куртку','Замки молодожёнов на перилах'],
+   tips_zh:['夜晚电视塔像彩灯闪烁','山顶风大——带外套','护栏上挂满新婚夫妇的爱情锁'],
+   alert:'',alert_zh:'',
+   steps:[
+    {tm:'18:00',pl:'Нерчинская ул., 24',pl_zh:'涅尔钦斯卡亚街24号',dc:'Подъём к сопке. Никаких указателей — идти к телевышке.',dc_zh:'上山。没有路牌——朝电视塔方向走。'},
+    {tr:'Пешком вверх · 20 мин',tr_zh:'步行上山 · 20分钟'},
+    {tm:'18:25',pl:'Вершина · 199 м',pl_zh:'山顶 · 海拔199米',dc:'Памятник Кириллу и Мефодию. Вид на оба моста и Золотой Рог.',dc_zh:'基里尔与美多迪乌斯雕像。两座大桥和金角湾全景。',tip:'Ночью телевышка светится разноцветной гирляндой.',tip_zh:'夜晚电视塔亮起五彩缤纷的彩灯。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Нагорный парк — смотровая',label_zh:'纳戈尔内公园观景台',sc:'places'}]},
+
+  {id:'Т-08',cat:'sea',
+   title:'Эгершельд: сопка Крестовая и набережная 7 футов',
+   title_zh:'埃格尔谢利德：十字山与七英尺滨海大道',
+   folk:'Дикая тропа, рабочий порт как на ладони. Туристов нет.',
+   folk_zh:'野径，工业港口尽收眼底。几乎没有游客。',
+   dist:'4 км',time:'3 часа',diff:'Средняя',diff_zh:'中等',
+   folkm:'Для тех, кто хочет видеть город не из окна.',folkm_zh:'适合想亲身感受这座城市的人，而不是透过窗户看。',
+   tips:['Фонарь ночью обязателен','После дождя скользко','Туристов почти не бывает — это плюс'],
+   tips_zh:['夜间必须带手电筒','雨后很滑','几乎没游客——这是优点'],
+   alert:'Тропа неофициальная — нет указателей.',
+   alert_zh:'非官方小径——没有路牌。',
+   steps:[
+    {tm:'16:00',pl:'Самарская ул., 10',pl_zh:'萨马尔斯卡亚街10号',dc:'Начало тропы к Крестовой сопке. Жилой двор — проходи уверенно.',dc_zh:'通往十字山的小径起点。住宅区院子——大胆穿过去。'},
+    {tr:'По тропе вверх · 25 мин',tr_zh:'沿小径上山 · 25分钟'},
+    {tm:'16:30',pl:'Сопка Крестовая',pl_zh:'十字山',dc:'Рабочий порт во всей красе. Золотой и Русский мосты одновременно.',dc_zh:'工业港口全貌。金角大桥和俄罗斯岛大桥同时入眼。',tip:'Вид, который любят горожане и не знают гости.',tip_zh:'当地人钟爱、游客不知道的风景。',end:true},
+    {tr:'Спуск и пешком · 30 мин',tr_zh:'下山步行 · 30分钟'},
+    {tm:'17:15',pl:'Набережная 7 футов',pl_zh:'七英尺滨海大道',dc:'Яхты, нестандартная архитектура, тихий угол Эгершельда.',dc_zh:'游艇、非传统建筑、埃格尔谢利德半岛的僻静角落。',tip:'Хорошо просто идти вдоль воды.',tip_zh:'就沿着水边走走——很惬意。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Токаревская кошка рядом',label_zh:'附近的托卡廖夫沙嘴',sc:'places'}]},
+
+  {id:'Т-09',cat:'view',
+   title:'Нагорный парк — кофе и два вида',
+   title_zh:'纳戈尔内公园——咖啡与双重美景',
+   folk:'182 метра. Парк с гротом, кофе и двумя смотровыми.',
+   folk_zh:'182米。有山洞、咖啡和两个观景台的公园。',
+   dist:'3 км',time:'2 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Утренняя прогулка с кофе.',folkm_zh:'带着咖啡的早晨散步。',
+   tips:['Грот «Хозяин горы» — дети в восторге','Фуд-траки с кофе в нижней части','Бетонные дорожки — удобно для коляски'],
+   tips_zh:['「山之主」山洞——孩子们会着迷','下方区域有咖啡餐车','混凝土小路——适合婴儿车'],
+   alert:'',alert_zh:'',
+   steps:[
+    {tm:'09:00',pl:'Нижняя часть парка',pl_zh:'公园下方区域',dc:'Амфитеатр, детская площадка, фуд-траки.',dc_zh:'露天剧场、儿童游乐区、餐车。'},
+    {tr:'Пешком вверх · 15 мин',tr_zh:'步行上山 · 15分钟'},
+    {tm:'09:20',pl:'Грот «Хозяин горы»',pl_zh:'「山之主」山洞',dc:'Из колонок транслируется легенда. Рекомендуем задержаться.',dc_zh:'扬声器中传来传说故事。建议在此停留片刻。'},
+    {tr:'Продолжение подъёма · 10 мин',tr_zh:'继续上山 · 10分钟'},
+    {tm:'09:35',pl:'Смотровая · 182 м',pl_zh:'观景台 · 海拔182米',dc:'Золотой мост, суда в порту, Амурский залив.',dc_zh:'金角大桥、港口船只、阿穆尔湾全景。',tip:'Лучший вид утром — пока мало народу.',tip_zh:'早上人少——视野最佳。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Орлиное гнездо рядом',label_zh:'附近的鹰巢山',sc:'places'}]},
+
+  {id:'Т-10',cat:'sea',
+   title:'Кунгасный пляж: от Юбилейного вдоль берега',
+   title_zh:'孔加斯内海滩：从尤比列伊内沿岸而行',
+   folk:'Стритфуд, беседки, волна. По дороге — лошади.',
+   folk_zh:'街头美食、凉亭、冲浪。路上还有马匹。',
+   dist:'5 км',time:'3 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Летний день у воды.',folkm_zh:'水边的夏日时光。',
+   tips:['Беседки бронировать заранее в выходные','Волна работает только летом','По дороге от Юбилейного иногда встречаются лошади'],
+   tips_zh:['周末凉亭需要提前预订','冲浪设施仅夏季开放','从尤比列伊内路上偶尔会遇到马'],
+   alert:'Летний маршрут. В межсезонье — только набережная.',
+   alert_zh:'夏季路线。非夏季只有滨海大道可走。',
+   steps:[
+    {tm:'10:00',pl:'Юбилейный пляж',pl_zh:'尤比列伊内海滩',dc:'Старт. Пляж с прокатом досок и спортплощадкой.',dc_zh:'出发点。有冲浪板租赁和运动场地的海滩。'},
+    {tr:'Вдоль берега · 40–50 мин',tr_zh:'沿海岸线行走 · 40–50分钟'},
+    {tm:'11:00',pl:'Кунгасный пляж',pl_zh:'孔加斯内海滩',dc:'Стритфуд, беседки в аренду. Летом — аттракцион с искусственной волной.',dc_zh:'街头美食、凉亭租赁。夏季有人工冲浪设施。',tip:'Беседки бронировать заранее.',tip_zh:'凉亭需提前预订。',end:true}],
+   cross:[{type:'Встреча',type_zh:'活动',label:'Гриль на Русском острове',label_zh:'俄罗斯岛烧烤',sc:'meet'}]},
+
+  {id:'Т-12',cat:'nature',
+   title:'Остров Русский: кампус, мысы, лисы',
+   title_zh:'俄罗斯岛：校园、海角与狐狸',
+   folk:'Переезжаешь — и что-то меняется. Воздух другой. Горизонт шире.',
+   folk_zh:'过了桥——什么都变了。空气不一样。视野更开阔。',
+   dist:'15 км',time:'6 часов',diff:'Средняя',diff_zh:'中等',
+   folkm:'Целый день. С великом — лучше.',folkm_zh:'整整一天。骑自行车更好。',
+   tips:['Прокат велосипедов в кампусе ДВФУ','Посл. авт. с ДВФУ — 22:30','Лисы не боятся людей — не кормить'],
+   tips_zh:['远东联邦大学校园内可租自行车','从远东联邦大学最后一班车——22:30','狐狸不怕人——但别喂食'],
+   alert:'Без машины маршрут долгий. Рассчитывай время на обратный путь.',
+   alert_zh:'没有车路线会很长。计算好返回时间。',
+   steps:[
+    {tm:'09:30',pl:'Остановка «Изумруд»',pl_zh:'「翡翠」公交站',dc:'Автобус №15 через Русский мост.',dc_zh:'乘15路公交经俄罗斯岛大桥。'},
+    {tr:'Автобус · 40 мин',tr_zh:'公交车 · 40分钟'},
+    {tm:'10:10',pl:'Кампус ДВФУ',pl_zh:'远东联邦大学校园',dc:'Прокат велосипедов и самокатов. Пирс для купания.',dc_zh:'自行车和电动滑板车租赁。游泳码头。'},
+    {tr:'На велике или пешком · 40 мин',tr_zh:'骑车或步行 · 40分钟'},
+    {tm:'11:00',pl:'Гора Русская',pl_zh:'俄罗斯山',dc:'Оба моста — Золотой и Русский — одновременно. Лучшая смотровая на острове.',dc_zh:'金角大桥和俄罗斯岛大桥同时可见。岛上最佳观景点。',tip:'Тропа не маркирована — нужен навигатор.',tip_zh:'小径没有标记——需要导航。',end:true},
+    {tr:'Дальше на юг · 50 мин',tr_zh:'继续向南 · 50分钟'},
+    {tm:'12:00',pl:'Мыс Тобизина',pl_zh:'托比津角',dc:'Лисы, бирюзовая вода, вертикальные скалы.',dc_zh:'狐狸、碧绿的海水、垂直悬崖。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Остров Русский — всё об острове',label_zh:'俄罗斯岛——关于岛的一切',sc:'places'}]},
+
+  {id:'Т-13',cat:'city',
+   title:'Покровский парк и смотровая Бурачка',
+   title_zh:'波克罗夫斯基公园与布拉奇卡观景台',
+   folk:'Парк с храмом и фонарями — потом смотровая с биноклем. Два настроения подряд.',
+   folk_zh:'有教堂和路灯的公园——然后是有望远镜的观景台。两种心情接连体验。',
+   dist:'2,5 км',time:'2 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Спокойная прогулка. Хороша вечером.',folkm_zh:'悠闲散步。傍晚最美。',
+   tips:['Покровский парк — тихий, детская площадка','Бурачка — без торговли и толпы','Вечером — фонари в парке и огни со смотровой'],
+   tips_zh:['波克罗夫斯基公园——安静，有儿童游乐区','布拉奇卡——没有商贩和人群','傍晚——公园路灯亮起，观景台灯光闪烁'],
+   alert:'',alert_zh:'',
+   steps:[
+    {tm:'17:00',pl:'Покровский парк',pl_zh:'波克罗夫斯基公园',dc:'Деревья, лавочки. На территории — храм Покрова. Ночью горят фонари.',dc_zh:'树木、长椅。园内有圣母庇护教堂。夜晚路灯明亮。',tip:'Остановка «Ул. Комарова», авт. 15, 16ц.',tip_zh:'「科马罗夫大街」站，15路或16ц路公交。'},
+    {tr:'Пешком или транспортом · 15 мин',tr_zh:'步行或乘车 · 15分钟'},
+    {tm:'17:30',pl:'Смотровая Бурачка · 138 м',pl_zh:'布拉奇卡观景台 · 海拔138米',dc:'Стационарный бинокль на площадке. Вид на Чуркин.',dc_zh:'平台上有固定双筒望远镜。朱尔金半岛全景。',tip:'Обувь на плоской подошве — лестница скользкая.',tip_zh:'穿平底鞋——台阶很滑。',end:true}],
+   cross:[{type:'Локация',type_zh:'地点',label:'Смотровая Бурачка',label_zh:'布拉奇卡观景台',sc:'places'}]},
+
+  {id:'Т-14',cat:'city',
+   title:'Адмиральский сквер и набережная Цесаревича',
+   title_zh:'海军广场与皇太子滨海大道',
+   folk:'Подлодка, часовня, арка и смотровая с биноклем. Полдня вдоль воды.',
+   folk_zh:'潜艇、礼拜堂、凯旋门和有望远镜的观景台。半天沿水而行。',
+   dist:'2 км',time:'2 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Для первого знакомства с городом.',folkm_zh:'与这座城市的第一次邂逅。',
+   tips:['Маршрут короткий — хороший старт','Бинокль бесплатный — не упусти','После — можно дойти до Морского вокзала'],
+   tips_zh:['路线短——好的开始','望远镜免费——别错过','之后可以步行到海运车站'],
+   alert:'',alert_zh:'',
+   steps:[
+    {tm:'11:00',pl:'Адмиральский сквер',pl_zh:'海军广场',dc:'Рядом с подлодкой С-56. Андреевская часовня и Триумфальные ворота.',dc_zh:'C-56潜艇旁边。圣安德烈小礼拜堂和凯旋门。',tip:'Арка построена к приезду цесаревича Николая в 1891 г.',tip_zh:'凯旋门建于1891年，迎接皇太子尼古拉访问。'},
+    {tr:'По набережной Цесаревича · 10 мин',tr_zh:'沿皇太子滨海大道 · 10分钟'},
+    {tm:'11:20',pl:'Корабельная набережная, 10',pl_zh:'船舶滨海大道10号',dc:'Смотровая с бесплатным биноклем. Вид на Золотой Рог.',dc_zh:'免费望远镜观景台。金角湾全景。',tip:'Охрана не пускает с едой.',tip_zh:'保安不允许带食物进入。',end:true}],
+   cross:[{type:'Ем',type_zh:'美食',label:'Гребешок после прогулки',label_zh:'散步后的扇贝',sc:'seafood'}]},
+
+  {id:'Т-15',cat:'city',
+   title:'Три сопки: Тигровая, Жуковского и Шошина',
+   title_zh:'三座山丘：虎山、茹科夫斯基山与肖申山',
+   folk:'Не туристические тропы. Здесь горожане, не гости. Виды без фотообоев.',
+   folk_zh:'不是旅游路线。这里是本地人，不是游客。没有滤镜的真实风景。',
+   dist:'9 км',time:'5 часов',diff:'Средняя',diff_zh:'中等',
+   folkm:'Нужна машина. Для тех, кто хочет видеть город как местный.',folkm_zh:'需要有车。适合想像本地人一样看城市的人。',
+   tips:['Ранний подъём (до 06:00) — облака в тоннеле сопки','Сопка Шошина — лучше днём','Нужна машина или такси между точками'],
+   tips_zh:['早起（06:00前）——云雾穿越山丘隧道','肖申山——白天最佳','各点之间需要有车或打车'],
+   alert:'Сопка Шошина — подход через территорию автосервиса. Обычно не препятствуют.',
+   alert_zh:'肖申山——需穿过汽车修理厂区域进入。通常不会阻拦。',
+   steps:[
+    {tm:'09:30',pl:'Сопка Тигровая',pl_zh:'虎山',dc:'Тропинка от Инженерного пер., 14а. Один из пиков над центром.',dc_zh:'从工程师小巷14a出发的小径。市中心上方的山峰之一。',tip:'Тропа неприметная — пройди двором.',tip_zh:'小径不显眼——穿过院子进去。'},
+    {tr:'На авто · 15 мин',tr_zh:'开车 · 15分钟'},
+    {tm:'10:30',pl:'Улица Жуковского, 4',pl_zh:'茹科夫斯基街4号',dc:'Видовая улица. Хороший ракурс на город.',dc_zh:'观景街道。城市的好角度。'},
+    {tr:'На авто · 20 мин',tr_zh:'开车 · 20分钟'},
+    {tm:'11:15',pl:'Сопка Шошина',pl_zh:'肖申山',dc:'Вид на оба моста. Под сопкой — железнодорожный тоннель.',dc_zh:'两座大桥尽收眼底。山下是铁路隧道。',tip:'Ранним утром облака иногда проходят сквозь сопку.',tip_zh:'清晨云雾有时会穿越山丘。',end:true}],
+   cross:[]},
+
+  {id:'Т-16',cat:'sea',
+   title:'Набережные: Ахлёстышева — Первый пляж — Морвокзал',
+   title_zh:'滨海大道：阿赫廖斯蒂舍娃——第一海滩——海运车站',
+   folk:'Тёплая вода, шашлык на берегу и вид на Золотой мост.',
+   folk_zh:'温暖的海水、海边烤肉、金角大桥美景。',
+   dist:'6 км',time:'4 часа',diff:'Лёгкая',diff_zh:'轻松',
+   folkm:'Летний день у воды. С детьми — самое оно.',folkm_zh:'水边的夏日时光。带孩子来最合适。',
+   tips:['Прокат самокатов на Ахлёстышева','Мелко у берега — хорошо для детей','Морвокзал — нетуристическое место, тихо'],
+   tips_zh:['阿赫廖斯蒂舍娃有电动滑板车租赁','近岸水浅——适合孩子','海运车站——非旅游景点，很安静'],
+   alert:'Летний маршрут. В межсезонье — только набережные.',
+   alert_zh:'夏季路线。非夏季只有滨海大道可走。',
+   steps:[
+    {tm:'10:30',pl:'Набережная Ахлёстышева',pl_zh:'阿赫廖斯蒂舍娃滨海大道',dc:'Тёплая и мелкая вода. Прокат велосипедов и самокатов.',dc_zh:'温暖的浅水区。自行车和电动滑板车租赁。',tip:'Мелко у берега — хорошо для детей.',tip_zh:'近岸水浅——适合孩子。'},
+    {tr:'По набережной · 30 мин',tr_zh:'沿滨海大道 · 30分钟'},
+    {tm:'11:30',pl:'Первый городской пляж',pl_zh:'第一城市海滩',dc:'Кафе с шашлыком у воды. Вид на город с моря.',dc_zh:'水边有烤肉咖啡馆。从海上看城市的角度。',tip:'Плыви и смотри на город — вид с воды другой.',tip_zh:'游泳时看城市——从水中看又是另一番景象。'},
+    {tr:'Пешком · 40 мин',tr_zh:'步行 · 40分钟'},
+    {tm:'12:30',pl:'Морской вокзал',pl_zh:'海运车站',dc:'Лавочки с видом на Золотой мост, Чуркин и центр. Маленький фонтан.',dc_zh:'长椅俯瞰金角大桥、朱尔金半岛和市中心。小喷泉。',tip:'Хорошая точка для отдыха и перекуса.',tip_zh:'休息和小吃的好地方。',end:true}],
+   cross:[{type:'Ем',type_zh:'美食',label:'Рыбный ряд после набережной',label_zh:'逛完滨海大道去海鲜摊',sc:'seafood'}]}
+];
+const DEFAULT_PLACES=[
+  {id:'L-01',cat:'view',nm:'Орлиное гнездо',nm_zh:'鹰巢山',icon:'🦅',
+   tagline:'199 метров. Самая высокая точка старого города.',tagline_zh:'海拔199米。老城区最高点。电视塔夜晚像彩灯闪烁。',
+   teaser:'Отсюда видно всё — Золотой мост, Русский мост, бухту Золотой Рог.',teaser_zh:'从这里可以看到一切——金角大桥、俄罗斯岛大桥、金角湾。',
+   atmo:'Поднимаешься — и город раскрывается под ногами весь, сразу. Справа Золотой мост висит в тумане, слева Эгершельд уходит в море. Ветер тут всегда. Телевышка мигает гирляндой.',
+   atmo_zh:'登上山顶——整座城市瞬间在脚下展开。右边金角大桥在雾中若隐若现，左边埃格尔谢利德半岛延伸入海。这里总有风。电视塔闪烁着彩灯。',
+   body:'<p>Сопка Орлиное гнездо — высшая точка исторического центра, 199 метров. На вершине — <b>памятник Кириллу и Мефодию</b>, замки молодожёнов, камень дружбы с Тоямой.</p><p><em>Ночью телевышка светится разноцветными огнями.</em></p>',
+   body_zh:'<p>鹰巢山是历史中心最高点，199米。山顶有<b>基里尔与美多迪乌斯雕像</b>，护栏上挂满爱情锁，还有与日本富山市友好纪念石。</p><p><em>夜晚电视塔亮起五彩缤纷的灯光。</em></p>',
+   chronicle:[
+    {year:'1877',text:'Сопка получила имя в честь скалы Орлиное гнездо на болгарской Шипке. До этого называлась сопкой Клыкова — по имени гидрографа.'},
+    {year:'6 марта 1904',text:'Японская эскадра обстреляла Владивосток. Горожане забрались на сопку смотреть. Батареи молчали: смазка орудий замёрзла.'},
+    {year:'1959',text:'Хрущёв вернулся из Америки под впечатлением от Сан-Франциско и распорядился построить фуникулёр. Построили к 1962 году.'}],
+   facts:[{icon:'📐',t:'Высота',t_zh:'海拔',v:'199 м',v_zh:'199米'},{icon:'🌉',t:'Видно',t_zh:'可见',v:'Оба моста, Золотой Рог',v_zh:'两座大桥、金角湾'},{icon:'🕯',t:'Ночью',t_zh:'夜晚',v:'Телевышка-гирлянда',v_zh:'电视塔亮起彩灯'},{icon:'💑',t:'Традиция',t_zh:'传统',v:'Замки молодожёнов',v_zh:'新婚爱情锁'}],
+   when:[{icon:'🌅',t:'Рассвет',t_zh:'日出',d:'Пустая площадка',d_zh:'空旷的平台'},{icon:'🌇',t:'Закат',t_zh:'日落',d:'Огни города',d_zh:'城市灯光亮起'},{icon:'🌙',t:'Ночь',t_zh:'夜晚',d:'Мосты в огнях',d_zh:'桥梁在灯光中'},{icon:'☁️',t:'Туман',t_zh:'雾天',d:'Город в облаках',d_zh:'城市在云雾中'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Свободный, 24/7',v_zh:'免费，全天候'},{k:'Адрес',k_zh:'地址',v:'Нерчинская ул., 24',v_zh:'涅尔钦斯卡亚街24号'},{k:'Транспорт',k_zh:'交通',v:'Авт. 15, 63 — «Фуникулёр»',v_zh:'15路、63路——缆车站'},{k:'Ориентир',k_zh:'地标',v:'Телевышка',v_zh:'电视塔'}],
+   routeLink:'Т-07',nearby:['L-02','L-11','L-06']},
+
+  {id:'L-02',cat:'view',nm:'Нагорный парк',nm_zh:'纳戈尔内公园',icon:'🌲',
+   tagline:'182 метра. Парк с гротом, кофе и двумя смотровыми.',tagline_zh:'海拔182米。有山洞、咖啡和两个观景台的公园。',
+   teaser:'Парк на сопке — грот с легендой, амфитеатр, фуд-траки.',teaser_zh:'山上的公园——有传说的山洞、露天剧场、餐车和港口全景。',
+   atmo:'Идёшь вверх — мимо грота, откуда звучит легенда о Хозяине горы. Поднимаешься — и весь Владивосток как схема. Золотой мост, корабли, Амурский залив.',
+   atmo_zh:'沿路上山——经过山洞，传来山之主的传说。登顶——整个海参崴像地图展开。金角大桥、船只、阿穆尔湾。',
+   body:'<p>Нагорный парк, 1928 год, реконструкция 2020-х. Нижняя часть — амфитеатр, детская площадка, <b>фуд-траки</b>. Наверху — две смотровые на сопке Тюменской (182 м).</p><p><em>Грот «Хозяин горы»</em>: легенда из колонок. Детям нравится.</p>',
+   body_zh:'<p>纳戈尔内公园，1928年，2020年代重修。下方有露天剧场、儿童游乐区和<b>咖啡餐车</b>。上方在秋明斯卡亚山丘（182米）有两个观景台。</p><p><em>「山之主」山洞</em>：扬声器播放传说。孩子着迷。</p>',
+   chronicle:[],
+   facts:[{icon:'📏',t:'Высота',t_zh:'海拔',v:'182 м',v_zh:'182米'},{icon:'🗓',t:'Основан',t_zh:'建立',v:'1928 г.',v_zh:'1928年'},{icon:'🕳',t:'Грот',t_zh:'山洞',v:'Легенда о Хозяине горы',v_zh:'山之主传说'},{icon:'🕛',t:'Режим',t_zh:'开放时间',v:'Круглосуточно',v_zh:'全天候'}],
+   when:[{icon:'☕',t:'Утро',t_zh:'早晨',d:'Кофе и никого',d_zh:'咖啡，几乎没人'},{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Огни Золотого моста',d_zh:'金角大桥亮起'},{icon:'🌙',t:'Ночь',t_zh:'夜晚',d:'Освещён, безопасен',d_zh:'有灯光，安全'},{icon:'👨‍👩‍👧',t:'С детьми',t_zh:'亲子',d:'Грот, площадка',d_zh:'山洞、游乐区'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Свободный, 24/7',v_zh:'免费，全天候'},{k:'Транспорт',k_zh:'交通',v:'Авт. №68 от Семёновской пл.',v_zh:'68路公交'},{k:'Еда',k_zh:'餐饮',v:'Фуд-траки',v_zh:'餐车'},{k:'Дорожки',k_zh:'道路',v:'Бетонные, для коляски',v_zh:'混凝土路，适合婴儿车'}],
+   routeLink:'Т-09',nearby:['L-01','L-06','L-11']},
+
+  {id:'L-03',cat:'sea',nm:'Токаревская кошка',nm_zh:'托卡廖夫沙嘴',icon:'🏮',
+   tagline:'Коса уходит в море. Маяк 1876 года. Дальше — только Японское море.',tagline_zh:'沙嘴延伸入海。1876年灯塔。再往前——只有日本海。',
+   teaser:'Узкая полоса суши. Маяк в конце. В отлив — дойти пешком.',teaser_zh:'伸入大海的狭窄陆地。尽头是灯塔。退潮时可步行前往。',
+   atmo:'Коса начинается неожиданно — только что был город, и вдруг ты идёшь по узкой полоске земли, море с двух сторон. Ветер. Крики птиц. Маяк впереди.',
+   atmo_zh:'沙嘴出现得突然——刚才还在城市里，忽然你走在狭窄土地上，两侧都是大海。海风。鸟鸣。前方是灯塔。',
+   body:'<p>Коса на конце полуострова Эгершельд. В конце — <b>маяк Токаревского 1876 года</b>, один из старейших в Приморье. В отлив — пешком. <em>Проверяй часы прилива</em> — в прилив коса затапливается.</p>',
+   body_zh:'<p>埃格尔谢利德半岛尽端的天然地峡。尽头是<b>1876年托卡廖夫灯塔</b>，滨海边疆区最古老的灯塔之一。退潮时可步行。<em>查好潮汐时间</em>——涨潮时沙嘴被淹。</p>',
+   chronicle:[
+    {year:'1858',text:'Михаил Токаревский — флотский лоцман — скончался, так и не увидев Владивостока. Умер за два года до основания города. Мыс, коса и маяк носят его имя.'},
+    {year:'Зима',text:'Каждую зиму к косе приплывают кольчатые нерпы. Лежат на льдинах в нескольких метрах от людей. Около 250 детёнышей рождается здесь ежегодно.'}],
+   facts:[{icon:'🏗',t:'Маяк',t_zh:'灯塔',v:'1876 год',v_zh:'1876年建'},{icon:'🌊',t:'Отлив',t_zh:'退潮',v:'Только в отлив пешком',v_zh:'仅退潮时可步行'},{icon:'👥',t:'Рекорд',t_zh:'记录',v:'2 500+ на один закат',v_zh:'单次日落超2500人'},{icon:'💚',t:'Зелёный луч',t_zh:'绿色闪光',v:'Редкое явление',v_zh:'罕见自然现象'}],
+   when:[{icon:'🌊',t:'Отлив',t_zh:'退潮',d:'Единственный способ',d_zh:'步行到达的唯一方式'},{icon:'🌅',t:'Закат',t_zh:'日落',d:'Солнце за Русским мостом',d_zh:'太阳在俄罗斯岛大桥后沉落'},{icon:'🌞',t:'День',t_zh:'白天',d:'Без толпы',d_zh:'人少安静'},{icon:'❄️',t:'Зима',t_zh:'冬季',d:'Нерпы на льду',d_zh:'冰面上的海豹'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Свободный',v_zh:'免费'},{k:'Район',k_zh:'区域',v:'Эгершельд',v_zh:'埃格尔谢利德'},{k:'Прилив',k_zh:'潮汐',v:'Следи — коса затапливается',v_zh:'注意——涨潮时被淹'},{k:'Взять',k_zh:'携带',v:'Термос, шапка',v_zh:'保温壶，帽子'}],
+   routeLink:'Т-05',nearby:['L-08','L-09','L-01']},
+
+  {id:'L-04',cat:'history',nm:'Подлодка С-56',nm_zh:'C-56潜艇',icon:'⚓',
+   tagline:'14 торпед, 10 потопленных. Самая результативная подлодка ТОФ.',tagline_zh:'14枚鱼雷，击沉10艘船。太平洋舰队战果最辉煌的潜艇。',
+   teaser:'Мемориальный музей. Внутрь можно — тесно и очень настоящее.',teaser_zh:'纪念博物馆。可以进入——狭窄、黑暗、非常真实。',
+   atmo:'Идёшь по набережной — и вдруг она. Настоящая. Чёрный корпус, рубка. Входишь — тесно, темно, каждый сантиметр используется.',
+   atmo_zh:'走在滨海大道上——突然看到它。真实的。黑色船体，指挥塔。走进去——狭窄、黑暗，每一厘米都被充分利用。',
+   body:'<p>С-56 — самая результативная подлодка ТОФ во Второй мировой: 14 атак, 10 потопленных. На постаменте с 1975 года. Внутрь открыто, билет недорогой.</p><p>Рядом — <em>Андреевская часовня</em>, <em>Вечный огонь</em>, <em>арка 1891 года</em>.</p>',
+   body_zh:'<p>C-56是二战中太平洋舰队战果最辉煌的潜艇：14次攻击，击沉10艘。1975年起在基座上。可以进入内部，票价不贵。</p><p>旁边是<em>圣安德烈小礼拜堂</em>、<em>长明火</em>、<em>1891年凯旋门</em>。</p>',
+   chronicle:[
+    {year:'1936',text:'С-56 строилась в Ленинграде. По частям — через всю страну на поезде — во Владивосток на сборку. Она пересекла всю Россию ещё до первого погружения.'},
+    {year:'6 октября 1942',text:'Командир Щедрин получил приказ: подкрепить Северный флот. Маршрут — через Тихий и Атлантический океаны: Владивосток — Петропавловск — Сан-Франциско — Панама — Галифакс — Шотландия — Арктика. 40 000 км.'},
+    {year:'9 мая 1975',text:'К 30-летию Победы С-56 установлена на постаменте Корабельной набережной. Единственная подводная лодка ВОВ, стоящая в том городе, откуда вышла в поход.'}],
+   facts:[{icon:'⚔️',t:'В бою',t_zh:'战绩',v:'14 атак, 10 потопленных',v_zh:'14次攻击，击沉10艘'},{icon:'🗓',t:'Музей',t_zh:'博物馆',v:'На постаменте с 1975 г.',v_zh:'1975年起在基座上'},{icon:'🚪',t:'Внутрь',t_zh:'进入',v:'Открыто',v_zh:'开放'},{icon:'🏛',t:'Рядом',t_zh:'附近',v:'Арка 1891 г., Вечный огонь',v_zh:'1891年凯旋门，长明火'}],
+   when:[{icon:'🌞',t:'День',t_zh:'白天',d:'Музей открыт',d_zh:'博物馆开放'},{icon:'📸',t:'Фото',t_zh:'拍照',d:'Утром лучшее освещение',d_zh:'早上光线最好'},{icon:'🧒',t:'С детьми',t_zh:'亲子',d:'Детям нравится',d_zh:'孩子喜欢'},{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Набережная освещена',d_zh:'滨海大道有灯光'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Музей платный',v_zh:'博物馆收费'},{k:'Адрес',k_zh:'地址',v:'Корабельная набережная',v_zh:'船舶滨海大道'},{k:'Осторожно',k_zh:'注意',v:'Узкие проходы',v_zh:'通道狭窄'},{k:'Рядом',k_zh:'附近',v:'Арка, часовня, Вечный огонь',v_zh:'凯旋门、小礼拜堂、长明火'}],
+   routeLink:'Т-06',nearby:['L-05','L-11','L-12']},
+
+  {id:'L-05',cat:'history',nm:'Набережная Цесаревича',nm_zh:'皇太子滨海大道',icon:'🚢',
+   tagline:'Бесплатный бинокль, вид на Золотой мост, 1891 год.',tagline_zh:'免费望远镜、金角大桥美景、1891年历史。',
+   teaser:'Смотровая с бесплатным стационарным биноклем — вход свободный.',teaser_zh:'免费固定望远镜观景台——开放入场。',
+   atmo:'На Корабельной набережной, 10 — гостиница со свободной смотровой. Там стоит стационарный бинокль — бесплатный. Направи его на Золотой мост.',
+   atmo_zh:'船舶滨海大道10号——有开放观景台的酒店。那里有一台固定的免费双筒望远镜。把它对准金角大桥。',
+   body:'<p>Набережная Цесаревича названа в честь цесаревича Николая, приезжавшего в 1891 году. Корабельная набережная, 10 — <b>бесплатный стационарный бинокль</b>. Вход свободный.</p>',
+   body_zh:'<p>皇太子滨海大道以1891年到访的皇太子尼古拉命名。船舶滨海大道10号——<b>免费固定双筒望远镜</b>。免费入场。</p>',
+   chronicle:[{year:'Май 1891',text:'Цесаревич Николай Александрович прибыл во Владивосток. Лично заложил Транссиб, доки и памятник Невельскому. 23 года спустя, став Николаем II, он будет расстрелян — но современный Владивосток начался с этого визита.'}],
+   facts:[{icon:'🔭',t:'Бинокль',t_zh:'望远镜',v:'Стационарный, бесплатный',v_zh:'固定式，免费'},{icon:'👑',t:'История',t_zh:'历史',v:'Цесаревич Николай, 1891 г.',v_zh:'皇太子尼古拉，1891年'},{icon:'🚪',t:'Вход',t_zh:'入场',v:'Свободный',v_zh:'免费'},{icon:'⚓',t:'Рядом',t_zh:'附近',v:'Подлодка, арка, часовня',v_zh:'潜艇、凯旋门、小礼拜堂'}],
+   when:[{icon:'🌞',t:'День',t_zh:'白天',d:'Лучший вид',d_zh:'最佳视角'},{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Огни Золотого моста',d_zh:'金角大桥灯光'},{icon:'🌫',t:'Туман',t_zh:'雾天',d:'Суда в тумане',d_zh:'雾中船只'},{icon:'🚶',t:'Маршрут',t_zh:'路线',d:'Удобно до подлодки',d_zh:'步行至潜艇很方便'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Свободный',v_zh:'免费'},{k:'Адрес',k_zh:'地址',v:'Корабельная набережная, 10',v_zh:'船舶滨海大道10号'},{k:'Бинокль',k_zh:'望远镜',v:'Бесплатный',v_zh:'免费'},{k:'Курение',k_zh:'吸烟',v:'Не разрешается',v_zh:'禁止'}],
+   routeLink:'Т-14',nearby:['L-04','L-06','L-12']},
+
+  {id:'L-06',cat:'view',nm:'Смотровая Бурачка',nm_zh:'布拉奇卡观景台',icon:'🔭',
+   tagline:'138 метров. Стационарный бинокль. Вид на Чуркин. Горожане, не туристы.',tagline_zh:'海拔138米。固定望远镜。朱尔金全景。本地人，不是游客。',
+   teaser:'Смотровая без толп — бинокль и честный вид на город.',teaser_zh:'没有人群的观景台——望远镜和城市的真实风景。',
+   atmo:'Здесь не бывает толп. Лестница с решётчатыми ступенями, ветер, бинокль. Направляешь его на Чуркин — и понимаешь, какой большой этот город.',
+   atmo_zh:'这里从不拥挤。格栅台阶、海风、望远镜。把它对准朱尔金——才明白这座城市有多大。',
+   body:'<p>Смотровая сопки Бурачка — 138 м. Названа в честь первого начальника порта Евстафия Бурачка (1861). <b>Стационарный бинокль</b>, бесплатно. Нетуристическое место.</p>',
+   body_zh:'<p>布拉奇卡山丘观景台——138米。以1861年首任港口长官叶夫斯塔菲·布拉奇科命名。<b>固定望远镜</b>，免费。非旅游景点。</p>',
+   chronicle:[],
+   facts:[{icon:'📐',t:'Высота',t_zh:'海拔',v:'138 м',v_zh:'138米'},{icon:'🔭',t:'Бинокль',t_zh:'望远镜',v:'Стационарный, бесплатный',v_zh:'固定式，免费'},{icon:'👤',t:'Атмосфера',t_zh:'氛围',v:'Нетуристическое',v_zh:'非旅游景点'},{icon:'⚠️',t:'Обувь',t_zh:'鞋子',v:'Плоская — ступени скользкие',v_zh:'平底鞋——台阶滑'}],
+   when:[{icon:'🌞',t:'День',t_zh:'白天',d:'Лучшая видимость',d_zh:'能见度最佳'},{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Огни города',d_zh:'城市灯光'},{icon:'🌬',t:'Ветер',t_zh:'风',d:'Возьми куртку',d_zh:'带外套'},{icon:'⚠️',t:'Обувь',t_zh:'鞋子',d:'Плоская подошва',d_zh:'平底鞋'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Бесплатно',v_zh:'免费'},{k:'Бинокль',k_zh:'望远镜',v:'Есть, бесплатно',v_zh:'有，免费'},{k:'Обувь',k_zh:'鞋子',v:'Плоская подошва',v_zh:'平底鞋'},{k:'Рядом',k_zh:'附近',v:'Покровский парк',v_zh:'波克罗夫斯基公园'}],
+   routeLink:'Т-13',nearby:['L-01','L-02','L-11']},
+
+  {id:'L-07',cat:'sea',nm:'Мыс Тобизина',nm_zh:'托比津角',icon:'🌊',
+   tagline:'Вертикальные скалы. Самая южная точка острова Русский.',tagline_zh:'垂直悬崖。俄罗斯岛最南端。',
+   teaser:'Скалы уходят в море. Лисы подходят. Бирюзовая вода. Край земли.',teaser_zh:'悬崖延伸入海。狐狸接近人类。碧绿海水。天涯尽头。',
+   atmo:'Тропа — час. Потом скалы кончаются — и дальше только Японское море. Лисы привыкли к людям. Вода бирюзовая.',
+   atmo_zh:'步行一小时。然后悬崖戛然而止——往前只有日本海。狐狸习惯了人类。海水碧绿。',
+   body:'<p>Мыс Тобизина — самая южная точка острова Русский. Открытое Японское море. От кампуса ДВФУ пешком ~4–5 км. <b>Лисы</b> подходят близко. Камни скользкие.</p>',
+   body_zh:'<p>托比津角是俄罗斯岛最南端。开阔的日本海。从远东联邦大学校园步行约4-5公里。<b>狐狸</b>会走近人。岩石很滑。</p>',
+   chronicle:[],
+   facts:[{icon:'🦊',t:'Лисы',t_zh:'狐狸',v:'Дикие, подходят близко',v_zh:'野生，会走近'},{icon:'🌊',t:'Вода',t_zh:'海水',v:'Бирюзовая, снорклинг',v_zh:'碧绿色，可浮潜'},{icon:'📍',t:'Точка',t_zh:'位置',v:'Самая южная на острове',v_zh:'岛上最南端'},{icon:'⚠️',t:'Осторожно',t_zh:'注意',v:'Скалы скользкие',v_zh:'岩石很滑'}],
+   when:[{icon:'☀️',t:'Лето',t_zh:'夏季',d:'Купание, снорклинг',d_zh:'游泳、浮潜'},{icon:'🌅',t:'Утро',t_zh:'早晨',d:'Рассвет на скалах',d_zh:'晨光照在悬崖上'},{icon:'🍂',t:'Осень',t_zh:'秋季',d:'Пустой мыс',d_zh:'空旷的海角'},{icon:'❄️',t:'Зима',t_zh:'冬季',d:'Не рекомендуется',d_zh:'不建议'}],
+   info:[{k:'Остров',k_zh:'岛屿',v:'Русский',v_zh:'俄罗斯岛'},{k:'Транспорт',k_zh:'交通',v:'Авт. №15 до ДВФУ',v_zh:'15路到远东联邦大学'},{k:'Расстояние',k_zh:'距离',v:'~4–5 км от кампуса',v_zh:'距校园约4-5公里'},{k:'Взять',k_zh:'携带',v:'Термос, маска летом',v_zh:'保温壶，夏天带面镜'}],
+   routeLink:'Т-02',nearby:['L-10','L-14']},
+
+  {id:'L-08',cat:'city',nm:'Сопка Крестовая',nm_zh:'十字山',icon:'⛵',
+   tagline:'Дикая тропа на Эгершельде. Рабочий порт. Туристов нет.',tagline_zh:'埃格尔谢利德的野径。工业港口。几乎没有游客。',
+   teaser:'Без указателей — вид на порт и два моста без туристических групп.',teaser_zh:'没有路牌——港口和两座大桥的美景，没有任何旅游团。',
+   atmo:'Тропинка начинается у жилого дома. Поднимаешься — и город открывается с незнакомой стороны. Рабочий. Краны, суда, гудки. Оба моста одновременно.',
+   atmo_zh:'小径从住宅楼边开始。上山——城市从陌生角度展现。工业的。起重机、船只、汽笛声。两座大桥同时可见。',
+   body:'<p>Сопка Крестовая на Эгершельде. Тропа от Самарской, 10 — без указателей. Вершина — <b>рабочий порт</b> целиком. Золотой и Русский одновременно.</p>',
+   body_zh:'<p>埃格尔谢利德半岛上的十字山。从萨马尔斯卡亚街10号出发——没有路牌。山顶——<b>工业港口</b>全貌。金角大桥和俄罗斯岛大桥同时入眼。</p>',
+   chronicle:[],
+   facts:[{icon:'🏗',t:'Вид',t_zh:'景色',v:'Рабочий порт, краны',v_zh:'工业港口，起重机'},{icon:'🌉',t:'Мосты',t_zh:'大桥',v:'Золотой и Русский',v_zh:'金角大桥和俄罗斯岛大桥'},{icon:'🥾',t:'Тропа',t_zh:'小径',v:'Неофициальная',v_zh:'非官方'},{icon:'🔦',t:'Ночью',t_zh:'夜晚',v:'Огни порта',v_zh:'港口灯光'}],
+   when:[{icon:'🌞',t:'День',t_zh:'白天',d:'Активный порт',d_zh:'港口活跃'},{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Огни заводятся',d_zh:'灯光亮起'},{icon:'☀️',t:'Ясно',t_zh:'晴天',d:'Оба моста чётко',d_zh:'两座大桥清晰可见'},{icon:'🌧',t:'После дождя',t_zh:'雨后',d:'Скользко',d_zh:'很滑'}],
+   info:[{k:'Тропа',k_zh:'小径',v:'Самарская, 10',v_zh:'萨马尔斯卡亚街10号'},{k:'Фонарь',k_zh:'手电筒',v:'Ночью обязателен',v_zh:'夜间必备'},{k:'Туристы',k_zh:'游客',v:'Почти не бывают',v_zh:'几乎没有'}],
+   routeLink:'Т-08',nearby:['L-09','L-03','L-01']},
+
+  {id:'L-09',cat:'sea',nm:'Набережная 7 футов',nm_zh:'七英尺滨海大道',icon:'⛵',
+   tagline:'Яхты, нетипичная архитектура, тихий угол Эгершельда.',tagline_zh:'游艇、非典型建筑、埃格尔谢利德的僻静角落。',
+   teaser:'Причал с яхтами — нетуристический Эгершельд.',teaser_zh:'游艇码头——非旅游化的埃格尔谢利德。',
+   atmo:'Яхты борт к борту. Дома строили без стандартов — странные, угловатые. Хорошо просто идти вдоль воды.',
+   atmo_zh:'游艇并排停靠。房子不按标准建——奇怪、有棱角。就沿着水边走走，很惬意。',
+   body:'<p>Набережная 7 футов на Эгершельде. 7 футов — единица глубины. Яхты, необычная архитектура фасадов. Нетуристическое место.</p>',
+   body_zh:'<p>七英尺滨海大道位于埃格尔谢利德。七英尺是深度单位。游艇、不寻常的建筑外立面。非旅游景点。</p>',
+   chronicle:[],
+   facts:[{icon:'⛵',t:'Яхты',t_zh:'游艇',v:'Причальная стоянка',v_zh:'游艇停靠码头'},{icon:'🏗',t:'Архитектура',t_zh:'建筑',v:'Нестандартные фасады',v_zh:'非标准外立面'},{icon:'🧘',t:'Атмосфера',t_zh:'氛围',v:'Тихо, нетуристично',v_zh:'安静，非旅游景点'}],
+   when:[{icon:'🌅',t:'Вечер',t_zh:'傍晚',d:'В закатном свете',d_zh:'日落时分'},{icon:'🌞',t:'День',t_zh:'白天',d:'Яхты на солнце',d_zh:'阳光下的游艇'},{icon:'🚶',t:'Пешком',t_zh:'步行',d:'После Крестовой сопки',d_zh:'游览十字山后步行来此'}],
+   info:[{k:'Район',k_zh:'区域',v:'Эгершельд',v_zh:'埃格尔谢利德'},{k:'Вход',k_zh:'入场',v:'Свободный',v_zh:'免费'},{k:'Рядом',k_zh:'附近',v:'Крестовая, Токаревская кошка',v_zh:'十字山、托卡廖夫沙嘴'}],
+   routeLink:'Т-08',nearby:['L-08','L-03','L-06']},
+
+  {id:'L-10',cat:'nature',nm:'Остров Русский',nm_zh:'俄罗斯岛',icon:'🏝',
+   tagline:'Мосты и дикие мысы. Кампус у моря. Лисы. Лучший вид на оба моста.',tagline_zh:'大桥与野性海角。海边校园。狐狸。观赏两座大桥的最佳视角。',
+   teaser:'Остров рядом с городом — ощущение края земли.',teaser_zh:'城市旁的岛屿——天涯尽头的感觉。校园、海角、自行车、狐狸。',
+   atmo:'Переезжаешь через Русский мост — и что-то меняется. Воздух другой. Горизонт шире. Огромный кампус у воды, велосипеды, море. Едешь дальше — дикие мысы, лисы, бирюзовая вода.',
+   atmo_zh:'过了俄罗斯岛大桥——什么都变了。空气不一样。视野更开阔。巨大的海边校园、自行车、大海。继续前行——野性的海角、狐狸、碧绿的海水。',
+   body:'<p>Остров Русский соединён <b>мостом Русский</b> (2012, 1 886 м). На острове — кампус ДВФУ: прокат велосипедов, пирс. Дальше — <em>мыс Тобизина</em>, <em>гора Русская</em> — оба моста одновременно. Лисы не боятся людей.</p>',
+   body_zh:'<p>俄罗斯岛通过<b>俄罗斯岛大桥</b>（2012年，1886米）相连。岛上有远东联邦大学校园：自行车租赁、游泳码头。更远处——<em>托比津角</em>、<em>俄罗斯山</em>——可同时看到两座大桥。狐狸不怕人。</p>',
+   chronicle:[{year:'1860',text:'При основании Владивостока остров сразу оценили военные — он прикрывал вход в бухту. Почти 150 лет остров был закрытой военной зоной.'},
+    {year:'2012',text:'Открылся мост Русский — тогда один из самых длинных вантовых в мире, пролёт 1104 м. Построен к АТЭС. Остров открылся для всех.'}],
+   facts:[{icon:'🌉',t:'Мост',t_zh:'大桥',v:'Русский, 1 886 м',v_zh:'俄罗斯岛大桥，1886米'},{icon:'🎓',t:'ДВФУ',t_zh:'远东联邦大学',v:'Прокат велосипедов',v_zh:'自行车租赁'},{icon:'🦊',t:'Лисы',t_zh:'狐狸',v:'Не боятся людей',v_zh:'不怕人'},{icon:'🏔',t:'Гора Русская',t_zh:'俄罗斯山',v:'Оба моста',v_zh:'两座大桥同时可见'}],
+   when:[{icon:'☀️',t:'Лето',t_zh:'夏季',d:'Пирс, велики, купание',d_zh:'码头、自行车、游泳'},{icon:'🍂',t:'Осень',t_zh:'秋季',d:'Мысы без толп',d_zh:'海角人少'},{icon:'🚲',t:'Велик',t_zh:'自行车',d:'Прокат в кампусе',d_zh:'校园内可租借'},{icon:'⏰',t:'Последний',t_zh:'末班',d:'Автобус 22:30',d_zh:'公交22:30'}],
+   info:[{k:'Транспорт',k_zh:'交通',v:'Авт. №15',v_zh:'15路公交'},{k:'Прокат',k_zh:'租赁',v:'Велосипеды в кампусе',v_zh:'校园内租借'},{k:'Посл. авт.',k_zh:'末班车',v:'22:30 с ДВФУ',v_zh:'22:30从远东联邦大学'},{k:'Пляж',k_zh:'海滩',v:'Пирс, купание',v_zh:'码头游泳'}],
+   routeLink:'Т-12',nearby:['L-07','L-14']},
+
+  {id:'L-11',cat:'park',nm:'Покровский парк',nm_zh:'波克罗夫斯基公园',icon:'⛪',
+   tagline:'Парк с храмом и фонарями. Ночью — особая тишина.',tagline_zh:'有教堂和路灯的公园。夜晚有特别的宁静。',
+   teaser:'Тихий парк с деревьями, лавочками и храмом — редкая тишина в центре.',teaser_zh:'有树木、长椅和教堂的安静公园——市中心罕见的宁静。',
+   atmo:'Городской шум заходит сюда с трудом. Деревья, дорожки, лавочки. Ночью горят фонари. В углу — храм Покрова.',
+   atmo_zh:'城市的喧嚣很难渗透到这里。树木、小路、长椅。夜晚路灯明亮。角落里有圣母庇护教堂。',
+   body:'<p>Покровский парк — один из старых городских парков. <b>Покровский собор</b> на территории. Небольшая детская площадка. Ночью горят фонари. Хорошая точка старта к Орлиному гнезду.</p>',
+   body_zh:'<p>波克罗夫斯基公园是城市古老公园之一。园内有<b>圣母庇护大教堂</b>。小型儿童游乐区。夜晚路灯明亮。前往鹰巢山的好出发点。</p>',
+   chronicle:[],
+   facts:[{icon:'⛪',t:'Храм',t_zh:'教堂',v:'Покрова Пресвятой Богородицы',v_zh:'圣母庇护大教堂'},{icon:'🌙',t:'Ночью',t_zh:'夜晚',v:'Горят фонари',v_zh:'路灯明亮'},{icon:'🌲',t:'Природа',t_zh:'自然',v:'Деревья в центре',v_zh:'市中心的树木'},{icon:'👶',t:'Детям',t_zh:'亲子',v:'Детская площадка',v_zh:'儿童游乐区'}],
+   when:[{icon:'🌇',t:'Вечер',t_zh:'傍晚',d:'Фонари зажглись',d_zh:'路灯亮起'},{icon:'☀️',t:'День',t_zh:'白天',d:'Тень деревьев',d_zh:'树荫'},{icon:'🌙',t:'Ночь',t_zh:'夜晚',d:'Тихо и освещено',d_zh:'安静而明亮'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Бесплатно',v_zh:'免费'},{k:'Транспорт',k_zh:'交通',v:'Авт. 15 — «Ул. Комарова»',v_zh:'15路——科马罗夫大街站'},{k:'Рядом',k_zh:'附近',v:'Орлиное гнездо, Бурачка',v_zh:'鹰巢山、布拉奇卡'}],
+   routeLink:'Т-13',nearby:['L-01','L-06','L-04']},
+
+  {id:'L-12',cat:'city',nm:'Морской вокзал',nm_zh:'海运车站',icon:'🚢',
+   tagline:'Лавочки с видом на Золотой мост и маленький фонтан.',tagline_zh:'俯瞰金角大桥的长椅和小喷泉。',
+   teaser:'Тихая точка с видом на мост — сюда заходят те, кто знает.',teaser_zh:'看到大桥的安静之地——懂的人才来。',
+   atmo:'Садишься на лавочку — перед тобой бухта, Золотой мост, Чуркин. Маленький фонтан. Нетуристическое место.',
+   atmo_zh:'坐在长椅上——面前是海湾、金角大桥、朱尔金半岛。小喷泉。非旅游景点。',
+   body:'<p>За Морским вокзалом — одно из лучших мест для наблюдения за бухтой. Лавочки, <b>вид на Золотой мост, Чуркин и центр</b>. Маленький фонтан. Тихо.</p>',
+   body_zh:'<p>海运车站外是欣赏海湾的最佳位置之一。长椅提供<b>金角大桥、朱尔金半岛和市中心</b>的视角。小喷泉。安静。</p>',
+   chronicle:[{year:'Май 1891',text:'Цесаревич Николай лично заложил на берегу Золотого Рога первый камень Транссиба. Триумфальная арка — в ста метрах отсюда.'}],
+   facts:[{icon:'🌉',t:'Вид',t_zh:'景色',v:'Золотой мост, Чуркин',v_zh:'金角大桥、朱尔金'},{icon:'⛲',t:'Фонтан',t_zh:'喷泉',v:'На территории',v_zh:'院内'},{icon:'🧘',t:'Атмосфера',t_zh:'氛围',v:'Тихо',v_zh:'安静'},{icon:'🚢',t:'Паромы',t_zh:'渡船',v:'Движение судов',v_zh:'船只往来'}],
+   when:[{icon:'🌇',t:'Закат',t_zh:'日落',d:'Мост в закатном свете',d_zh:'大桥在日落中'},{icon:'🌙',t:'Ночь',t_zh:'夜晚',d:'Огни моста в воде',d_zh:'灯光倒映水中'},{icon:'☕',t:'Пауза',t_zh:'休息',d:'Передышка между точками',d_zh:'景点间的休息站'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Бесплатно',v_zh:'免费'},{k:'Рядом',k_zh:'附近',v:'Набережная Цесаревича',v_zh:'皇太子滨海大道'},{k:'Еда',k_zh:'餐饮',v:'Кафе внутри',v_zh:'内部有咖啡馆'}],
+   routeLink:'Т-16',nearby:['L-05','L-04','L-15']},
+
+  {id:'L-13',cat:'sea',nm:'Кунгасный пляж',nm_zh:'孔加斯内海滩',icon:'🌊',
+   tagline:'Стритфуд, беседки, волна. Летом — шумно и по-владивостокски.',tagline_zh:'街头美食、凉亭、人工冲浪。夏天——热闹而充满海参崴风情。',
+   teaser:'Стритфуд, беседки, волна — с лошадьми по дороге.',teaser_zh:'街头美食、凉亭、冲浪——途中还有马。',
+   atmo:'Летом здесь кипит. Запах уличной еды, музыка, беседки. По дороге от Юбилейного иногда лошади. Искусственная волна работает — очередь.',
+   atmo_zh:'夏天这里热闹非凡。街头美食、音乐、凉亭。从尤比列伊内来的路上有时能看到马。人工冲浪——需要排队。',
+   body:'<p>Стритфуд, аренда беседок, летом — искусственная волна. Лучший вариант — от <b>Юбилейного пляжа</b> вдоль берега (40–50 мин). Беседки в выходные бронировать заранее.</p>',
+   body_zh:'<p>街头美食、凉亭租赁，夏季有人工冲浪。最佳方式——从<b>尤比列伊内海滩</b>沿海岸步行（40–50分钟）。周末凉亭需提前预订。</p>',
+   chronicle:[],
+   facts:[{icon:'🏄',t:'Волна',t_zh:'冲浪',v:'Летом',v_zh:'夏季'},{icon:'🍢',t:'Еда',t_zh:'美食',v:'Стритфуд',v_zh:'街头美食'},{icon:'🛖',t:'Беседки',t_zh:'凉亭',v:'В аренду',v_zh:'可租赁'},{icon:'🐴',t:'Лошади',t_zh:'马匹',v:'От Юбилейного',v_zh:'从尤比列伊内来的路上'}],
+   when:[{icon:'☀️',t:'Лето',t_zh:'夏季',d:'Главный сезон',d_zh:'主要季节'},{icon:'🌅',t:'До полудня',t_zh:'正午前',d:'Свободнее',d_zh:'人少些'},{icon:'❄️',t:'Зима',t_zh:'冬季',d:'Пустой пляж',d_zh:'空旷的海滩'}],
+   info:[{k:'Еда',k_zh:'美食',v:'Стритфуд',v_zh:'街头美食'},{k:'Беседки',k_zh:'凉亭',v:'В аренду, заранее',v_zh:'可租，需提前预订'},{k:'Волна',k_zh:'冲浪',v:'Только летом',v_zh:'仅夏季'},{k:'Подход',k_zh:'到达',v:'От Юбилейного вдоль берега',v_zh:'从尤比列伊内沿海岸'}],
+   routeLink:'Т-10',nearby:['L-15','L-09','L-08']},
+
+  {id:'L-14',cat:'nature',nm:'Гора Русская',nm_zh:'俄罗斯山',icon:'⛰',
+   tagline:'Лучший вид на оба моста сразу. Остров Русский с высоты.',tagline_zh:'同时看到两座大桥的最佳视角。俄罗斯岛制高点。',
+   teaser:'Вершина острова — Золотой и Русский мосты одновременно.',teaser_zh:'岛顶——金角大桥和俄罗斯岛大桥同时可见。',
+   atmo:'Подъём с навигатором. Когда выходишь на вершину — оба вантовых моста сразу. Город вдали, море вокруг.',
+   atmo_zh:'靠导航上山。登顶时——两座斜拉大桥同时入眼。城市在远处，海洋环绕。',
+   body:'<p>Гора Русская на острове Русский. Один из лучших видов в Приморье: <b>Золотой и Русский мосты одновременно</b>. Тропа не маркирована — нужен навигатор.</p>',
+   body_zh:'<p>俄罗斯岛上的俄罗斯山。滨海边疆区最佳观景点之一：<b>金角大桥和俄罗斯岛大桥同时可见</b>。没有官方小径——需要导航。</p>',
+   chronicle:[],
+   facts:[{icon:'🌉',t:'Мосты',t_zh:'大桥',v:'Оба сразу',v_zh:'两座同时可见'},{icon:'🗺',t:'Тропа',t_zh:'小径',v:'Без маркировки',v_zh:'无标记'},{icon:'🌊',t:'Вид',t_zh:'景色',v:'Море, город, мосты',v_zh:'大海、城市、大桥'},{icon:'🥾',t:'Обувь',t_zh:'鞋子',v:'Кроссовки обязательно',v_zh:'运动鞋必备'}],
+   when:[{icon:'☀️',t:'Ясно',t_zh:'晴天',d:'В туман не видно',d_zh:'雾天看不见'},{icon:'🌅',t:'Вечер',t_zh:'傍晚',d:'Огни мостов',d_zh:'大桥灯光'},{icon:'📸',t:'Фото',t_zh:'拍照',d:'Лучшая точка',d_zh:'最佳位置'},{icon:'🥾',t:'Обувь',t_zh:'鞋子',d:'Нормальная',d_zh:'需要合适的鞋'}],
+   info:[{k:'Остров',k_zh:'岛屿',v:'Русский',v_zh:'俄罗斯岛'},{k:'Тропа',k_zh:'小径',v:'Не маркирована',v_zh:'无标记'},{k:'Транспорт',k_zh:'交通',v:'Авт. №15, дальше авто',v_zh:'15路，之后需有车'},{k:'Сложность',k_zh:'难度',v:'Средняя',v_zh:'中等'}],
+   routeLink:'Т-12',nearby:['L-07','L-10']},
+
+  {id:'L-15',cat:'sea',nm:'Первый городской пляж',nm_zh:'第一城市海滩',icon:'🏖',
+   tagline:'Вид на город с воды. Шашлык у берега. Канал и остров Елена.',tagline_zh:'从水中看城市。海边烤肉。运河与叶莲娜岛。',
+   teaser:'Купаешься — и видишь город. Шашлык, канал рядом.',teaser_zh:'游泳时——城市就在眼前。旁边有烤肉和运河。',
+   atmo:'Открываешь глаза в воде — и видишь город. Небоскрёбы, порт, сопки. Рядом канал с островом Елена. Шашлык и дым с морским воздухом.',
+   atmo_zh:'在水中睁开眼睛——城市就在面前。摩天大楼、港口、山丘。旁边运河隔开叶莲娜岛。烤肉烟熏味和海风交织。',
+   body:'<p>Первый городской пляж. Кафе с шашлыком у берега. Канал с <b>островом Елена</b>. Вид на город с воды.</p>',
+   body_zh:'<p>第一城市海滩。海边有烤肉咖啡馆。运河隔开<b>叶莲娜岛</b>。从水中看城市——罕见角度。</p>',
+   chronicle:[],
+   facts:[{icon:'🏙',t:'Вид',t_zh:'景色',v:'Город с воды',v_zh:'从水中看城市'},{icon:'🍖',t:'Еда',t_zh:'美食',v:'Кафе с шашлыком',v_zh:'烤肉咖啡馆'},{icon:'🏝',t:'Рядом',t_zh:'附近',v:'Остров Елена',v_zh:'叶莲娜岛'},{icon:'🌊',t:'Купание',t_zh:'游泳',v:'Городской пляж',v_zh:'城市海滩'}],
+   when:[{icon:'☀️',t:'Лето',t_zh:'夏季',d:'Главный сезон',d_zh:'主要季节'},{icon:'🌅',t:'Вечер',t_zh:'傍晚',d:'Город в огнях',d_zh:'城市灯光'},{icon:'🌞',t:'Утро',t_zh:'早晨',d:'Пустой берег',d_zh:'空旷的海滩'}],
+   info:[{k:'Вход',k_zh:'入场',v:'Бесплатно',v_zh:'免费'},{k:'Еда',k_zh:'美食',v:'Шашлык на берегу',v_zh:'海边烤肉'},{k:'Рядом',k_zh:'附近',v:'Остров Елена, канал',v_zh:'叶莲娜岛、运河'}],
+   routeLink:'Т-16',nearby:['L-12','L-13','L-05']}
+];
+const DEFAULT_SEAFOOD=[
+  {nm:'Гребешок приморский',nm_zh:'滨海扇贝',folk:'Живой, ещё пахнет йодом.',folk_zh:'活的，还带着海碘的气息。',sub:'прилавок №12',p:650,u:'₽ за штуку'},
+  {nm:'Краб камчатский',nm_zh:'堪察加帝王蟹',folk:'Варёный в солёной воде, свежий.',folk_zh:'用盐水煮好，新鲜出锅。',sub:'прилавок №08',p:2400,u:'₽ за кило'},
+  {nm:'Трубач',nm_zh:'海螺',folk:'Белое мясо, чуть сладкое.',folk_zh:'白色蟹肉，略带甜味。比牡蛎更扎实。',sub:'прилавок №05',p:850,u:'₽ за кило'},
+  {nm:'Устрицы хасанские',nm_zh:'哈桑牡蛎',folk:'Холодная вода — тонкий вкус.',folk_zh:'冷水培育——味道细腻。',sub:'прилавок №12',p:180,u:'₽ за штуку'},
+  {nm:'Морской ёж',nm_zh:'海胆',folk:'Икра — золото Японского моря.',folk_zh:'海胆黄——日本海的黄金。',sub:'прилавок №03',p:350,u:'₽ за штуку'},
+  {nm:'Кальмар',nm_zh:'鱿鱼',folk:'Утренний улов, брать целиком.',folk_zh:'早晨的渔获，整条带走。',sub:'прилавок №15',p:480,u:'₽ за кило'},
+  {nm:'Креветка северная',nm_zh:'北极虾',folk:'Мелкая, сладкая. На пару — лучше.',folk_zh:'小个头，甜味足。清蒸最好。',sub:'прилавок №09',p:920,u:'₽ за кило'},
+  {nm:'Мидии с Попова',nm_zh:'波波夫岛贻贝',folk:'С острова. Чёрные, крупные.',folk_zh:'来自小岛。黑色，个头大。',sub:'прилавок №12',p:380,u:'₽ за кило'},
+  {nm:'Корюшка',nm_zh:'胡瓜鱼',folk:'Пахнет огурцом — так и должно быть.',folk_zh:'闻起来像黄瓜——这就对了。',sub:'прилавок №07',p:220,u:'₽ за кило'},
+  {nm:'Минтай свежий',nm_zh:'阿拉斯加鳕鱼',folk:'Местный, не мороженый. На уху — идеально.',folk_zh:'本地的，非冷冻。做鱼汤最棒。',sub:'прилавок №11',p:180,u:'₽ за кило'}
+];
+const DEFAULT_MEETS=[
+  {id:'М-01',cat:'sea',hot:true,
+   author:{name:'Аня Л.',role:'предприниматель, 3 года на яхте',role_zh:'企业家，玩帆船3年',ava:'А',clr:'#C12B26'},
+   title:'Яхта на 10 человек.',title_zh:'10人游艇出行。',
+   sub:'Скидываемся — каждый по 1 400 ₽.',sub_zh:'合租——每人1400卢布。',
+   folk:'Арендую яхту на воскресенье, ищу ещё 6 человек. Выходим из Спортивной гавани в 10:00, возвращаемся в 16:00. Острова Русский, Попова, купание.',
+   folk_zh:'周日租游艇，还需6人。10:00从运动港出发，16:00返回。俄罗斯岛、波波娃岛，游泳。',
+   vibes:['⛵ 6 часов в море','💰 1 400 ₽ с человека','🏊 купание у островов'],
+   vibes_zh:['⛵ 海上6小时','💰 每人1400卢布','🏊 岛边游泳'],
+   seats:6,total:10,tm:'10:00',day:'11',mo:'мая',dow:'Вс',dow_zh:'周日',tg:'anyavlad'},
+
+  {id:'М-02',cat:'sunset',hot:true,
+   author:{name:'Миша К.',role:'местный, живёт здесь 4 года',role_zh:'本地人，住了4年',ava:'М',clr:'#1D3F6E'},
+   title:'Закат на Токаревской. Тихо.',title_zh:'托卡廖夫沙嘴看日落。',
+   sub:'Без алкоголя. Термос с чаем.',sub_zh:'不喝酒。带保温壶。',
+   folk:'Собираю небольшую компанию 5–6 человек. Встречаемся у входа на косу, идём пешком до маяка, смотрим закат. Кто хочет молчать — молчит, кто хочет говорить — говорит.',
+   folk_zh:'召集小团体5-6人。在沙嘴入口集合，步行到灯塔，看日落。',
+   vibes:['🧘 интроверт-friendly','🚫 без алкоголя','🌅 закат у маяка'],
+   vibes_zh:['🧘 内向者友好','🚫 不喝酒','🌅 灯塔边看日落'],
+   seats:3,total:6,tm:'18:47',day:'10',mo:'мая',dow:'Сб',dow_zh:'周六',tg:'mishavdk'},
+
+  {id:'М-03',cat:'talk',hot:false,
+   author:{name:'Дима Р.',role:'разработчик, работает удалённо',role_zh:'开发者，远程工作',ava:'Д',clr:'#2A6B3A'},
+   title:'Работаю в кофейне. Присоединяйся.',title_zh:'咖啡馆办公，欢迎加入。',
+   sub:'Коворкинг за чашкой кофе.',sub_zh:'边喝咖啡边办公。',
+   folk:'Каждую среду занимаю столик в «Волшебном фонаре» с 10 до 14. Удалёнщики, фрилансеры, самозанятые — приходите. Просто работать рядом, иногда говорить.',
+   folk_zh:'每周三10点到14点在「魔灯」咖啡馆。远程工作者、自由职业者——欢迎来。',
+   vibes:['💻 удалёнщики','☕ кофейня центр','📅 каждую среду'],
+   vibes_zh:['💻 远程办公','☕ 市中心咖啡馆','📅 每周三'],
+   seats:4,total:8,tm:'10:00',day:'14',mo:'мая',dow:'Ср',dow_zh:'周三',tg:'dimaremote'},
+
+  {id:'М-04',cat:'sport',hot:false,
+   author:{name:'Катя В.',role:'инструктор по SUP',role_zh:'SUP冲浪教练',ava:'К',clr:'#8E1E1A'},
+   title:'SUP для начинающих.',title_zh:'初学者SUP冲浪课。',
+   sub:'Научу стоять на доске за час.',sub_zh:'一小时教你站上冲浪板。',
+   folk:'Провожу бесплатное вводное занятие для тех, кто никогда не стоял на SUP. Доски есть. Встречаемся на пляже у яхт-клуба. Нужна только смелость и купальник.',
+   folk_zh:'为零基础新手提供免费入门课。板子有。在游艇俱乐部海滩集合。只需勇气和泳衣。',
+   vibes:['🏄 доски включены','🆓 бесплатно','🌊 бухта Золотой Рог'],
+   vibes_zh:['🏄 板子提供','🆓 免费','🌊 金角湾'],
+   seats:5,total:8,tm:'09:30',day:'12',mo:'мая',dow:'Вс',dow_zh:'周日',tg:'katya_sup'},
+
+  {id:'М-05',cat:'food',hot:false,
+   author:{name:'Серёжа Н.',role:'рыбак, выходит в море с детства',role_zh:'渔民，从小出海',ava:'С',clr:'#1D3F6E'},
+   title:'Гребешков сами поймали.',title_zh:'我们自己捞的扇贝。',
+   sub:'Жарим прямо у воды. Скидываемся на уголь.',sub_zh:'在水边现烤。大家凑钱买炭。',
+   folk:'Утром сходили на лодке, набрали гребешков. Зову пятерых незнакомцев разделить добычу. Берег Русского острова, мангал, вид на мост. Надо только доехать.',
+   folk_zh:'早上乘船出海，捞了扇贝。邀请五位分享收获。俄罗斯岛海岸，烤架，大桥美景。',
+   vibes:['🦪 свежий улов','🔥 мангал у моря','🚗 нужно доехать до Русского'],
+   vibes_zh:['🦪 新鲜渔获','🔥 海边烧烤','🚗 需前往俄罗斯岛'],
+   seats:5,total:5,tm:'14:00',day:'13',mo:'мая',dow:'Пн',dow_zh:'周一',tg:'seryozha_fish'},
+
+  {id:'М-06',cat:'talk',hot:false,
+   author:{name:'Лена М.',role:'инвестор, крипта и акции',role_zh:'投资人，加密货币和股票',ava:'Л',clr:'#2E5FA3'},
+   title:'Крипта — разбираем рынок.',title_zh:'加密货币——分析市场。',
+   sub:'Не курс. Живой разговор.',sub_zh:'不是课程。真实对话。',
+   folk:'Собираюсь раз в две недели с теми, кто реально инвестирует или только начинает. Обсуждаем конкретные решения, ошибки, находки. Бар «Перекрёсток», угловой столик.',
+   folk_zh:'每两周与真正投资或刚起步的人聚一次。讨论具体决策、错误和发现。',
+   vibes:['📈 практика не теория','🍺 бар Перекрёсток','🔄 раз в 2 недели'],
+   vibes_zh:['📈 实战非理论','🍺 十字路口酒吧','🔄 每两周一次'],
+   seats:3,total:7,tm:'19:00',day:'15',mo:'мая',dow:'Ср',dow_zh:'周三',tg:'lena_invest'},
+
+  {id:'М-07',cat:'travel',hot:false,
+   author:{name:'Паша О.',role:'фотограф, снимает рассветы',role_zh:'摄影师，专拍日出',ava:'П',clr:'#C12B26'},
+   title:'Съёмка рассвета на Орлином.',title_zh:'鹰巢山拍日出。',
+   sub:'Выезд в 4:30. Вернёмся к завтраку.',sub_zh:'4:30出发，早餐前回来。',
+   folk:'Фотографирую каждые выходные. Зову двух-трёх человек — неважно, с телефоном или камерой. Покажу лучшую точку на сопке. Кофе в термосе беру сам.',
+   folk_zh:'每周末拍摄。邀请两三个人——手机或相机都行。带你找山上最佳机位。咖啡自备。',
+   vibes:['📸 любой уровень','🌅 рассвет 05:12','☕ кофе с собой'],
+   vibes_zh:['📸 任何水平','🌅 日出05:12','☕ 自带咖啡'],
+   seats:2,total:3,tm:'04:30',day:'16',mo:'мая',dow:'Чт',dow_zh:'周四',tg:'pasha_photo'},
+
+  {id:'М-08',cat:'travel',hot:false,
+   author:{name:'Рита Г.',role:'биолог, ищет тигров в тайге',role_zh:'生物学家，寻找老虎',ava:'Р',clr:'#2A6B3A'},
+   title:'Ищем компанию к тиграм.',title_zh:'寻找同伴去看老虎。',
+   sub:'Сафари-парк. Делимся на такси.',sub_zh:'野生动物园。拼车前往。',
+   folk:'Еду в Сафари-парк в субботу, хочу разделить такси и войти в группу (дешевле). Туда и обратно — около 800 ₽ с человека. Выезд от Центральной площади.',
+   folk_zh:'周六去野生动物园，想拼车和团体票（更便宜）。往返约每人800卢布。从中央广场出发。',
+   vibes:['🐯 Сафари-парк','💰 800 ₽ такси с чел.','📅 суббота 10:00'],
+   vibes_zh:['🐯 野生动物园','💰 每人800卢布打车','📅 周六10:00'],
+   seats:3,total:4,tm:'10:00',day:'17',mo:'мая',dow:'Пт',dow_zh:'周五',tg:'rita_tigers'},
+
+  {id:'М-09',cat:'talk',hot:false,
+   author:{name:'Макс Б.',role:'американец, учит русский',role_zh:'美国人，在学俄语',ava:'М',clr:'#1D3F6E'},
+   title:'English speaking club.',title_zh:'英语口语俱乐部。',
+   sub:'Русским — практика. Иностранцам — помощь.',sub_zh:'俄国人练口语，外国人有人帮。',
+   folk:'Встречаемся каждый вторник в 18:00 в библиотеке Горького. Русские практикуют английский, иностранцы — русский. Ведущий — я. Без записи, просто приходи.',
+   folk_zh:'每周二18:00在高尔基图书馆。俄国人练英语，外国人练俄语。主持人是我。不需预约。',
+   vibes:['🇬🇧 english practice','🔄 каждый вторник','📚 библиотека Горького'],
+   vibes_zh:['🇬🇧 英语练习','🔄 每周二','📚 高尔基图书馆'],
+   seats:6,total:12,tm:'18:00',day:'13',mo:'мая',dow:'Вт',dow_zh:'周二',tg:'max_english'},
+
+  {id:'М-10',cat:'sea',hot:false,
+   author:{name:'Оля С.',role:'мама двоих, знает все пляжи',role_zh:'两个孩子的妈妈，熟知所有海滩',ava:'О',clr:'#C12B26'},
+   title:'На Попова с детьми.',title_zh:'带孩子去波波娃岛。',
+   sub:'Паром + пляж. Скидываемся на паром.',sub_zh:'轮渡+海滩。拼渡轮票。',
+   folk:'Еду с детьми на остров Попова в воскресенье. Ищу ещё семью или двух человек — вместе интереснее и дешевле. Мелкий берег, безопасно для детей.',
+   folk_zh:'周日带孩子去波波娃岛。找一个家庭或两人同行——更有趣也更便宜。浅滩，适合孩子。',
+   vibes:['🧒 с детьми','⛴ паром 35 мин','🏖 мелкий пляж Попова'],
+   vibes_zh:['🧒 亲子','⛴ 轮渡35分钟','🏖 波波娃岛浅滩'],
+   seats:4,total:6,tm:'09:00',day:'18',mo:'мая',dow:'Вс',dow_zh:'周日',tg:'olya_kids'}
+];
+const DEFAULT_NEWS=[
+  {date:'24 апреля',date_zh:'4月24日',cat:'Погода',cat_zh:'天气',
+   h:'Первые +18° в этом сезоне. Пляжи открываются.',h_zh:'本季首次+18°。海滩开放了。',
+   d:'Набережная Ахлёстышева с утра полна. Прокат самокатов заработал.',d_zh:'阿赫廖斯蒂舍娃滨海大道早上就人满为患。电动滑板车租赁已开放。',
+   cross:{label:'→ Маршрут по набережным',label_zh:'→ 滨海大道路线',sc:'routes',id:'Т-16'}},
+  {date:'22 апреля',date_zh:'4月22日',cat:'Сезон',cat_zh:'季节',
+   h:'Корюшка пошла. Рынок на Фокина — с 7 утра.',h_zh:'胡瓜鱼来了。福金街市场——早7点开始。',
+   d:'Пахнет огурцом — значит свежая. 220 ₽ за кило у прилавка №7.',d_zh:'闻起来像黄瓜——说明是新鲜的。第7摊位220卢布一公斤。',
+   cross:{label:'→ Рыбный ряд · корюшка',label_zh:'→ 海鲜摊 · 胡瓜鱼',sc:'seafood'}},
+  {date:'20 апреля',date_zh:'4月20日',cat:'События',cat_zh:'活动',
+   h:'Сафари-парк: тигрята вышли в вольеры.',h_zh:'野生动物园：幼虎走进围栏区。',
+   d:'До конца мая — лучшее время. Кормление в 11:00 и 14:00.',d_zh:'五月底前——最佳观赏时间。喂食时间11:00和14:00。',
+   cross:{label:'→ Тропинка к тиграм',label_zh:'→ 前往老虎的路线',sc:'routes',id:'Т-04'}},
+  {date:'15 апреля',date_zh:'4月15日',cat:'Локации',cat_zh:'地点',
+   h:'Океанариум ДВФУ открывает зал Арктики с 15 мая.',h_zh:'远东联邦大学海洋馆5月15日起开放北极展厅。',
+   d:'Белые медведи, моржи, реконструкция льдов. Билеты со скидкой 30%.',d_zh:'北极熊、海象、冰川复原场景。门票享七折优惠。'}
+];
+const DEFAULT_LOG=[
+  {tm:'08:40',dy:'27 апр.',dy_zh:'4月27日',tt:'Русский мост ограничен из-за тумана.',tt_zh:'大雾导致俄罗斯岛大桥限行。',d:'Движение по одной полосе до 11:00.',d_zh:'单车道行驶至11:00。',cat:'По дорогам',cat_zh:'道路情况'},
+  {tm:'07:15',dy:'27 апр.',dy_zh:'4月27日',tt:'Сафари-парк: тигрица вывела троих.',tt_zh:'野生动物园：老虎妈妈带出三只幼崽。',d:'Амурская тигрица Тайга стала матерью трёх тигрят.',d_zh:'阿穆尔虎塔依加成为三只虎崽的母亲。',cat:'В тайге',cat_zh:'泰加林'},
+  {tm:'22:30',dy:'26 апр.',dy_zh:'4月26日',tt:'Утиный закат: рекорд Эгершельда.',tt_zh:'夕阳如鸭：埃格尔谢利德新纪录。',d:'На Токаревскую кошку пришли более 2 500 человек.',d_zh:'超过2500人来到托卡廖夫沙嘴。',cat:'По городу',cat_zh:'城市动态'},
+  {tm:'18:00',dy:'26 апр.',dy_zh:'4月26日',tt:'Завтра — южный ветер до 9 м/с.',tt_zh:'明日——南风风速可达9米/秒。',d:'Катера Русского моста могут отменить.',d_zh:'俄罗斯岛大桥渡轮可能取消。',cat:'С небес',cat_zh:'天气'},
+  {tm:'14:20',dy:'26 апр.',dy_zh:'4月26日',tt:'Рыбный ряд: пришёл краб-стригун.',tt_zh:'海鲜摊：雪蟹到货了。',d:'Прилавки №05 и №08. Цена — 1 800 ₽/кг.',d_zh:'第05和第08摊位。价格——1800卢布/公斤。',cat:'С рынка',cat_zh:'市场情报'},
+  {tm:'11:10',dy:'26 апр.',dy_zh:'4月26日',tt:'Фестиваль «Меридиан»: программа трёх дней.',tt_zh:'「子午线」节：三天活动日程。',d:'С пт по вс на косе Токаревского. Световая инсталляция, чай, микрофон.',d_zh:'周五至周日在托卡廖夫沙嘴。灯光装置、喝茶、开放麦克风。',cat:'Гулянье',cat_zh:'节庆'},
+  {tm:'20:45',dy:'25 апр.',dy_zh:'4月25日',tt:'В Хасане замечен тигр.',tt_zh:'哈桑地区发现老虎。',d:'Рядом с посёлком Славянка. Лесники советуют не ходить одному.',d_zh:'斯拉夫扬卡村附近。林业人员建议不要单独出行。',cat:'В тайге',cat_zh:'泰加林'}
+];
+
+const ADMIN_PW_KEY='gornitsa_admin_pw';
+const DEFAULT_PW='gornitsa2026';
+const CMS_KEY='gornitsa_cms_v1';
+const CLOUD_KEY='gornitsa_cloudinary_v1';
+
+/* ── Storage ── */
+const _store=(function(){
+  const mem={};let ls=false;
+  try{localStorage.setItem('_t','1');localStorage.removeItem('_t');ls=true;}catch(_){}
+  return{
+    get(k){try{return ls?localStorage.getItem(k):mem[k]??null;}catch(_){return mem[k]??null;}},
+    set(k,v){try{if(ls)localStorage.setItem(k,v);else mem[k]=v;}catch(_){mem[k]=v;}},
+    remove(k){try{if(ls)localStorage.removeItem(k);else delete mem[k];}catch(_){delete mem[k];}}
+  };
+})();
+
+/* ── Cloudinary config (set in Settings) ── */
+let CLOUD_NAME='';
+let UPLOAD_PRESET='';
+
+function loadCloudConfig(){
+  try{
+    const raw=_store.get(CLOUD_KEY);
+    if(raw){const c=JSON.parse(raw);CLOUD_NAME=c.name||'';UPLOAD_PRESET=c.preset||'';}
+  }catch(_){}
+}
+function saveCloudConfig(){
+  const name=(document.getElementById('cloud-name')||{}).value||'';
+  const preset=(document.getElementById('cloud-preset')||{}).value||'';
+  CLOUD_NAME=name.trim();
+  UPLOAD_PRESET=preset.trim();
+  _store.set(CLOUD_KEY,JSON.stringify({name:CLOUD_NAME,preset:UPLOAD_PRESET}));
+  updateCloudStatus();
+  toast('✓ Cloudinary настроен');
+}
+function cloudReady(){return !!(CLOUD_NAME&&UPLOAD_PRESET);}
+function updateCloudStatus(){
+  const el=document.getElementById('cloud-status');
+  if(!el)return;
+  if(cloudReady()){
+    el.className='cloud-status ok';
+    el.innerHTML='✓ Cloudinary подключён — фото доступны всем пользователям';
+  } else {
+    el.className='cloud-status warn';
+    el.innerHTML='⚠ Cloudinary не настроен — загрузка фото недоступна';
+  }
+  // Sync input fields
+  const ni=document.getElementById('cloud-name');
+  const pi=document.getElementById('cloud-preset');
+  if(ni)ni.value=CLOUD_NAME;
+  if(pi)pi.value=UPLOAD_PRESET;
+}
+
+/* ── Upload to Cloudinary ── */
+async function uploadToCloudinary(file){
+  if(!cloudReady()) throw new Error('Cloudinary не настроен');
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset',UPLOAD_PRESET);
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+  if(!res.ok) throw new Error('Ошибка загрузки: '+res.status);
+  const data=await res.json();
+  return data.secure_url;
+}
+
+/* ── Auth ── */
+function getPw(){return _store.get(ADMIN_PW_KEY)||DEFAULT_PW;}
+function tryLogin(){
+  const pw=document.getElementById('auth-pw').value;
+  if(pw===getPw()){
+    _store.set('gornitsa_admin_sess','1');
+    document.getElementById('auth-overlay').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  } else {
+    document.getElementById('auth-err').textContent='Неверный пароль';
+    const inp=document.getElementById('auth-pw');
+    inp.style.borderColor='var(--red)';
+    setTimeout(()=>{inp.style.borderColor='';},1800);
+  }
+}
+function logout(){_store.remove('gornitsa_admin_sess');location.reload();}
+function changePassword(){
+  const p1=document.getElementById('cfg-pw').value;
+  const p2=document.getElementById('cfg-pw2').value;
+  if(!p1){toast('Введите новый пароль');return;}
+  if(p1!==p2){toast('Пароли не совпадают');return;}
+  _store.set(ADMIN_PW_KEY,p1);
+  document.getElementById('cfg-pw').value='';
+  document.getElementById('cfg-pw2').value='';
+  toast('✓ Пароль изменён');
+}
+
+/* ── Data ── */
+let DATA={routes:[],places:[],seafood:[],meets:[],news:[],log:[],settings:{}};
+
+function getDefaults(){
+  return{
+    routes:JSON.parse(JSON.stringify(DEFAULT_ROUTES)),
+    places:JSON.parse(JSON.stringify(DEFAULT_PLACES)),
+    seafood:JSON.parse(JSON.stringify(DEFAULT_SEAFOOD)),
+    meets:JSON.parse(JSON.stringify(DEFAULT_MEETS)),
+    news:JSON.parse(JSON.stringify(DEFAULT_NEWS)),
+    log:JSON.parse(JSON.stringify(DEFAULT_LOG))
+  };
+}
+
+function initApp(){
+  loadCloudConfig();
+  loadData();
+  renderDashboard();
+  renderSettings();
+  renderRoutes();
+  renderPlaces();
+  renderSeafood();
+  renderMeets();
+  renderNews();
+}
+
+function loadData(){
+  const d=getDefaults();
+  const raw=_store.get(CMS_KEY);
+  if(raw){
+    try{
+      const s=JSON.parse(raw);
+      DATA.routes  =s.routes  ||d.routes;
+      DATA.places  =s.places  ||d.places;
+      DATA.seafood =s.seafood ||d.seafood;
+      DATA.meets   =s.meets   ||d.meets;
+      DATA.news    =s.news    ||d.news;
+      DATA.log     =s.log     ||d.log;
+      DATA.settings=s.settings||{};
+    }catch(e){Object.assign(DATA,d);DATA.settings={};}
+  } else {
+    Object.assign(DATA,d);DATA.settings={};
+  }
+}
+
+function saveAll(){
+  const h1=(document.getElementById('cfg-h1')||{}).value||'';
+  const sub=(document.getElementById('cfg-sub')||{}).value||'';
+  if(h1||sub)DATA.settings={h1,sub};
+  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings};
+  _store.set(CMS_KEY,JSON.stringify(cms));
+  const btn=document.getElementById('save-btn');
+  btn.textContent='✓ Сохранено';btn.classList.add('saved');
+  setTimeout(()=>{btn.textContent='💾 Сохранить всё';btn.classList.remove('saved');},2200);
+  toast('✓ Изменения сохранены и применены на сайте');
+}
+
+function resetToDefaults(){
+  if(!confirm('Сбросить весь контент к исходным данным сайта?\nТекстовые изменения будут отменены. Нельзя отменить.'))return;
+  _store.remove(CMS_KEY);
+  const d=getDefaults();Object.assign(DATA,d);DATA.settings={};
+  renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();
+  toast('✓ Данные сброшены к исходным');
+}
+
+/* ── Panels ── */
+const TITLES={dashboard:'Дашборд',settings:'Настройки',routes:'Маршруты',places:'Локации',seafood:'Рыбный ряд',meets:'Встречи',news:'Новости'};
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+name).classList.add('on');
+  document.getElementById('topbar-title').textContent=TITLES[name]||name;
+  document.querySelectorAll('.sb-item').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+name+"'"))b.classList.add('on');
+  });
+  if(name==='settings')updateCloudStatus();
+}
+
+/* ── Dashboard ── */
+function renderDashboard(){
+  const s=[
+    {n:DATA.routes.length,l:'Маршрутов',h:'Пешеходные маршруты',p:'routes'},
+    {n:DATA.places.length,l:'Локаций',h:'Места и достопримечательности',p:'places'},
+    {n:DATA.seafood.length,l:'Позиций',h:'Рыбный ряд',p:'seafood'},
+    {n:DATA.meets.length,l:'Встреч',h:'Активных встреч',p:'meets'},
+    {n:DATA.news.length,l:'Новостей',h:'Карточки новостей',p:'news'},
+    {n:DATA.log.length,l:'Записей',h:'Лента событий',p:'news'}
+  ];
+  document.getElementById('dash-stats').innerHTML=s.map(x=>`
+    <div class="dash-card" onclick="showPanel('${x.p}')">
+      <div class="dash-num">${x.n}</div>
+      <div class="dash-label">${x.l}</div>
+      <div class="dash-hint">${x.h}</div>
+    </div>`).join('');
+}
+
+/* ── Settings ── */
+function renderSettings(){
+  document.getElementById('cfg-h1').value=DATA.settings.h1||'';
+  document.getElementById('cfg-sub').value=DATA.settings.sub||'';
+  updateCloudStatus();
+}
+
+/* ── Photo upload (Cloudinary) ── */
+function photoWarn(containerId){
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  if(!cloudReady()){
+    el.innerHTML='<div class="cloud-warn">⚠ Настройте Cloudinary в разделе <b>Настройки → Cloudinary</b>, чтобы загружать фото. Фото будут видны всем пользователям на любом устройстве.</div>';
+  } else {
+    el.innerHTML='';
+  }
+}
+
+function setupPhotoZone(zoneId,galleryId,warnId,getPhotos,setPhoto,delPhoto){
+  const zone=document.getElementById(zoneId);
+  if(!zone)return;
+  photoWarn(warnId);
+
+  // Self-referencing delete — always re-registers itself so chain never breaks
+  function doDelete(pi){
+    delPhoto(pi);
+    renderGallery(galleryId, getPhotos(), doDelete);
+  }
+  renderGallery(galleryId, getPhotos(), doDelete);
+
+  const handleFiles = (files) => {
+    if(!files.length) return;
+    if(!cloudReady()){toast('⚠ Сначала настройте Cloudinary в Настройках');return;}
+    const prog = zone.querySelector('.photo-uploading');
+    if(prog) prog.style.display='block';
+    let ok=0, fail=0;
+    const uploads = Array.from(files).filter(f=>f.type.startsWith('image/')).map(f =>
+      uploadToCloudinary(f)
+        .then(url=>{ setPhoto(url); ok++; })
+        .catch(e=>{ fail++; console.error(e); })
+    );
+    Promise.all(uploads).then(()=>{
+      if(prog) prog.style.display='none';
+      renderGallery(galleryId, getPhotos(), doDelete);
+      if(ok) toast('✓ Загружено: '+ok+(fail?' (ошибок: '+fail+')':''));
+      else if(fail) toast('Ошибка загрузки фото');
+    });
+  };
+
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drag');
+    handleFiles(Array.from(e.dataTransfer.files));
+  });
+  const inp=zone.querySelector('input[type=file]');
+  if(inp){
+    inp.addEventListener('change',e=>{
+      handleFiles(Array.from(e.target.files));
+      e.target.value='';
+    });
+  }
+}
+
+async function handlePhotoFiles(files,zoneId,galleryId,setPhoto,getPhotos){
+  if(!files.length)return;
+  if(!cloudReady()){toast('⚠ Сначала настройте Cloudinary в Настройках');return;}
+  const zone=document.getElementById(zoneId);
+  const prog=zone?zone.querySelector('.photo-uploading'):null;
+  if(prog)prog.style.display='block';
+  let ok=0,fail=0;
+  for(const f of files){
+    if(!f.type.startsWith('image/')){fail++;continue;}
+    try{
+      const url=await uploadToCloudinary(f);
+      setPhoto(url);
+      ok++;
+    }catch(e){fail++;console.error(e);}
+  }
+  if(prog)prog.style.display='none';
+  renderGallery(galleryId,getPhotos(),null);
+  if(ok)toast('✓ Загружено фото: '+ok+(fail?' (ошибок: '+fail+')':''));
+  else toast('Ошибка загрузки фото');
+}
+
+// Global delete registry — key: galleryId, value: fn(photoIndex)
+window._galleryDel = {};
+
+function renderGallery(galleryId, photos, delFn){
+  const el = document.getElementById(galleryId);
+  if(!el) return;
+  // Register delete fn — never overwrite with null/undefined
+  if(typeof delFn === 'function') window._galleryDel[galleryId] = delFn;
+  if(!photos || !photos.length){ el.innerHTML = ''; return; }
+  el.innerHTML = photos.map((url, i) => `
+    <div class="photo-item">
+      <img src="${url}" alt="фото ${i+1}" loading="lazy">
+      ${i===0 ? '<div class="photo-item-main">Главное</div>' : ''}
+      <div class="photo-item-del" onclick="event.stopPropagation();(window._galleryDel['${galleryId}']||function(){})(${i})">✕</div>
+    </div>`).join('');
+}
+
+/* ── Photo helpers per section ── */
+// photos stored as arrays of URLs in DATA items
+function getRoutePhotos(i){return DATA.routes[i].photos||[];}
+function addRoutePhoto(i,url){if(!DATA.routes[i].photos)DATA.routes[i].photos=[];DATA.routes[i].photos.push(url);}
+function delRoutePhoto(i,pi){if(DATA.routes[i].photos)DATA.routes[i].photos.splice(pi,1);}
+
+function getPlacePhotos(i){return DATA.places[i].photos||[];}
+function addPlacePhoto(i,url){if(!DATA.places[i].photos)DATA.places[i].photos=[];DATA.places[i].photos.push(url);}
+function delPlacePhoto(i,pi){if(DATA.places[i].photos)DATA.places[i].photos.splice(pi,1);}
+
+function getSfPhotos(i){return DATA.seafood[i].photos||[];}
+
+/* ── Step (точка маршрута) photo helpers ── */
+function getStepPhotos(ri,si){
+  const s=DATA.routes[ri]&&DATA.routes[ri].steps&&DATA.routes[ri].steps[si];
+  return (s&&s.photos)||[];
+}
+function addStepPhoto(ri,si,url){
+  const s=DATA.routes[ri].steps[si];
+  if(!s.photos)s.photos=[];
+  s.photos.push(url);
+}
+function delStepPhoto(ri,si,pi){
+  const s=DATA.routes[ri].steps[si];
+  if(s&&s.photos)s.photos.splice(pi,1);
+}
+
+function setupStepPhotoZone(ri,si){
+  const zoneId=`szone-${ri}-${si}`;
+  const galleryId=`sgallery-${ri}-${si}`;
+  const warnId=`swarn-${ri}-${si}`;
+  const zone=document.getElementById(zoneId);
+  if(!zone)return;
+
+  const warnEl=document.getElementById(warnId);
+  if(warnEl&&!cloudReady()){
+    warnEl.innerHTML='<div class="cloud-warn" style="margin-bottom:6px">⚠ Настройте Cloudinary для загрузки фото</div>';
+  }
+
+  function doDelete(pi){
+    delStepPhoto(ri,si,pi);
+    renderGallery(galleryId, getStepPhotos(ri,si), doDelete);
+  }
+  renderGallery(galleryId, getStepPhotos(ri,si), doDelete);
+
+  const handleFiles = (files) => {
+    if(!files.length) return;
+    if(!cloudReady()){toast('⚠ Сначала настройте Cloudinary в Настройках');return;}
+    const prog = zone.querySelector('.photo-uploading');
+    if(prog) prog.style.display='block';
+    let ok=0, fail=0;
+    Promise.all(Array.from(files).filter(f=>f.type.startsWith('image/')).map(f=>
+      uploadToCloudinary(f)
+        .then(url=>{ addStepPhoto(ri,si,url); ok++; })
+        .catch(e=>{ fail++; console.error(e); })
+    )).then(()=>{
+      if(prog) prog.style.display='none';
+      renderGallery(galleryId, getStepPhotos(ri,si), doDelete);
+      if(ok) toast('✓ Загружено: '+ok+(fail?' (ошибок: '+fail+')':''));
+      else if(fail) toast('Ошибка загрузки фото');
+    });
+  };
+
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drag');
+    handleFiles(Array.from(e.dataTransfer.files));
+  });
+  const inp=zone.querySelector('input[type=file]');
+  if(inp){
+    inp.addEventListener('change',e=>{
+      handleFiles(Array.from(e.target.files));
+      e.target.value='';
+    });
+  }
+}
+function addSfPhoto(i,url){if(!DATA.seafood[i].photos)DATA.seafood[i].photos=[];DATA.seafood[i].photos.push(url);}
+function delSfPhoto(i,pi){if(DATA.seafood[i].photos)DATA.seafood[i].photos.splice(pi,1);}
+
+/* ── Routes ── */
+function renderRoutes(){
+  const el=document.getElementById('routes-list');
+  if(!DATA.routes.length){el.innerHTML='<div class="empty"><div class="empty-icon">🗺</div><div class="empty-text">Маршрутов пока нет</div></div>';return;}
+  el.innerHTML=DATA.routes.map((r,i)=>`
+    <div class="card-item" id="ri-${i}">
+      <div class="card-header" onclick="toggleCard('ri-${i}')">
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(r.id||'?')} · ${esc(r.title||'Без названия')}</div>
+          <div class="card-subtitle">${esc(r.title_zh||'')} · ${esc(r.time||'')} · ${esc(r.dist||'')}</div>
+        </div>
+        <div class="card-actions">
+          <span class="badge">${esc(r.cat||'—')}</span>
+          <div class="card-toggle" id="ri-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();deleteItem('routes',${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="ri-${i}-body">${routeForm(r,i)}</div>
+    </div>`).join('');
+  DATA.routes.forEach((r,i)=>{
+    // Route-level photo zone
+    setupPhotoZone(
+      `rzone-${i}`,`rgallery-${i}`,`rwarn-${i}`,
+      ()=>getRoutePhotos(i),
+      url=>{ addRoutePhoto(i,url); renderGallery(`rgallery-${i}`,getRoutePhotos(i),pi=>{ delRoutePhoto(i,pi); renderGallery(`rgallery-${i}`,getRoutePhotos(i),null); }); },
+      pi=>{ delRoutePhoto(i,pi); renderGallery(`rgallery-${i}`,getRoutePhotos(i),null); }
+    );
+    // Per-step photo zones
+    (r.steps||[]).forEach((s,si)=>{
+      if(s.tr!==undefined) return; // skip transit steps
+      setupStepPhotoZone(i,si);
+    });
+  });
+}
+
+function routeForm(r,i){
+  const steps=(r.steps||[]).map((s,si)=>stepRow(s,i,si)).join('');
+  return `
+<div style="padding-top:14px">
+<div class="form-section-h">Фотографии маршрута</div>
+<div id="rwarn-${i}"></div>
+<div class="photo-zone" id="rzone-${i}">
+  <input type="file" accept="image/*" multiple>
+  <div class="photo-zone-icon">📸</div>
+  <div class="photo-zone-text">Перетащите фото или нажмите для загрузки</div>
+  <div class="photo-zone-sub">Фото загружаются на Cloudinary и видны всем пользователям</div>
+  <div class="photo-uploading">Загрузка... ⏳</div>
+</div>
+<div class="photo-gallery" id="rgallery-${i}"></div>
+<div class="form-section-h">Основная информация</div>
+<div class="form-grid">
+  <div class="form-row"><label class="form-label">ID маршрута</label>
+    <input class="form-input" value="${esc(r.id)}" onchange="DATA.routes[${i}].id=this.value"></div>
+  <div class="form-row"><label class="form-label">Категория</label>
+    <select class="form-select" onchange="DATA.routes[${i}].cat=this.value">
+      ${['city','sea','history','nature','view'].map(c=>`<option value="${c}"${r.cat===c?' selected':''}>${c}</option>`).join('')}
+    </select></div>
+  <div class="form-row"><label class="form-label">Дистанция</label>
+    <input class="form-input" value="${esc(r.dist)}" onchange="DATA.routes[${i}].dist=this.value" placeholder="4,2 км"></div>
+  <div class="form-row"><label class="form-label">Время</label>
+    <input class="form-input" value="${esc(r.time)}" onchange="DATA.routes[${i}].time=this.value" placeholder="3 ч 30 м"></div>
+  <div class="form-row"><label class="form-label">Сложность (RU)</label>
+    <input class="form-input" value="${esc(r.diff)}" onchange="DATA.routes[${i}].diff=this.value"></div>
+  <div class="form-row"><label class="form-label">Сложность <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(r.diff_zh)}" onchange="DATA.routes[${i}].diff_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Название (RU)</label>
+    <input class="form-input" value="${esc(r.title)}" onchange="DATA.routes[${i}].title=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Название <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(r.title_zh)}" onchange="DATA.routes[${i}].title_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.routes[${i}].folk=this.value">${esc(r.folk)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.routes[${i}].folk_zh=this.value">${esc(r.folk_zh)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Предупреждение (RU)</label>
+    <input class="form-input" value="${esc(r.alert)}" onchange="DATA.routes[${i}].alert=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Предупреждение <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(r.alert_zh)}" onchange="DATA.routes[${i}].alert_zh=this.value"></div>
+</div>
+<div class="form-section-h">Точки маршрута</div>
+<div class="step-list" id="steps-${i}">${steps}</div>
+<button class="btn-add" onclick="addStep(${i},'stop')" style="margin-bottom:5px">＋ Добавить точку</button>
+<button class="btn-add" onclick="addStep(${i},'transit')">＋ Добавить переход</button>
+</div>`;
+}
+
+function stepRow(s,ri,si){
+  if(s.tr!==undefined){
+    return `<div class="step-item">
+      <div class="step-head"><span class="step-badge tr">→ Переход</span></div>
+      <div class="step-rm" onclick="removeStep(${ri},${si})">✕</div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-label">Текст (RU)</label>
+          <input class="form-input" value="${esc(s.tr)}" onchange="DATA.routes[${ri}].steps[${si}].tr=this.value"></div>
+        <div class="form-row"><label class="form-label">Текст <span class="zh-badge">中文</span></label>
+          <input class="form-input" value="${esc(s.tr_zh)}" onchange="DATA.routes[${ri}].steps[${si}].tr_zh=this.value"></div>
+      </div></div>`;
+  }
+  return `<div class="step-item">
+    <div class="step-head">
+      <span class="step-badge">📍 Точка${s.tm?' · '+esc(s.tm):''}</span>
+      ${s.end?'<span class="badge red">Финал</span>':''}
+    </div>
+    <div class="step-rm" onclick="removeStep(${ri},${si})">✕</div>
+    <div class="form-grid">
+      <div class="form-row"><label class="form-label">Время</label>
+        <input class="form-input" value="${esc(s.tm)}" onchange="DATA.routes[${ri}].steps[${si}].tm=this.value" placeholder="10:00"></div>
+      <div class="form-row"><label class="form-label">Финал?</label>
+        <select class="form-select" onchange="DATA.routes[${ri}].steps[${si}].end=this.value==='1'">
+          <option value=""${!s.end?' selected':''}>Нет</option><option value="1"${s.end?' selected':''}>Да</option>
+        </select></div>
+      <div class="form-row"><label class="form-label">Место (RU)</label>
+        <input class="form-input" value="${esc(s.pl)}" onchange="DATA.routes[${ri}].steps[${si}].pl=this.value"></div>
+      <div class="form-row"><label class="form-label">Место <span class="zh-badge">中文</span></label>
+        <input class="form-input" value="${esc(s.pl_zh)}" onchange="DATA.routes[${ri}].steps[${si}].pl_zh=this.value"></div>
+      <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+        <textarea class="form-textarea" onchange="DATA.routes[${ri}].steps[${si}].dc=this.value">${esc(s.dc)}</textarea></div>
+      <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+        <textarea class="form-textarea" onchange="DATA.routes[${ri}].steps[${si}].dc_zh=this.value">${esc(s.dc_zh)}</textarea></div>
+      <div class="form-row form-full"><label class="form-label">Подсказка (RU)</label>
+        <input class="form-input" value="${esc(s.tip)}" onchange="DATA.routes[${ri}].steps[${si}].tip=this.value"></div>
+      <div class="form-row form-full"><label class="form-label">Подсказка <span class="zh-badge">中文</span></label>
+        <input class="form-input" value="${esc(s.tip_zh)}" onchange="DATA.routes[${ri}].steps[${si}].tip_zh=this.value"></div>
+      <div class="form-row form-full">
+        <label class="form-label">Фото точки <span style="font-size:10px;letter-spacing:0;text-transform:none;color:var(--ink-3);font-weight:400">(появятся прямо у этой точки на маршруте)</span></label>
+        <div id="swarn-${ri}-${si}"></div>
+        <div class="photo-zone" id="szone-${ri}-${si}" style="padding:14px;text-align:center;position:relative">
+          <input type="file" accept="image/*" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <div style="font-size:18px;margin-bottom:4px">📸</div>
+          <div style="font-size:12px;color:var(--ink-3)">Фото ${esc(s.pl)||'точки'}</div>
+          <div class="photo-uploading" style="font-size:11px;color:var(--blue-lt);margin-top:4px;display:none">Загрузка... ⏳</div>
+        </div>
+        <div class="photo-gallery" id="sgallery-${ri}-${si}" style="margin-top:6px"></div>
+      </div>
+    </div></div>`;
+}
+
+function removeStep(ri,si){DATA.routes[ri].steps.splice(si,1);renderRoutes();}
+function addStep(ri,type){
+  if(!DATA.routes[ri].steps)DATA.routes[ri].steps=[];
+  DATA.routes[ri].steps.push(type==='transit'?{tr:'',tr_zh:''}:{tm:'',pl:'',pl_zh:'',dc:'',dc_zh:'',tip:'',tip_zh:''});
+  renderRoutes();
+  setTimeout(()=>{const b=document.getElementById('ri-'+ri+'-body');if(b&&!b.classList.contains('open'))toggleCard('ri-'+ri);},60);
+}
+function addRoute(){
+  const id='Т-'+String(DATA.routes.length+1).padStart(2,'0');
+  DATA.routes.push({id,cat:'city',title:'Новый маршрут',title_zh:'新路线',folk:'',folk_zh:'',dist:'',time:'',diff:'Лёгкая',diff_zh:'轻松',folkm:'',folkm_zh:'',tips:[],tips_zh:[],alert:'',alert_zh:'',steps:[],cross:[],photos:[]});
+  renderRoutes();setTimeout(()=>toggleCard('ri-'+(DATA.routes.length-1)),60);
+}
+
+/* ── Places ── */
+function renderPlaces(){
+  const el=document.getElementById('places-list');
+  if(!DATA.places.length){el.innerHTML='<div class="empty"><div class="empty-icon">📍</div><div class="empty-text">Локаций пока нет</div></div>';return;}
+  el.innerHTML=DATA.places.map((p,i)=>`
+    <div class="card-item" id="pi-${i}">
+      <div class="card-header" onclick="toggleCard('pi-${i}')">
+        <span style="font-size:20px;flex-shrink:0">${p.icon||'📍'}</span>
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(p.nm||'Без названия')}</div>
+          <div class="card-subtitle">${esc(p.nm_zh||'')} · ${esc(p.cat||'')}</div>
+        </div>
+        <div class="card-actions">
+          <div class="card-toggle" id="pi-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();deleteItem('places',${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="pi-${i}-body">${placeForm(p,i)}</div>
+    </div>`).join('');
+  DATA.places.forEach((_,i)=>{
+    setupPhotoZone(
+      `pzone-${i}`,`pgallery-${i}`,`pwarn-${i}`,
+      ()=>getPlacePhotos(i),
+      url=>{ addPlacePhoto(i,url); renderGallery(`pgallery-${i}`,getPlacePhotos(i),pi2=>{ delPlacePhoto(i,pi2); renderGallery(`pgallery-${i}`,getPlacePhotos(i),null); }); },
+      pi2=>{ delPlacePhoto(i,pi2); renderGallery(`pgallery-${i}`,getPlacePhotos(i),null); }
+    );
+  });
+}
+
+function placeForm(p,i){
+  return `
+<div style="padding-top:14px">
+<div class="form-section-h">Фотографии локации</div>
+<div id="pwarn-${i}"></div>
+<div class="photo-zone" id="pzone-${i}">
+  <input type="file" accept="image/*" multiple>
+  <div class="photo-zone-icon">📸</div>
+  <div class="photo-zone-text">Перетащите фото или нажмите для загрузки</div>
+  <div class="photo-zone-sub">Фото загружаются на Cloudinary и видны всем</div>
+  <div class="photo-uploading">Загрузка... ⏳</div>
+</div>
+<div class="photo-gallery" id="pgallery-${i}"></div>
+<div class="form-section-h">Информация</div>
+<div class="form-grid">
+  <div class="form-row"><label class="form-label">ID</label>
+    <input class="form-input" value="${esc(p.id)}" onchange="DATA.places[${i}].id=this.value"></div>
+  <div class="form-row"><label class="form-label">Категория</label>
+    <select class="form-select" onchange="DATA.places[${i}].cat=this.value">
+      ${['view','sea','city','history','nature','park'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}
+    </select></div>
+  <div class="form-row"><label class="form-label">Иконка (emoji)</label>
+    <input class="form-input" value="${esc(p.icon)}" onchange="DATA.places[${i}].icon=this.value" placeholder="🏮"></div>
+  <div class="form-row"><label class="form-label">Связанный маршрут</label>
+    <input class="form-input" value="${esc(p.routeLink)}" onchange="DATA.places[${i}].routeLink=this.value" placeholder="Т-01"></div>
+  <div class="form-row form-full"><label class="form-label">Название (RU)</label>
+    <input class="form-input" value="${esc(p.nm)}" onchange="DATA.places[${i}].nm=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Название <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(p.nm_zh)}" onchange="DATA.places[${i}].nm_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок (RU)</label>
+    <input class="form-input" value="${esc(p.tagline)}" onchange="DATA.places[${i}].tagline=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(p.tagline_zh)}" onchange="DATA.places[${i}].tagline_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Краткое описание (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.places[${i}].teaser=this.value">${esc(p.teaser)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Краткое описание <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.places[${i}].teaser_zh=this.value">${esc(p.teaser_zh)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Атмосфера (RU)</label>
+    <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo=this.value">${esc(p.atmo)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Атмосфера <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo_zh=this.value">${esc(p.atmo_zh)}</textarea></div>
+</div></div>`;
+}
+function addPlace(){
+  const id='L-'+String(DATA.places.length+1).padStart(2,'0');
+  DATA.places.push({id,cat:'view',nm:'Новая локация',nm_zh:'新地点',icon:'📍',tagline:'',tagline_zh:'',teaser:'',teaser_zh:'',atmo:'',atmo_zh:'',body:'',body_zh:'',chronicle:[],facts:[],when:[],info:[],routeLink:'',nearby:[],photos:[]});
+  renderPlaces();setTimeout(()=>toggleCard('pi-'+(DATA.places.length-1)),60);
+}
+
+/* ── Seafood ── */
+function renderSeafood(){
+  const el=document.getElementById('seafood-list');
+  if(!DATA.seafood.length){el.innerHTML='<div class="empty"><div class="empty-icon">🦀</div><div class="empty-text">Позиций пока нет</div></div>';return;}
+  el.innerHTML=DATA.seafood.map((s,i)=>`
+    <div class="card-item" id="sfi-${i}">
+      <div class="card-header" onclick="toggleCard('sfi-${i}')">
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(s.nm||'Без названия')}</div>
+          <div class="card-subtitle">${esc(s.nm_zh||'')} · ${s.p||0} ₽ · ${esc(s.sub||'')}</div>
+        </div>
+        <div class="card-actions">
+          <div class="card-toggle" id="sfi-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();deleteItem('seafood',${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="sfi-${i}-body">${seafoodForm(s,i)}</div>
+    </div>`).join('');
+  DATA.seafood.forEach((_,i)=>{
+    setupPhotoZone(
+      `sfzone-${i}`,`sfgallery-${i}`,`sfwarn-${i}`,
+      ()=>getSfPhotos(i),
+      url=>{ addSfPhoto(i,url); renderGallery(`sfgallery-${i}`,getSfPhotos(i),pi=>{ delSfPhoto(i,pi); renderGallery(`sfgallery-${i}`,getSfPhotos(i),null); }); },
+      pi=>{ delSfPhoto(i,pi); renderGallery(`sfgallery-${i}`,getSfPhotos(i),null); }
+    );
+  });
+}
+function seafoodForm(s,i){
+  return `
+<div style="padding-top:14px">
+<div class="form-section-h">Фото позиции</div>
+<div id="sfwarn-${i}"></div>
+<div class="photo-zone" id="sfzone-${i}">
+  <input type="file" accept="image/*" multiple>
+  <div class="photo-zone-icon">📸</div>
+  <div class="photo-zone-text">Загрузить фото морепродукта</div>
+  <div class="photo-uploading">Загрузка... ⏳</div>
+</div>
+<div class="photo-gallery" id="sfgallery-${i}"></div>
+<div class="form-section-h">Данные</div>
+<div class="form-grid">
+  <div class="form-row form-full"><label class="form-label">Название (RU)</label>
+    <input class="form-input" value="${esc(s.nm)}" onchange="DATA.seafood[${i}].nm=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Название <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(s.nm_zh)}" onchange="DATA.seafood[${i}].nm_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+    <input class="form-input" value="${esc(s.folk)}" onchange="DATA.seafood[${i}].folk=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(s.folk_zh)}" onchange="DATA.seafood[${i}].folk_zh=this.value"></div>
+  <div class="form-row"><label class="form-label">Цена (₽)</label>
+    <input class="form-input" type="number" value="${s.p||0}" onchange="DATA.seafood[${i}].p=Number(this.value)"></div>
+  <div class="form-row"><label class="form-label">Единица</label>
+    <input class="form-input" value="${esc(s.u)}" onchange="DATA.seafood[${i}].u=this.value" placeholder="₽ за штуку"></div>
+  <div class="form-row form-full"><label class="form-label">Прилавок</label>
+    <input class="form-input" value="${esc(s.sub)}" onchange="DATA.seafood[${i}].sub=this.value" placeholder="прилавок №12"></div>
+</div></div>`;
+}
+function addSeafood(){
+  DATA.seafood.push({nm:'Новая позиция',nm_zh:'新品',folk:'',folk_zh:'',sub:'прилавок №',p:0,u:'₽ за штуку',photos:[]});
+  renderSeafood();setTimeout(()=>toggleCard('sfi-'+(DATA.seafood.length-1)),60);
+}
+
+/* ── Meets ── */
+function renderMeets(){
+  const el=document.getElementById('meets-list');
+  if(!DATA.meets.length){el.innerHTML='<div class="empty"><div class="empty-icon">🤝</div><div class="empty-text">Встреч пока нет</div></div>';return;}
+  el.innerHTML=DATA.meets.map((m,i)=>`
+    <div class="card-item" id="mi-${i}">
+      <div class="card-header" onclick="toggleCard('mi-${i}')">
+        <div style="width:28px;height:28px;border-radius:50%;background:${esc((m.author&&m.author.clr)||'#1D3F6E')};color:white;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${esc((m.author&&m.author.ava)||'?')}</div>
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(m.title||'Без названия')}</div>
+          <div class="card-subtitle">${esc(m.title_zh||'')} · ${esc(m.dow||'')} ${esc(m.day||'')} · ${esc(m.tm||'')}</div>
+        </div>
+        <div class="card-actions">
+          ${m.hot?'<span class="badge red">Горячая</span>':''}
+          <div class="card-toggle" id="mi-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();deleteItem('meets',${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="mi-${i}-body">${meetForm(m,i)}</div>
+    </div>`).join('');
+}
+function meetForm(m,i){
+  const a=m.author||{};
+  return `
+<div style="padding-top:14px">
+<div class="form-section-h">Встреча</div>
+<div class="form-grid">
+  <div class="form-row form-full"><label class="form-label">Заголовок (RU)</label>
+    <input class="form-input" value="${esc(m.title)}" onchange="DATA.meets[${i}].title=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.title_zh)}" onchange="DATA.meets[${i}].title_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок (RU)</label>
+    <input class="form-input" value="${esc(m.sub)}" onchange="DATA.meets[${i}].sub=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.sub_zh)}" onchange="DATA.meets[${i}].sub_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.meets[${i}].folk=this.value">${esc(m.folk)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.meets[${i}].folk_zh=this.value">${esc(m.folk_zh)}</textarea></div>
+  <div class="form-row"><label class="form-label">Категория</label>
+    <select class="form-select" onchange="DATA.meets[${i}].cat=this.value">
+      ${['sunset','sea','food','travel','talk','sport'].map(c=>`<option value="${c}"${m.cat===c?' selected':''}>${c}</option>`).join('')}
+    </select></div>
+  <div class="form-row"><label class="form-label">Горячая?</label>
+    <select class="form-select" onchange="DATA.meets[${i}].hot=this.value==='1'">
+      <option value=""${!m.hot?' selected':''}>Нет</option><option value="1"${m.hot?' selected':''}>Да</option>
+    </select></div>
+  <div class="form-row"><label class="form-label">День</label>
+    <input class="form-input" value="${esc(m.day)}" onchange="DATA.meets[${i}].day=this.value" placeholder="10"></div>
+  <div class="form-row"><label class="form-label">Время</label>
+    <input class="form-input" value="${esc(m.tm)}" onchange="DATA.meets[${i}].tm=this.value" placeholder="18:47"></div>
+  <div class="form-row"><label class="form-label">День недели (RU)</label>
+    <input class="form-input" value="${esc(m.dow)}" onchange="DATA.meets[${i}].dow=this.value" placeholder="Сб"></div>
+  <div class="form-row"><label class="form-label">День недели <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.dow_zh)}" onchange="DATA.meets[${i}].dow_zh=this.value"></div>
+  <div class="form-row"><label class="form-label">Мест занято</label>
+    <input class="form-input" type="number" value="${m.seats||0}" onchange="DATA.meets[${i}].seats=Number(this.value)"></div>
+  <div class="form-row"><label class="form-label">Всего мест</label>
+    <input class="form-input" type="number" value="${m.total||0}" onchange="DATA.meets[${i}].total=Number(this.value)"></div>
+  <div class="form-row form-full"><label class="form-label">Telegram @username</label>
+    <input class="form-input" value="${esc(m.tg)}" onchange="DATA.meets[${i}].tg=this.value" placeholder="username"></div>
+</div>
+<div class="form-section-h">Организатор</div>
+<div class="form-grid">
+  <div class="form-row"><label class="form-label">Имя</label>
+    <input class="form-input" value="${esc(a.name)}" onchange="if(!DATA.meets[${i}].author)DATA.meets[${i}].author={};DATA.meets[${i}].author.name=this.value"></div>
+  <div class="form-row"><label class="form-label">Аватар (буква)</label>
+    <input class="form-input" value="${esc(a.ava)}" maxlength="2" onchange="if(!DATA.meets[${i}].author)DATA.meets[${i}].author={};DATA.meets[${i}].author.ava=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Роль (RU)</label>
+    <input class="form-input" value="${esc(a.role)}" onchange="if(!DATA.meets[${i}].author)DATA.meets[${i}].author={};DATA.meets[${i}].author.role=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Роль <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(a.role_zh)}" onchange="if(!DATA.meets[${i}].author)DATA.meets[${i}].author={};DATA.meets[${i}].author.role_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Цвет аватара (hex)</label>
+    <input class="form-input" value="${esc(a.clr)}" onchange="if(!DATA.meets[${i}].author)DATA.meets[${i}].author={};DATA.meets[${i}].author.clr=this.value" placeholder="#1D3F6E"></div>
+</div></div>`;
+}
+function addMeet(){
+  DATA.meets.push({cat:'talk',hot:false,author:{name:'Новый',role:'',role_zh:'',ava:'Н',clr:'#1D3F6E'},title:'Новая встреча',title_zh:'新活动',sub:'',sub_zh:'',folk:'',folk_zh:'',vibes:[],vibes_zh:[],seats:0,total:10,tm:'12:00',day:'1',mo:'мая',dow:'Пн',dow_zh:'周一',tg:''});
+  renderMeets();setTimeout(()=>toggleCard('mi-'+(DATA.meets.length-1)),60);
+}
+
+/* ── News ── */
+let _newsTab='cards';
+function switchNewsTab(tab,btn){
+  _newsTab=tab;
+  document.querySelectorAll('#panel-news .tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('news-cards-section').style.display=tab==='cards'?'block':'none';
+  document.getElementById('news-log-section').style.display=tab==='log'?'block':'none';
+}
+function renderNews(){renderNewsCards();renderNewsLog();}
+function renderNewsCards(){
+  const el=document.getElementById('news-cards-list');
+  if(!DATA.news.length){el.innerHTML='<div class="empty"><div class="empty-icon">📰</div><div class="empty-text">Новостей пока нет</div></div>';return;}
+  el.innerHTML=DATA.news.map((n,i)=>`
+    <div class="card-item" id="nci-${i}">
+      <div class="card-header" onclick="toggleCard('nci-${i}')">
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(n.h||'Без заголовка')}</div>
+          <div class="card-subtitle">${esc(n.date||'')} · ${esc(n.cat||'')}</div>
+        </div>
+        <div class="card-actions">
+          <div class="card-toggle" id="nci-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();delNewsCard(${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="nci-${i}-body">${newsCardForm(n,i)}</div>
+    </div>`).join('');
+}
+function newsCardForm(n,i){
+  return `<div style="padding-top:14px"><div class="form-grid">
+  <div class="form-row"><label class="form-label">Дата (RU)</label>
+    <input class="form-input" value="${esc(n.date)}" onchange="DATA.news[${i}].date=this.value"></div>
+  <div class="form-row"><label class="form-label">Дата <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.date_zh)}" onchange="DATA.news[${i}].date_zh=this.value"></div>
+  <div class="form-row"><label class="form-label">Категория (RU)</label>
+    <input class="form-input" value="${esc(n.cat)}" onchange="DATA.news[${i}].cat=this.value"></div>
+  <div class="form-row"><label class="form-label">Категория <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.cat_zh)}" onchange="DATA.news[${i}].cat_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок (RU)</label>
+    <input class="form-input" value="${esc(n.h)}" onchange="DATA.news[${i}].h=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.h_zh)}" onchange="DATA.news[${i}].h_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Текст (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.news[${i}].d=this.value">${esc(n.d)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Текст <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.news[${i}].d_zh=this.value">${esc(n.d_zh)}</textarea></div>
+</div></div>`;
+}
+function delNewsCard(i){if(!confirm('Удалить эту новость?'))return;DATA.news.splice(i,1);renderNewsCards();}
+function addNewsCard(){
+  const mn=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const d=new Date();
+  DATA.news.unshift({date:d.getDate()+' '+mn[d.getMonth()],date_zh:'',cat:'Новости',cat_zh:'新闻',h:'Новая запись',h_zh:'',d:'',d_zh:'',cross:null});
+  renderNewsCards();setTimeout(()=>toggleCard('nci-0'),60);
+}
+function renderNewsLog(){
+  const el=document.getElementById('news-log-list');
+  if(!DATA.log.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Записей пока нет</div></div>';return;}
+  el.innerHTML=DATA.log.map((n,i)=>`
+    <div class="card-item" id="nli-${i}">
+      <div class="card-header" onclick="toggleCard('nli-${i}')">
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(n.tt||'Без заголовка')}</div>
+          <div class="card-subtitle">${esc(n.tm||'')} · ${esc(n.dy||'')} · ${esc(n.cat||'')}</div>
+        </div>
+        <div class="card-actions">
+          <div class="card-toggle" id="nli-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();delNewsLog(${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="nli-${i}-body">${newsLogForm(n,i)}</div>
+    </div>`).join('');
+}
+function newsLogForm(n,i){
+  return `<div style="padding-top:14px"><div class="form-grid">
+  <div class="form-row"><label class="form-label">Время</label>
+    <input class="form-input" value="${esc(n.tm)}" onchange="DATA.log[${i}].tm=this.value" placeholder="08:40"></div>
+  <div class="form-row"><label class="form-label">Категория (RU)</label>
+    <input class="form-input" value="${esc(n.cat)}" onchange="DATA.log[${i}].cat=this.value"></div>
+  <div class="form-row"><label class="form-label">Дата (RU)</label>
+    <input class="form-input" value="${esc(n.dy)}" onchange="DATA.log[${i}].dy=this.value" placeholder="27 апр."></div>
+  <div class="form-row"><label class="form-label">Дата <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.dy_zh)}" onchange="DATA.log[${i}].dy_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок (RU)</label>
+    <input class="form-input" value="${esc(n.tt)}" onchange="DATA.log[${i}].tt=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.tt_zh)}" onchange="DATA.log[${i}].tt_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.log[${i}].d=this.value">${esc(n.d)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.log[${i}].d_zh=this.value">${esc(n.d_zh)}</textarea></div>
+  <div class="form-row"><label class="form-label">Категория <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(n.cat_zh)}" onchange="DATA.log[${i}].cat_zh=this.value"></div>
+</div></div>`;
+}
+function delNewsLog(i){if(!confirm('Удалить эту запись?'))return;DATA.log.splice(i,1);renderNewsLog();}
+function addNewsLog(){
+  DATA.log.unshift({tm:'12:00',dy:'сегодня',dy_zh:'',tt:'Новая запись',tt_zh:'',d:'',d_zh:'',cat:'По городу',cat_zh:''});
+  renderNewsLog();setTimeout(()=>toggleCard('nli-0'),60);
+}
+
+/* ── Generic ── */
+function deleteItem(type,i){
+  const n={routes:'маршрут',places:'локацию',seafood:'позицию',meets:'встречу'};
+  if(!confirm('Удалить '+n[type]+'?'))return;
+  DATA[type].splice(i,1);
+  if(type==='routes')renderRoutes();
+  else if(type==='places')renderPlaces();
+  else if(type==='seafood')renderSeafood();
+  else if(type==='meets')renderMeets();
+  renderDashboard();
+}
+function toggleCard(id){
+  const body=document.getElementById(id+'-body');
+  const tog=document.getElementById(id+'-tog');
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(tog)tog.classList.toggle('open',open);
+}
+function esc(v){
+  if(v===undefined||v===null)return'';
+  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Export / Import ── */
+function exportData(){
+  const blob=new Blob([JSON.stringify({routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='gornitsa-cms-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast('✓ Данные экспортированы');
+}
+
+/* ── ГЛАВНАЯ ФУНКЦИЯ: экспорт index.html с вшитыми данными ── */
+async function exportSite(){
+  toast('⏳ Загружаю index.html...');
+  let siteHtml;
+  try {
+    const res = await fetch('index.html?nocache='+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    siteHtml = await res.text();
+  } catch(e) {
+    toast('✗ Не удалось загрузить index.html: '+e.message);
+    return;
+  }
+
+  // Replace each data array in the site with current CMS data
+  const replacements = [
+    { name:'ROUTES',   data: DATA.routes  },
+    { name:'PLACES',   data: DATA.places  },
+    { name:'SEAFOOD',  data: DATA.seafood },
+    { name:'MEETS',    data: DATA.meets   },
+    { name:'NEWS_CARDS', data: DATA.news  },
+    { name:'NEWS_LOG', data: DATA.log     },
+  ];
+
+  for(const {name, data} of replacements){
+    // Find block: const NAME=[...];
+    const startMarker = 'const '+name+'=[';
+    const startIdx = siteHtml.indexOf(startMarker);
+    if(startIdx === -1){ console.warn('Not found: '+name); continue; }
+    const endIdx = siteHtml.indexOf('\n];', startIdx);
+    if(endIdx === -1){ console.warn('End not found: '+name); continue; }
+    const oldBlock = siteHtml.slice(startIdx, endIdx + 4);
+    const newBlock = 'const '+name+'='+JSON.stringify(data, null, 2)+';';
+    siteHtml = siteHtml.slice(0, startIdx) + newBlock + siteHtml.slice(startIdx + oldBlock.length);
+  }
+
+  // Apply settings if any
+  if(DATA.settings && DATA.settings.h1){
+    // Update default h1 in the HTML (the static one in the page, not JS)
+    siteHtml = siteHtml.replace(/(<[^>]+class="home-h1"[^>]*>)[^<]*/g, '$1'+DATA.settings.h1);
+  }
+
+  const blob = new Blob([siteHtml], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
+  toast('✓ index.html скачан — загрузите его на Netlify');
+}
+function importClick(){document.getElementById('import-file').click();}
+function importData(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=function(ev){
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!confirm('Заменить текущие данные данными из файла?'))return;
+      if(d.routes)DATA.routes=d.routes;
+      if(d.places)DATA.places=d.places;
+      if(d.seafood)DATA.seafood=d.seafood;
+      if(d.meets)DATA.meets=d.meets;
+      if(d.news)DATA.news=d.news;
+      if(d.log)DATA.log=d.log;
+      if(d.settings)DATA.settings=d.settings;
+      renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();
+      toast('✓ Данные импортированы');
+    }catch(err){toast('Ошибка импорта: '+err.message);}
+  };
+  r.readAsText(f);e.target.value='';
+}
+
+function openSite(){window.open('index.html','_blank');}
+function toast(msg,ms=3200){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),ms);
+}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveAll();}});
+
+/* ── Boot ── */
+(function(){
+  if(_store.get('gornitsa_admin_sess')==='1'){
+    document.getElementById('auth-overlay').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  }
+})();
+
+</script>
+</body>
+</html>
