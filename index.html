@@ -884,10 +884,6 @@ html, body{ -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
 .card-photo, .preview-photo, .step-photo{ contain: layout paint; }
 img[loading="lazy"]{ content-visibility: auto; contain-intrinsic-size: 800px 400px; }
 
-/* CLS-фикс через aspect-ratio */
-.card-photo{ aspect-ratio: 2 / 1; background: var(--cream); }
-.card-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
-
 /* Anchor-scroll учитывает sticky header */
 html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
 [id]{ scroll-margin-top: calc(var(--hdr-h,60px) + 12px); }
