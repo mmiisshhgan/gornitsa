@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════
+# ГорницаВДК · robots.txt
+# Положить в корень сайта: https://gornitsa.ru/robots.txt
+# ═══════════════════════════════════════════════════════════════
+
+User-agent: *
+Allow: /
+Allow: /routes/
+Allow: /places/
+Allow: /seafood/
+Allow: /meet/
+Allow: /today/
+Allow: /place/
+Allow: /route/
+Disallow: /gornitsa-admin.html
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /*?*utm_
+Disallow: /*?*fbclid
+Disallow: /*?*gclid
+Disallow: /*?*yclid
+Disallow: /*?*_openstat
+
+# Запрещаем индексацию служебных параметров, но НЕ запрещаем lang=zh
+
+# ─── GOOGLE ───
+User-agent: Googlebot
+Allow: /
+Disallow: /gornitsa-admin.html
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /gornitsa-admin.html
+
+User-agent: AdsBot-Google
+Allow: /
+
+# ─── YANDEX (отдельный блок — у Яндекса свой синтаксис) ───
+User-agent: Yandex
+Allow: /
+Disallow: /gornitsa-admin.html
+Disallow: /admin/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&fbclid&gclid&_openstat /
+Host: gornitsa.ru
+
+User-agent: YandexBot
+Allow: /
+Disallow: /gornitsa-admin.html
+
+User-agent: YandexImages
+Allow: /
+
+User-agent: YandexMobileBot
+Allow: /
+
+# ─── ПОИСКОВЫЕ AI-АГЕНТЫ ───
+# Разрешаем индексировать; запрещаем training-краулерам (по желанию владельца).
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# ─── SITEMAPS ───
+Sitemap: https://gornitsa.ru/sitemap.xml
+Sitemap: https://gornitsa.ru/sitemap-places.xml
+Sitemap: https://gornitsa.ru/sitemap-routes.xml

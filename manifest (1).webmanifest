@@ -1,0 +1,70 @@
+{
+  "name": "ГорницаВДК — городской гид Владивостока",
+  "short_name": "ГорницаВДК",
+  "description": "Куда пойти, что съесть, с кем встретиться во Владивостоке. Маршруты, локации, морепродукты, события.",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait",
+  "background_color": "#F6EFE1",
+  "theme_color": "#1E140D",
+  "lang": "ru-RU",
+  "dir": "ltr",
+  "categories": ["travel", "lifestyle", "navigation", "food", "events"],
+  "icons": [
+    { "src": "/favicon.svg",           "type": "image/svg+xml", "sizes": "any",     "purpose": "any" },
+    { "src": "/icon-192.png",          "type": "image/png",     "sizes": "192x192", "purpose": "any" },
+    { "src": "/icon-512.png",          "type": "image/png",     "sizes": "512x512", "purpose": "any" },
+    { "src": "/icon-192-maskable.png", "type": "image/png",     "sizes": "192x192", "purpose": "maskable" },
+    { "src": "/icon-512-maskable.png", "type": "image/png",     "sizes": "512x512", "purpose": "maskable" },
+    { "src": "/apple-touch-icon.png",  "type": "image/png",     "sizes": "180x180", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Маршруты",
+      "short_name": "Маршруты",
+      "description": "16 пеших маршрутов по Владивостоку",
+      "url": "/routes/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Локации",
+      "short_name": "Места",
+      "description": "30 мест Владивостока",
+      "url": "/places/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Рыбный ряд",
+      "short_name": "Морепродукты",
+      "description": "Свежий улов Владивостока",
+      "url": "/seafood/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Встречи",
+      "short_name": "Встречи",
+      "description": "Живые встречи во Владивостоке",
+      "url": "/meet/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile-1.jpg",
+      "type": "image/jpeg",
+      "sizes": "1080x1920",
+      "form_factor": "narrow",
+      "label": "Главная ГорницаВДК"
+    },
+    {
+      "src": "/screenshot-mobile-2.jpg",
+      "type": "image/jpeg",
+      "sizes": "1080x1920",
+      "form_factor": "narrow",
+      "label": "Маршруты по Владивостоку"
+    }
+  ],
+  "prefer_related_applications": false
+}
