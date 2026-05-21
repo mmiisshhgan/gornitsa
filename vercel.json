@@ -3,13 +3,6 @@
   "cleanUrls": false,
   "trailingSlash": false,
 
-  "redirects": [
-    { "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.gornicavdk.ru" }],
-      "destination": "https://gornicavdk.ru/$1",
-      "permanent": true }
-  ],
-
   "rewrites": [
     { "source": "/routes",         "destination": "/index.html" },
     { "source": "/routes/",        "destination": "/index.html" },
