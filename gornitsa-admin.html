@@ -230,6 +230,7 @@ input,textarea,select{font:inherit;color:inherit}
       <div class="sb-item" onclick="showPanel('seafood')"><span class="sb-icon">🦀</span>Рыбный ряд</div>
       <div class="sb-item" onclick="showPanel('meets')"><span class="sb-icon">🤝</span>Встречи</div>
       <div class="sb-item" onclick="showPanel('news')"><span class="sb-icon">📰</span>Новости</div>
+      <div class="sb-item" onclick="showPanel('texts')"><span class="sb-icon">✏️</span>Тексты сайта</div>
       <div class="sb-section">Публикация</div>
       <div class="sb-item" onclick="exportSite()" style="color:rgba(246,239,225,.85)"><span class="sb-icon">🚀</span>Скачать index.html</div>
       <div class="sb-section">Данные</div>
@@ -375,6 +376,331 @@ input,textarea,select{font:inherit;color:inherit}
         <button class="btn-add" onclick="addNewsLog()">＋ Добавить запись</button>
       </div>
     </div>
+
+    <!-- TEXTS -->
+    <div class="panel" id="panel-texts">
+      <div class="section-head">
+        <h2>Тексты сайта</h2>
+        <p>Главная страница, разделы, футер, навигация, погода — весь текстовый контент платформы.</p>
+      </div>
+
+      <div class="tabs" id="texts-tabs">
+        <div class="tab on"  onclick="switchTextsTab('home',this)">Главная</div>
+        <div class="tab" onclick="switchTextsTab('sections',this)">Разделы</div>
+        <div class="tab" onclick="switchTextsTab('footer',this)">Футер</div>
+        <div class="tab" onclick="switchTextsTab('nav',this)">Навигация</div>
+        <div class="tab" onclick="switchTextsTab('moods',this)">Мудборды</div>
+        <div class="tab" onclick="switchTextsTab('weather',this)">Погода</div>
+        <div class="tab" onclick="switchTextsTab('seo',this)">SEO</div>
+      </div>
+
+      <!-- HOME -->
+      <div id="texts-home">
+        <div class="form-section-h">Главный экран</div>
+        <div class="form-row"><label class="form-label">Плашка (eyebrow) над заголовком</label>
+          <input class="form-input" id="tx-home_eyebrow" placeholder="Владивосток · 43° северной · сегодня"></div>
+        <div class="form-row"><label class="form-label">Заголовок H1 (первая строка)</label>
+          <input class="form-input" id="tx-home_h1_1" placeholder="Куда пойти."></div>
+        <div class="form-row"><label class="form-label">Заголовок H1 (вторая строка)</label>
+          <input class="form-input" id="tx-home_h1_2" placeholder="Что съесть."></div>
+        <div class="form-row"><label class="form-label">Заголовок H1 (третья строка с акцентом)</label>
+          <input class="form-input" id="tx-home_h1_3" placeholder="С кем встретиться."></div>
+        <div class="form-row"><label class="form-label">Подзаголовок (home_sub)</label>
+          <input class="form-input" id="tx-home_sub" placeholder="Горница — городской штаб Владивостока."></div>
+        <div class="form-row"><label class="form-label">Описание платформы (home_pitch)</label>
+          <textarea class="form-input" id="tx-home_pitch" rows="3" placeholder="Открываешь — и знаешь, что делать сегодня..."></textarea></div>
+
+        <div class="form-section-h">Кнопки на главной</div>
+        <div class="form-row"><label class="form-label">Кнопка «Маршруты» (home_hot_routes)</label>
+          <input class="form-input" id="tx-home_hot_routes" placeholder="Горячие маршруты"></div>
+        <div class="form-row"><label class="form-label">Кнопка «Все маршруты» (home_all_routes)</label>
+          <input class="form-input" id="tx-home_all_routes" placeholder="Все маршруты →"></div>
+        <div class="form-row"><label class="form-label">Заголовок «Локации» (home_places_title)</label>
+          <input class="form-input" id="tx-home_places_title" placeholder="Места, которые стоит знать"></div>
+        <div class="form-row"><label class="form-label">Кнопка «Все локации» (home_all_places)</label>
+          <input class="form-input" id="tx-home_all_places" placeholder="Все локации →"></div>
+      </div>
+
+      <!-- SECTIONS -->
+      <div id="texts-sections" style="display:none">
+        <div class="form-section-h">Раздел «Маршруты»</div>
+        <div class="form-row"><label class="form-label">Плашка eyebrow</label>
+          <input class="form-input" id="tx-routes_eyebrow" placeholder="16 троп"></div>
+        <div class="form-row"><label class="form-label">Заголовок раздела</label>
+          <input class="form-input" id="tx-routes_h1" placeholder="Владивосток пешком"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="tx-routes_sub" placeholder="С тайм-кодом, точками и подсказками"></div>
+        <div class="form-row"><label class="form-label">Описание раздела (pitch)</label>
+          <textarea class="form-input" id="tx-routes_pitch" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Бейдж 1</label>
+          <input class="form-input" id="tx-routes_badge1" placeholder="Пешком"></div>
+        <div class="form-row"><label class="form-label">Бейдж 2</label>
+          <input class="form-input" id="tx-routes_badge2" placeholder="С тайм-кодом"></div>
+        <div class="form-row"><label class="form-label">Бейдж 3</label>
+          <input class="form-input" id="tx-routes_badge3" placeholder="Без экскурсовода"></div>
+
+        <div class="form-section-h">Раздел «Локации»</div>
+        <div class="form-row"><label class="form-label">Плашка eyebrow</label>
+          <input class="form-input" id="tx-places_eyebrow" placeholder="30 мест"></div>
+        <div class="form-row"><label class="form-label">Заголовок раздела</label>
+          <input class="form-input" id="tx-places_h1" placeholder="30 мест, которые стоит знать"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="tx-places_sub" placeholder="Смотровые, мысы, бухты"></div>
+        <div class="form-row"><label class="form-label">Описание раздела (pitch)</label>
+          <textarea class="form-input" id="tx-places_pitch" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Бейдж 1</label>
+          <input class="form-input" id="tx-places_badge1" placeholder="Проверено"></div>
+        <div class="form-row"><label class="form-label">Бейдж 2</label>
+          <input class="form-input" id="tx-places_badge2" placeholder="Местными"></div>
+
+        <div class="form-section-h">Раздел «Рыбный ряд»</div>
+        <div class="form-row"><label class="form-label">Плашка eyebrow</label>
+          <input class="form-input" id="tx-sf_eyebrow" placeholder="С прилавка"></div>
+        <div class="form-row"><label class="form-label">Заголовок раздела</label>
+          <input class="form-input" id="tx-sf_h1" placeholder="Японское море — на прилавке"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="tx-sf_sub" placeholder="Свежий улов, цены без наценки"></div>
+        <div class="form-row"><label class="form-label">Описание раздела (pitch)</label>
+          <textarea class="form-input" id="tx-sf_pitch" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Бейдж 1</label>
+          <input class="form-input" id="tx-sf_badge1" placeholder="Сегодняшний улов"></div>
+        <div class="form-row"><label class="form-label">Бейдж 2</label>
+          <input class="form-input" id="tx-sf_badge2" placeholder="Без наценки"></div>
+        <div class="form-row"><label class="form-label">Бейдж 3</label>
+          <input class="form-input" id="tx-sf_badge3" placeholder="Оплата на месте"></div>
+
+        <div class="form-section-h">Раздел «Встречи»</div>
+        <div class="form-row"><label class="form-label">Плашка eyebrow</label>
+          <input class="form-input" id="tx-meet_eyebrow" placeholder="Живые"></div>
+        <div class="form-row"><label class="form-label">Заголовок раздела</label>
+          <input class="form-input" id="tx-meet_h1" placeholder="Найди компанию"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="tx-meet_sub" placeholder="Без соцсетей. Написал — пришёл."></div>
+        <div class="form-row"><label class="form-label">Описание раздела (pitch)</label>
+          <textarea class="form-input" id="tx-meet_pitch" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Бейдж 1</label>
+          <input class="form-input" id="tx-meet_badge1" placeholder="Яхта"></div>
+        <div class="form-row"><label class="form-label">Бейдж 2</label>
+          <input class="form-input" id="tx-meet_badge2" placeholder="SUP"></div>
+        <div class="form-row"><label class="form-label">Заголовок формы создания встречи</label>
+          <input class="form-input" id="tx-meet_create_h" placeholder="Предложи встречу"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок формы</label>
+          <input class="form-input" id="tx-meet_create_sub" placeholder="Напиши — и найдёшь компанию"></div>
+        <div class="form-row"><label class="form-label">Кнопка создать встречу</label>
+          <input class="form-input" id="tx-meet_create_btn" placeholder="Предложить встречу →"></div>
+        <div class="form-row"><label class="form-label">Пример встречи 1</label>
+          <input class="form-input" id="tx-meet_ex1" placeholder="Яхта на 10 человек — скидываемся"></div>
+        <div class="form-row"><label class="form-label">Пример встречи 2</label>
+          <input class="form-input" id="tx-meet_ex2" placeholder="SUP-прогулка на закате"></div>
+        <div class="form-row"><label class="form-label">Пример встречи 3</label>
+          <input class="form-input" id="tx-meet_ex3" placeholder="Удалёнщики в кафе"></div>
+
+        <div class="form-section-h">Раздел «Сегодня / Новости»</div>
+        <div class="form-row"><label class="form-label">Плашка eyebrow</label>
+          <input class="form-input" id="tx-news_eyebrow" placeholder="Бухта живёт"></div>
+        <div class="form-row"><label class="form-label">Заголовок раздела</label>
+          <input class="form-input" id="tx-news_h1" placeholder="Что случилось в бухте"></div>
+        <div class="form-row"><label class="form-label">Подзаголовок</label>
+          <input class="form-input" id="tx-news_sub" placeholder="Свежие записи из городской жизни"></div>
+        <div class="form-row"><label class="form-label">Описание (pitch)</label>
+          <textarea class="form-input" id="tx-news_pitch" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Главная новость — тег</label>
+          <input class="form-input" id="tx-news_main_tag" placeholder="Событие недели"></div>
+        <div class="form-row"><label class="form-label">Главная новость — заголовок</label>
+          <input class="form-input" id="tx-news_main_h" placeholder="Фестиваль «Меридиан»: 72 часа на косе Токаревского"></div>
+        <div class="form-row"><label class="form-label">Главная новость — описание</label>
+          <textarea class="form-input" id="tx-news_main_d" rows="2"></textarea></div>
+        <div class="form-row"><label class="form-label">Главная новость — ссылка 1</label>
+          <input class="form-input" id="tx-news_main_link1" placeholder="Читать программу →"></div>
+        <div class="form-row"><label class="form-label">Главная новость — ссылка 2</label>
+          <input class="form-input" id="tx-news_main_link2" placeholder="Как добраться →"></div>
+      </div>
+
+      <!-- FOOTER -->
+      <div id="texts-footer" style="display:none">
+        <div class="form-section-h">Футер</div>
+        <div class="form-row"><label class="form-label">Описание платформы в футере</label>
+          <textarea class="form-input" id="tx-footer_desc" rows="3" placeholder="Цифровая территория Владивостока..."></textarea></div>
+        <div class="form-row"><label class="form-label">Заголовок «Разделы»</label>
+          <input class="form-input" id="tx-footer_sections" placeholder="Разделы"></div>
+        <div class="form-row"><label class="form-label">Ссылка «Маршруты» в футере</label>
+          <input class="form-input" id="tx-footer_routes" placeholder="Гуляю · маршруты 🔒"></div>
+        <div class="form-row"><label class="form-label">Ссылка «Рыбный ряд» в футере</label>
+          <input class="form-input" id="tx-footer_seafood" placeholder="Ем · рыбный ряд 🔒"></div>
+        <div class="form-row"><label class="form-label">Ссылка «Встречи» в футере</label>
+          <input class="form-input" id="tx-footer_meet" placeholder="Знакомлюсь · встречи"></div>
+        <div class="form-row"><label class="form-label">Ссылка «Новости» в футере</label>
+          <input class="form-input" id="tx-footer_news" placeholder="Сегодня · летопись"></div>
+        <div class="form-section-h">Блок «Координаты»</div>
+        <div class="form-row"><label class="form-label">Заголовок блока координат</label>
+          <input class="form-input" id="tx-footer_coords_title" placeholder="Координаты"></div>
+        <div class="form-row"><label class="form-label">Регион</label>
+          <input class="form-input" id="tx-footer_region" placeholder="Приморский край"></div>
+        <div class="form-row"><label class="form-label">Расстояние до Москвы</label>
+          <input class="form-input" id="tx-footer_distance" placeholder="9 050 км до Москвы"></div>
+        <div class="form-row"><label class="form-label">Год основания</label>
+          <input class="form-input" id="tx-footer_founded" placeholder="Основан в 1860 году"></div>
+        <div class="form-row"><label class="form-label">Copyright</label>
+          <input class="form-input" id="tx-footer_copy" placeholder="© ГорницаВДК · 2026 · Владивосток"></div>
+        <div class="form-row"><label class="form-label">Название города (vladivostok)</label>
+          <input class="form-input" id="tx-vladivostok" placeholder="Владивосток"></div>
+      </div>
+
+      <!-- NAV -->
+      <div id="texts-nav" style="display:none">
+        <div class="form-section-h">Навигация — пункты меню</div>
+        <div class="form-row"><label class="form-label">Главная</label>
+          <input class="form-input" id="tx-nav_home" placeholder="Главная"></div>
+        <div class="form-row"><label class="form-label">Маршруты (nav_routes)</label>
+          <input class="form-input" id="tx-nav_routes" placeholder="Гуляю"></div>
+        <div class="form-row"><label class="form-label">Локации (nav_places)</label>
+          <input class="form-input" id="tx-nav_places" placeholder="Локации"></div>
+        <div class="form-row"><label class="form-label">Рыбный ряд (nav_seafood)</label>
+          <input class="form-input" id="tx-nav_seafood" placeholder="Ем"></div>
+        <div class="form-row"><label class="form-label">Встречи (nav_meet)</label>
+          <input class="form-input" id="tx-nav_meet" placeholder="Знакомлюсь"></div>
+        <div class="form-row"><label class="form-label">Сегодня (nav_news)</label>
+          <input class="form-input" id="tx-nav_news" placeholder="Сегодня"></div>
+        <div class="form-section-h">Мобильное меню</div>
+        <div class="form-row"><label class="form-label">Маршруты (mob)</label>
+          <input class="form-input" id="tx-mob_nav_routes" placeholder="Гуляю · маршруты"></div>
+        <div class="form-row"><label class="form-label">Рыбный ряд (mob)</label>
+          <input class="form-input" id="tx-mob_nav_seafood" placeholder="Ем · рыбный ряд"></div>
+        <div class="form-row"><label class="form-label">Встречи (mob)</label>
+          <input class="form-input" id="tx-mob_nav_meet" placeholder="Знакомлюсь · встречи"></div>
+        <div class="form-row"><label class="form-label">Новости (mob)</label>
+          <input class="form-input" id="tx-mob_nav_news" placeholder="Сегодня · летопись"></div>
+        <div class="form-section-h">Кнопки деталей</div>
+        <div class="form-row"><label class="form-label">Кнопка «Назад» в маршруте</label>
+          <input class="form-input" id="tx-rd_back" placeholder="← Маршруты"></div>
+        <div class="form-row"><label class="form-label">Кнопка «Назад» в локации</label>
+          <input class="form-input" id="tx-pd_back" placeholder="← Локации"></div>
+        <div class="form-section-h">Корзина</div>
+        <div class="form-row"><label class="form-label">Текст в корзине</label>
+          <input class="form-input" id="tx-cart_txt" placeholder="Корзина: X позиций · X ₽"></div>
+        <div class="form-row"><label class="form-label">Кнопка оформить бронь</label>
+          <input class="form-input" id="tx-cart_btn" placeholder="Оформить бронь →"></div>
+        <div class="form-section-h">Строка «Сегодня» в шапке</div>
+        <div class="form-row"><label class="form-label">Ярлык (today_label)</label>
+          <input class="form-input" id="tx-today_label" placeholder="сегодня"></div>
+        <div class="form-row"><label class="form-label">День 1 (today1)</label>
+          <input class="form-input" id="tx-today1" placeholder="пн"></div>
+        <div class="form-row"><label class="form-label">День 2 (today2)</label>
+          <input class="form-input" id="tx-today2" placeholder="вт"></div>
+        <div class="form-row"><label class="form-label">День 3 (today3)</label>
+          <input class="form-input" id="tx-today3" placeholder="ср"></div>
+        <div class="form-row"><label class="form-label">День 4 (today4)</label>
+          <input class="form-input" id="tx-today4" placeholder="чт"></div>
+      </div>
+
+      <!-- MOODS -->
+      <div id="texts-moods" style="display:none">
+        <div class="form-section-h">Мудборд 1 (карточка настроения)</div>
+        <div class="form-row"><label class="form-label">Название</label>
+          <input class="form-input" id="tx-mood1_title" placeholder="Гуляю"></div>
+        <div class="form-row"><label class="form-label">Описание</label>
+          <input class="form-input" id="tx-mood1_desc" placeholder="16 маршрутов с тайм-кодом"></div>
+        <div class="form-row"><label class="form-label">Число (mood1_num)</label>
+          <input class="form-input" id="tx-mood1_num" placeholder="16"></div>
+        <div class="form-row"><label class="form-label">Счётчик (mood1_count)</label>
+          <input class="form-input" id="tx-mood1_count" placeholder="маршрутов"></div>
+        <div class="form-row"><label class="form-label">Строка 1</label>
+          <input class="form-input" id="tx-mood1_s1" placeholder="По городу"></div>
+        <div class="form-row"><label class="form-label">Строка 2</label>
+          <input class="form-input" id="tx-mood1_s2" placeholder="К морю"></div>
+        <div class="form-row"><label class="form-label">Строка 3</label>
+          <input class="form-input" id="tx-mood1_s3" placeholder="История"></div>
+        <div class="form-row"><label class="form-label">Строка 4</label>
+          <input class="form-input" id="tx-mood1_s4" placeholder="Природа"></div>
+
+        <div class="form-section-h">Мудборд 2</div>
+        <div class="form-row"><label class="form-label">Название</label>
+          <input class="form-input" id="tx-mood2_title" placeholder="Ем"></div>
+        <div class="form-row"><label class="form-label">Описание</label>
+          <input class="form-input" id="tx-mood2_desc" placeholder="Свежий улов с прилавка"></div>
+        <div class="form-row"><label class="form-label">Число</label>
+          <input class="form-input" id="tx-mood2_num" placeholder="10"></div>
+        <div class="form-row"><label class="form-label">Счётчик</label>
+          <input class="form-input" id="tx-mood2_count" placeholder="позиций"></div>
+        <div class="form-row"><label class="form-label">Строка 1</label>
+          <input class="form-input" id="tx-mood2_s1" placeholder="Гребешок живой"></div>
+        <div class="form-row"><label class="form-label">Строка 2</label>
+          <input class="form-input" id="tx-mood2_s2" placeholder="Краб варёный"></div>
+        <div class="form-row"><label class="form-label">Строка 3</label>
+          <input class="form-input" id="tx-mood2_s3" placeholder="Морской ёж"></div>
+        <div class="form-row"><label class="form-label">Строка 4</label>
+          <input class="form-input" id="tx-mood2_s4" placeholder="Корюшка"></div>
+
+        <div class="form-section-h">Мудборд 3</div>
+        <div class="form-row"><label class="form-label">Название</label>
+          <input class="form-input" id="tx-mood3_title" placeholder="Знакомлюсь"></div>
+        <div class="form-row"><label class="form-label">Описание</label>
+          <input class="form-input" id="tx-mood3_desc" placeholder="Живые встречи без соцсетей"></div>
+        <div class="form-row"><label class="form-label">Число</label>
+          <input class="form-input" id="tx-mood3_num" placeholder="∞"></div>
+        <div class="form-row"><label class="form-label">Счётчик</label>
+          <input class="form-input" id="tx-mood3_count" placeholder="встреч"></div>
+        <div class="form-row"><label class="form-label">Строка 1</label>
+          <input class="form-input" id="tx-mood3_s1" placeholder="Яхта вскладчину"></div>
+        <div class="form-row"><label class="form-label">Строка 2</label>
+          <input class="form-input" id="tx-mood3_s2" placeholder="SUP · закат"></div>
+        <div class="form-row"><label class="form-label">Строка 3</label>
+          <input class="form-input" id="tx-mood3_s3" placeholder="Удалёнщики"></div>
+        <div class="form-row"><label class="form-label">Строка 4</label>
+          <input class="form-input" id="tx-mood3_s4" placeholder="Новички в городе"></div>
+      </div>
+
+      <!-- WEATHER -->
+      <div id="texts-weather" style="display:none">
+        <div class="form-section-h">Погода и геолокация</div>
+        <p style="font-size:13px;color:var(--ink-3);margin-bottom:16px;line-height:1.55">
+          Погода загружается автоматически через OpenWeatherMap. Здесь можно изменить
+          подписи и единицы отображения.
+        </p>
+        <div class="form-row"><label class="form-label">API ключ OpenWeatherMap</label>
+          <input class="form-input" id="tx-weather_key" placeholder="Вставьте API ключ от openweathermap.org"></div>
+        <div class="form-hint" style="margin-bottom:16px">Получить бесплатно на <a href="https://openweathermap.org/api" target="_blank">openweathermap.org/api</a> (план Free, 1000 запросов/день)</div>
+        <div class="form-row"><label class="form-label">Город (для API)</label>
+          <input class="form-input" id="tx-weather_city" placeholder="Vladivostok,RU"></div>
+        <div class="form-row"><label class="form-label">Единицы температуры</label>
+          <select class="form-input" id="tx-weather_units">
+            <option value="metric">°C (metric)</option>
+            <option value="imperial">°F (imperial)</option>
+          </select></div>
+        <div class="form-section-h">Иконки погоды по умолчанию</div>
+        <div class="form-row"><label class="form-label">Ясно</label>
+          <input class="form-input" id="tx-weather_clear" placeholder="☀"></div>
+        <div class="form-row"><label class="form-label">Облачно</label>
+          <input class="form-input" id="tx-weather_clouds" placeholder="☁"></div>
+        <div class="form-row"><label class="form-label">Дождь</label>
+          <input class="form-input" id="tx-weather_rain" placeholder="🌧"></div>
+        <div class="form-row"><label class="form-label">Снег</label>
+          <input class="form-input" id="tx-weather_snow" placeholder="❄"></div>
+        <div class="form-row"><label class="form-label">Гроза</label>
+          <input class="form-input" id="tx-weather_thunder" placeholder="⛈"></div>
+        <div class="form-row"><label class="form-label">Туман</label>
+          <input class="form-input" id="tx-weather_fog" placeholder="🌫"></div>
+      </div>
+
+      <!-- SEO -->
+      <div id="texts-seo" style="display:none">
+        <div class="form-section-h">SEO мета-теги (влияют на поиск и превью)</div>
+        <div class="form-row"><label class="form-label">Title страницы (title в браузере)</label>
+          <input class="form-input" id="tx-seo_title" placeholder="ГорницаВДК — городской гид Владивостока"></div>
+        <div class="form-row"><label class="form-label">Meta description</label>
+          <textarea class="form-input" id="tx-seo_desc" rows="2" placeholder="ГорницаВДК — городской гид по Владивостоку..."></textarea></div>
+        <div class="form-row"><label class="form-label">OG Title (превью в Telegram/VK)</label>
+          <input class="form-input" id="tx-seo_og_title" placeholder="ГорницаВДК — городской гид Владивостока"></div>
+        <div class="form-row"><label class="form-label">OG Description</label>
+          <textarea class="form-input" id="tx-seo_og_desc" rows="2" placeholder="Куда пойти. Что съесть. С кем встретиться..."></textarea></div>
+        <div class="form-row"><label class="form-label">Канонический URL</label>
+          <input class="form-input" id="tx-seo_canonical" placeholder="https://gornicavdk.ru/"></div>
+      </div>
+
+      <div style="height:20px"></div>
+      <button class="btn-save" onclick="saveTexts()">💾 Сохранить тексты</button>
+    </div>
+
   </div>
 </div>
 
@@ -5627,6 +5953,7 @@ function initApp(){
   renderSeafood();
   renderMeets();
   renderNews();
+  renderTexts();
 }
 
 function loadData(){
@@ -5642,9 +5969,10 @@ function loadData(){
       DATA.news    =s.news    ||d.news;
       DATA.log     =s.log     ||d.log;
       DATA.settings=s.settings||{};
-    }catch(e){Object.assign(DATA,d);DATA.settings={};}
+      DATA.texts   =s.texts   ||s.settings&&s.settings.texts||{};
+    }catch(e){Object.assign(DATA,d);DATA.settings={};DATA.texts={};}
   } else {
-    Object.assign(DATA,d);DATA.settings={};
+    Object.assign(DATA,d);DATA.settings={};DATA.texts={};
   }
 }
 
@@ -5663,13 +5991,73 @@ function saveAll(){
 function resetToDefaults(){
   if(!confirm('Сбросить весь контент к исходным данным сайта?\nТекстовые изменения будут отменены. Нельзя отменить.'))return;
   _store.remove(CMS_KEY);
-  const d=getDefaults();Object.assign(DATA,d);DATA.settings={};
-  renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();
+  const d=getDefaults();Object.assign(DATA,d);DATA.settings={};DATA.texts={};
+  renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();renderTexts();
   toast('✓ Данные сброшены к исходным');
 }
 
 /* ── Panels ── */
-const TITLES={dashboard:'Дашборд',settings:'Настройки',routes:'Маршруты',places:'Локации',seafood:'Рыбный ряд',meets:'Встречи',news:'Новости'};
+const TITLES={dashboard:'Дашборд',settings:'Настройки',routes:'Маршруты',places:'Локации',seafood:'Рыбный ряд',meets:'Встречи',news:'Новости',texts:'Тексты сайта'};
+
+/* ── Texts panel ── */
+const TEXTS_FIELDS = [
+  'home_eyebrow','home_h1_1','home_h1_2','home_h1_3','home_sub','home_pitch',
+  'home_hot_routes','home_all_routes','home_places_title','home_all_places',
+  'routes_eyebrow','routes_h1','routes_sub','routes_pitch','routes_badge1','routes_badge2','routes_badge3',
+  'places_eyebrow','places_h1','places_sub','places_pitch','places_badge1','places_badge2',
+  'sf_eyebrow','sf_h1','sf_sub','sf_pitch','sf_badge1','sf_badge2','sf_badge3',
+  'meet_eyebrow','meet_h1','meet_sub','meet_pitch','meet_badge1','meet_badge2',
+  'meet_create_h','meet_create_sub','meet_create_btn','meet_ex1','meet_ex2','meet_ex3',
+  'news_eyebrow','news_h1','news_sub','news_pitch',
+  'news_main_tag','news_main_h','news_main_d','news_main_link1','news_main_link2',
+  'footer_desc','footer_sections','footer_routes','footer_seafood',
+  'footer_meet','footer_news','footer_coords_title','footer_region',
+  'footer_distance','footer_founded','footer_copy','vladivostok',
+  'nav_home','nav_routes','nav_places','nav_seafood','nav_meet','nav_news',
+  'mob_nav_routes','mob_nav_seafood','mob_nav_meet','mob_nav_news',
+  'rd_back','pd_back','cart_txt','cart_btn','today_label','today1','today2','today3','today4',
+  'mood1_title','mood1_desc','mood1_num','mood1_count','mood1_s1','mood1_s2','mood1_s3','mood1_s4',
+  'mood2_title','mood2_desc','mood2_num','mood2_count','mood2_s1','mood2_s2','mood2_s3','mood2_s4',
+  'mood3_title','mood3_desc','mood3_num','mood3_count','mood3_s1','mood3_s2','mood3_s3','mood3_s4',
+  'weather_key','weather_city','weather_units','weather_clear','weather_clouds',
+  'weather_rain','weather_snow','weather_thunder','weather_fog',
+  'seo_title','seo_desc','seo_og_title','seo_og_desc','seo_canonical'
+];
+
+function switchTextsTab(name, el){
+  document.querySelectorAll('#texts-tabs .tab').forEach(t=>t.classList.remove('on'));
+  if(el) el.classList.add('on');
+  ['home','sections','footer','nav','moods','weather','seo'].forEach(t=>{
+    const el2 = document.getElementById('texts-'+t);
+    if(el2) el2.style.display = t===name ? '' : 'none';
+  });
+}
+
+function renderTexts(){
+  const tx = DATA.texts || {};
+  TEXTS_FIELDS.forEach(function(key){
+    const el = document.getElementById('tx-'+key);
+    if(!el) return;
+    el.value = tx[key] !== undefined ? tx[key] : '';
+  });
+}
+
+function saveTexts(){
+  if(!DATA.texts) DATA.texts = {};
+  TEXTS_FIELDS.forEach(function(key){
+    const el = document.getElementById('tx-'+key);
+    if(!el) return;
+    const val = el.value.trim();
+    if(val) DATA.texts[key] = val;
+    else delete DATA.texts[key];
+  });
+  // Merge into DATA.settings for backwards compat
+  if(!DATA.settings) DATA.settings = {};
+  DATA.settings.texts = DATA.texts;
+  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings,texts:DATA.texts};
+  _store.set(CMS_KEY,JSON.stringify(cms));
+  toast('✓ Тексты сохранены');
+}
 function showPanel(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('on'));
@@ -6396,7 +6784,7 @@ async function exportSite(){
     return;
   }
 
-  // Replace each data array in the site with current CMS data
+  // ── 1. Replace data arrays ──
   const replacements = [
     { name:'ROUTES',   data: DATA.routes  },
     { name:'PLACES',   data: DATA.places  },
@@ -6405,9 +6793,7 @@ async function exportSite(){
     { name:'NEWS_CARDS', data: DATA.news  },
     { name:'NEWS_LOG', data: DATA.log     },
   ];
-
   for(const {name, data} of replacements){
-    // Find block: const NAME=[...];
     const startMarker = 'const '+name+'=[';
     const startIdx = siteHtml.indexOf(startMarker);
     if(startIdx === -1){ console.warn('Not found: '+name); continue; }
@@ -6418,19 +6804,78 @@ async function exportSite(){
     siteHtml = siteHtml.slice(0, startIdx) + newBlock + siteHtml.slice(startIdx + oldBlock.length);
   }
 
-  // Apply settings if any
-  if(DATA.settings && DATA.settings.h1){
-    // Update default h1 in the HTML (the static one in the page, not JS)
-    siteHtml = siteHtml.replace(/(<[^>]+class="home-h1"[^>]*>)[^<]*/g, '$1'+DATA.settings.h1);
+  // ── 2. Apply texts (data-i18n and static HTML nodes) ──
+  const tx = DATA.texts || {};
+
+  // Helper: replace content of data-i18n="key" element
+  function replaceI18n(html, key, val){
+    if(!val) return html;
+    // Match <element ... data-i18n="key" ...>CONTENT and replace CONTENT
+    // Works for both simple tags and tags with extra attributes
+    const re = new RegExp('(<[^>]+data-i18n="'+key+'"[^>]*>)([^<]*)', 'g');
+    return html.replace(re, function(m, tag){ return tag + val; });
   }
 
+  // Standard i18n fields
+  const I18N_KEYS = [
+    'home_eyebrow','home_sub','home_pitch',
+    'home_hot_routes','home_all_routes','home_places_title','home_all_places',
+    'routes_eyebrow','routes_h1','routes_sub','routes_pitch',
+    'routes_badge1','routes_badge2','routes_badge3',
+    'places_eyebrow','places_h1','places_sub','places_pitch',
+    'places_badge1','places_badge2',
+    'sf_eyebrow','sf_h1','sf_sub','sf_pitch','sf_badge1','sf_badge2','sf_badge3',
+    'meet_eyebrow','meet_h1','meet_sub','meet_pitch','meet_badge1','meet_badge2',
+    'meet_create_h','meet_create_sub','meet_create_btn','meet_ex1','meet_ex2','meet_ex3',
+    'news_eyebrow','news_h1','news_sub','news_pitch',
+    'news_main_tag','news_main_h','news_main_d','news_main_link1','news_main_link2',
+    'footer_desc','footer_sections','footer_routes','footer_seafood',
+    'footer_meet','footer_news','footer_coords_title','footer_region',
+    'footer_distance','footer_founded','footer_copy','vladivostok',
+    'nav_home','nav_routes','nav_places','nav_seafood','nav_meet','nav_news',
+    'mob_nav_routes','mob_nav_seafood','mob_nav_meet','mob_nav_news',
+    'rd_back','pd_back','cart_txt','cart_btn',
+    'today_label','today1','today2','today3','today4',
+    'mood1_title','mood1_desc','mood1_num','mood1_count','mood1_s1','mood1_s2','mood1_s3','mood1_s4',
+    'mood2_title','mood2_desc','mood2_num','mood2_count','mood2_s1','mood2_s2','mood2_s3','mood2_s4',
+    'mood3_title','mood3_desc','mood3_num','mood3_count','mood3_s1','mood3_s2','mood3_s3','mood3_s4',
+  ];
+  I18N_KEYS.forEach(key => {
+    if(tx[key]) siteHtml = replaceI18n(siteHtml, key, tx[key]);
+  });
+
+  // Special: H1 (has <br> inside — split by lines)
+  if(tx.home_h1_1 || tx.home_h1_2 || tx.home_h1_3){
+    const l1 = tx.home_h1_1 || 'Куда пойти.';
+    const l2 = tx.home_h1_2 || 'Что съесть.';
+    const l3 = tx.home_h1_3 || 'С кем встретиться.';
+    siteHtml = siteHtml.replace(
+      /(<h1[^>]+class="home-h1"[^>]*>)([\s\S]*?)(<\/h1>)/,
+      '$1'+l1+'<br>'+l2+'<br><em>'+l3+'<\/em>$3'
+    );
+  }
+
+  // SEO: title
+  if(tx.seo_title) siteHtml = siteHtml.replace(/<title>[^<]*<\/title>/, '<title>'+tx.seo_title+'<\/title>');
+  if(tx.seo_desc) siteHtml = siteHtml.replace(/(name="description"\s+content=")[^"]*(")/g, '$1'+tx.seo_desc+'$2');
+  if(tx.seo_og_title) siteHtml = siteHtml.replace(/(property="og:title"\s+content=")[^"]*(")/g, '$1'+tx.seo_og_title+'$2');
+  if(tx.seo_og_desc) siteHtml = siteHtml.replace(/(property="og:description"\s+content=")[^"]*(")/g, '$1'+tx.seo_og_desc+'$2');
+  if(tx.seo_canonical) siteHtml = siteHtml.replace(/(rel="canonical"\s+href=")[^"]*(")/g, '$1'+tx.seo_canonical+'$2');
+
+  // Weather API key — inject into weather fetch call
+  if(tx.weather_key){
+    siteHtml = siteHtml.replace(/(WEATHER_KEY\s*=\s*['"])[^'"]*(['"])/g, '$1'+tx.weather_key+'$2');
+    siteHtml = siteHtml.replace(/(api\.openweathermap\.org[^&'"]*appid=)[^&'"&]*/g, '$1'+tx.weather_key);
+  }
+
+  // ── 3. Export ──
   const blob = new Blob([siteHtml], {type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'index.html';
   a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
-  toast('✓ index.html скачан — загрузите его на Netlify');
+  toast('✓ index.html скачан — загрузите его на GitHub');
 }
 function importClick(){document.getElementById('import-file').click();}
 function importData(e){
