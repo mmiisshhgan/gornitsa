@@ -1,12 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": true,
 
   "redirects": [
     { "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.gornitsa.ru" }],
-      "destination": "https://gornitsa.ru/$1",
+      "has": [{ "type": "host", "value": "www.gornicavdk.ru" }],
+      "destination": "https://gornicavdk.ru/$1",
       "permanent": true }
   ],
 

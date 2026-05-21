@@ -6776,9 +6776,16 @@ async function exportSite(){
   toast('⏳ Загружаю index.html...');
   let siteHtml;
   try {
-    const res = await fetch('index.html?nocache='+Date.now());
+    // Используем абсолютный URL и явное расширение, чтобы Vercel rewrite-правила
+    // (cleanUrls/trailingSlash) не подменяли запрос на текущую страницу.
+    const siteUrl = window.location.origin + '/index.html?nocache=' + Date.now();
+    const res = await fetch(siteUrl, { cache: 'no-store' });
     if(!res.ok) throw new Error('HTTP '+res.status);
     siteHtml = await res.text();
+    // Защита: если случайно скачался сам admin (содержит маркер админки), отказываемся
+    if(siteHtml.includes('gornitsa_admin_sess') || siteHtml.includes('panel-dashboard')){
+      throw new Error('Скачался не тот файл (admin). Проверь, что index.html доступен по '+siteUrl);
+    }
   } catch(e) {
     toast('✗ Не удалось загрузить index.html: '+e.message);
     return;
