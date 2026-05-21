@@ -70,7 +70,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#C12B26">
 <link rel="manifest" id="manifest-link" href="/manifest.webmanifest">
 
@@ -935,6 +935,156 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
   body{font-size:12pt;color:#000;background:#fff;}
   a::after{content:" ("attr(href)")";font-size:.85em;color:#555;}
 }
+/* ═══════════════════════════════════════════════════════
+   PWA INSTALL — кнопка установки + iOS-инструкция
+═══════════════════════════════════════════════════════ */
+
+/* Кнопка «Установить» в мобильном меню — всегда видна */
+.mob-install-btn{
+  width:100%;
+  background:linear-gradient(135deg, var(--accent) 0%, #8B1F1B 100%);
+  color:var(--ivory) !important;
+  border:none; border-bottom:none !important;
+  font-family:var(--body); font-weight:600;
+  font-size:15px; letter-spacing:.02em;
+  display:flex; align-items:center; gap:12px;
+  padding:18px 24px;
+  cursor:pointer;
+  margin-top:8px;
+  position:relative;
+  -webkit-tap-highlight-color:transparent;
+}
+.mob-install-btn:active{ filter:brightness(.9); }
+.mob-install-btn .mob-nav-icon{ font-size:20px; }
+.mob-install-badge{
+  position:absolute; right:24px; top:50%; transform:translateY(-50%);
+  background:rgba(246,239,225,.22);
+  font-size:10px; font-weight:700; letter-spacing:.08em;
+  padding:3px 8px; border-radius:3px;
+}
+
+/* Плавающая подсказка снизу (один раз за визит, ненавязчиво) */
+.pwa-hint{
+  position:fixed; left:16px; right:16px; bottom:16px;
+  z-index:9998;
+  display:none;
+  padding:14px 16px;
+  background:var(--ink); color:var(--ivory);
+  border:1px solid rgba(246,239,225,.15);
+  border-radius:14px;
+  font-family:var(--body); font-size:13px; line-height:1.45;
+  box-shadow:0 12px 40px rgba(30,20,13,.4);
+  animation:pwaHintIn .5s cubic-bezier(.2,.8,.2,1) both;
+  bottom:calc(16px + env(safe-area-inset-bottom, 0));
+}
+.pwa-hint.show{ display:flex; align-items:flex-start; gap:12px; }
+.pwa-hint-ico{
+  flex-shrink:0;
+  width:32px; height:32px; border-radius:8px;
+  background:var(--accent); color:var(--ivory);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700;
+}
+.pwa-hint-txt{ flex:1; }
+.pwa-hint-txt b{ font-weight:600; color:var(--ivory); display:block; margin-bottom:2px; }
+.pwa-hint-txt span{ opacity:.7; }
+.pwa-hint-cta{
+  flex-shrink:0; margin-left:6px;
+  display:inline-flex; gap:6px;
+}
+.pwa-hint-btn{
+  padding:8px 12px;
+  background:var(--ivory); color:var(--ink);
+  border:none; border-radius:8px;
+  font-family:var(--body); font-size:12px; font-weight:600;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.pwa-hint-btn:active{ filter:brightness(.95); }
+.pwa-hint-x{
+  width:28px; height:28px;
+  background:transparent; color:rgba(246,239,225,.5);
+  border:none; border-radius:50%;
+  font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.pwa-hint-x:active{ background:rgba(246,239,225,.08); }
+@keyframes pwaHintIn{
+  from{ transform:translateY(20px); opacity:0; }
+  to{   transform:translateY(0);    opacity:1; }
+}
+@media(min-width:900px){
+  .pwa-hint{ display:none !important; }
+  .mob-install-btn{ display:none !important; }
+}
+
+/* iOS bottom-sheet — модалка с инструкцией для айфонов */
+.pwa-sheet-bg{
+  position:fixed; inset:0; z-index:10000;
+  background:rgba(30,20,13,.55);
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  display:none; align-items:flex-end;
+  animation:pwaBgIn .25s ease both;
+}
+.pwa-sheet-bg.show{ display:flex; }
+@keyframes pwaBgIn{ from{opacity:0}to{opacity:1} }
+
+.pwa-sheet{
+  width:100%;
+  background:var(--ivory);
+  border-radius:24px 24px 0 0;
+  padding:28px 24px calc(28px + env(safe-area-inset-bottom, 0));
+  animation:pwaSheetIn .35s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes pwaSheetIn{
+  from{ transform:translateY(100%); }
+  to{   transform:translateY(0); }
+}
+.pwa-sheet-handle{
+  width:40px; height:4px; border-radius:2px;
+  background:var(--border); margin:0 auto 20px;
+}
+.pwa-sheet-h{
+  font-family:var(--serif); font-weight:700;
+  font-size:22px; line-height:1.2; color:var(--ink);
+  margin-bottom:8px;
+}
+.pwa-sheet-sub{
+  font-family:var(--body); font-size:14px; line-height:1.5;
+  color:rgba(30,20,13,.7); margin-bottom:24px;
+}
+.pwa-sheet-step{
+  display:flex; align-items:flex-start; gap:14px;
+  padding:14px 0;
+  border-top:1px solid var(--border);
+}
+.pwa-sheet-step:last-of-type{ border-bottom:1px solid var(--border); }
+.pwa-sheet-step-n{
+  flex-shrink:0;
+  width:28px; height:28px; border-radius:50%;
+  background:var(--accent); color:var(--ivory);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:13px;
+}
+.pwa-sheet-step-t{
+  font-family:var(--body); font-size:15px; line-height:1.45; color:var(--ink);
+}
+.pwa-sheet-step-t b{ font-weight:600; }
+.pwa-sheet-ico{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; vertical-align:middle;
+  margin:0 4px; color:#007AFF; font-size:18px; line-height:1;
+}
+.pwa-sheet-close{
+  display:block; width:100%; margin-top:20px; padding:14px;
+  background:transparent; color:var(--ink);
+  border:1px solid var(--border); border-radius:12px;
+  font-family:var(--body); font-size:15px; font-weight:600;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.pwa-sheet-close:active{ background:var(--cream); }
+
 </style>
 </head>
 <body>
@@ -991,6 +1141,13 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     <a class="mob-nav-btn locked" id="mnav-seafood" href="/seafood/" onclick="return routeLock(event,'seafood',true)"><span class="mob-nav-icon" aria-hidden="true">🦀</span><span data-i18n="mob_nav_seafood">Ем · рыбный ряд</span><span class="lock-ico" aria-hidden="true">🔒</span></a>
     <a class="mob-nav-btn" id="mnav-meet"    href="/meet/"    onclick="return route(event,'meet',true)"><span class="mob-nav-icon" aria-hidden="true">🤝</span><span data-i18n="mob_nav_meet">Знакомлюсь · встречи</span></a>
     <a class="mob-nav-btn" id="mnav-news"    href="/today/"   onclick="return route(event,'news',true)"><span class="mob-nav-icon" aria-hidden="true">📰</span><span data-i18n="mob_nav_news">Сегодня · летопись</span></a>
+
+    <!-- Install PWA button — постоянная в меню -->
+    <button class="mob-nav-btn mob-install-btn" id="mnav-install" type="button" hidden>
+      <span class="mob-nav-icon" aria-hidden="true">⬇</span>
+      <span>Установить приложение</span>
+      <span class="mob-install-badge">PWA</span>
+    </button>
   </nav>
   <div class="mob-drawer-foot">
     <div class="mob-lang-sw">
@@ -6793,82 +6950,9 @@ applyLang(currentLang);
     })
   });
 
-  // SEAFOOD → ItemList of Product
-  if (typeof SEAFOOD !== 'undefined' && Array.isArray(SEAFOOD) && SEAFOOD.length) {
-    nodes.push({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      '@id': SITE + '#seafood-list',
-      'name': 'Рыбный ряд Владивостока — свежий улов',
-      'description': 'Свежие морепродукты с прилавков Владивостока: гребешок, краб, устрицы, морской ёж, корюшка.',
-      'numberOfItems': SEAFOOD.length,
-      'inLanguage': 'ru-RU',
-      'itemListElement': SEAFOOD.map(function(s, i){
-        const nm = s.nm || s.name || s.t || ('Позиция ' + (i + 1));
-        const price = s.price || s.pr || '';
-        const priceNum = String(price).replace(/[^\d]/g, '');
-        return {
-          '@type': 'ListItem',
-          'position': i + 1,
-          'item': {
-            '@type': 'Product',
-            'name': nm,
-            'description': clip(s.desc || s.teaser || s.tagline || '', 200),
-            'image': firstPhoto(s),
-            'category': 'Морепродукты',
-            'brand': ORG,
-            'offers': priceNum ? {
-              '@type': 'Offer',
-              'priceCurrency': 'RUB',
-              'price': priceNum,
-              'availability': 'https://schema.org/InStock',
-              'areaServed': { '@type': 'City', 'name': 'Владивосток' },
-              'seller': ORG
-            } : undefined
-          }
-        };
-      })
-    });
-  }
-
-  // MEETS → ItemList of Event
-  if (typeof MEETS !== 'undefined' && Array.isArray(MEETS) && MEETS.length) {
-    nodes.push({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      '@id': SITE + '#meets-list',
-      'name': 'Встречи и события Владивостока — ГорницаВДК',
-      'description': 'Живые встречи во Владивостоке: яхты, SUP, прогулки, знакомства, удалёнщики.',
-      'numberOfItems': MEETS.length,
-      'inLanguage': 'ru-RU',
-      'itemListElement': MEETS.slice(0, 20).map(function(m, i){
-        return {
-          '@type': 'ListItem',
-          'position': i + 1,
-          'item': {
-            '@type': 'Event',
-            'name': m.title || m.nm || ('Встреча ' + (i + 1)),
-            'description': clip(m.desc || m.teaser || m.tagline || '', 280),
-            'startDate': m.date || m.startDate || undefined,
-            'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
-            'eventStatus': 'https://schema.org/EventScheduled',
-            'location': {
-              '@type': 'Place',
-              'name': m.location || 'Владивосток',
-              'address': {
-                '@type': 'PostalAddress',
-                'addressLocality': 'Владивосток',
-                'addressRegion': 'Приморский край',
-                'addressCountry': 'RU'
-              }
-            },
-            'organizer': ORG,
-            'image': firstPhoto(m)
-          }
-        };
-      })
-    });
-  }
+  // SEAFOOD и MEETS — JSON-LD не генерится, пока разделы заблокированы.
+  // Когда появятся реальные товары (с ценой/рейтингом) и события (с датами/адресами) —
+  // вернуть Product и Event схемы с полным набором обязательных полей Google.
 
   // Inject
   nodes.forEach(function(node){
@@ -6902,6 +6986,197 @@ window.addEventListener('load', function(){
   })(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=109310273','ym');
   ym(109310273,'init',{webvisor:true,clickmap:true,ecommerce:'dataLayer',accurateTrackBounce:true,trackLinks:true});
 });
+
+// Регистрация Service Worker — нужно для PWA-installable статуса в Chrome
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/sw.js').catch(function(e){
+      // молча — не критично
+    });
+  });
+}
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PWA INSTALL
+     - Кнопка в боковом меню — всегда видна на мобильном
+     - Тонкая подсказка снизу — один раз за визит через 25 сек
+     - На iOS Safari открывается bottom-sheet с инструкцией
+     - На Android Chrome — нативный prompt
+═══════════════════════════════════════════════════════════ -->
+
+<!-- Подсказка-toast снизу -->
+<div class="pwa-hint" id="pwa-hint" role="dialog" aria-label="Установить приложение">
+  <div class="pwa-hint-ico" aria-hidden="true">⬇</div>
+  <div class="pwa-hint-txt">
+    <b>Сохрани ГорницаВДК</b>
+    <span>Один тап — приложение на главном экране</span>
+  </div>
+  <div class="pwa-hint-cta">
+    <button class="pwa-hint-btn" id="pwa-hint-btn" type="button">Установить</button>
+    <button class="pwa-hint-x" id="pwa-hint-x" type="button" aria-label="Закрыть">✕</button>
+  </div>
+</div>
+
+<!-- iOS bottom-sheet с инструкцией -->
+<div class="pwa-sheet-bg" id="pwa-sheet-bg" role="dialog" aria-modal="true" aria-labelledby="pwa-sheet-h">
+  <div class="pwa-sheet" id="pwa-sheet">
+    <div class="pwa-sheet-handle" aria-hidden="true"></div>
+    <div class="pwa-sheet-h" id="pwa-sheet-h">Добавь ГорницаВДК на главный экран</div>
+    <div class="pwa-sheet-sub">Открывай маршруты, локации и события одним тапом — как обычное приложение. Без установки из App Store.</div>
+
+    <div class="pwa-sheet-step">
+      <div class="pwa-sheet-step-n">1</div>
+      <div class="pwa-sheet-step-t">Нажми кнопку <b>«Поделиться»</b><span class="pwa-sheet-ico" aria-hidden="true">⎙</span>внизу Safari</div>
+    </div>
+    <div class="pwa-sheet-step">
+      <div class="pwa-sheet-step-n">2</div>
+      <div class="pwa-sheet-step-t">В меню выбери <b>«На экран „Домой"»</b><span class="pwa-sheet-ico" aria-hidden="true">＋</span></div>
+    </div>
+    <div class="pwa-sheet-step">
+      <div class="pwa-sheet-step-n">3</div>
+      <div class="pwa-sheet-step-t">Нажми <b>«Добавить»</b> — иконка появится на главном экране</div>
+    </div>
+
+    <button class="pwa-sheet-close" id="pwa-sheet-close" type="button">Понятно</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const HINT_KEY       = 'pwa-hint-shown-v2';
+  const HINT_DISMISS_DAYS = 14;          // подсказка не возвращается 14 дней после закрытия
+  const HINT_DELAY_MS  = 25000;          // показать подсказку через 25 сек после захода
+
+  // Элементы
+  const installBtn   = document.getElementById('mnav-install');  // в меню
+  const hint         = document.getElementById('pwa-hint');
+  const hintBtn      = document.getElementById('pwa-hint-btn');
+  const hintX        = document.getElementById('pwa-hint-x');
+  const sheet        = document.getElementById('pwa-sheet-bg');
+  const sheetCloseBtn= document.getElementById('pwa-sheet-close');
+
+  // Платформа
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  // Если уже установлено — ничего не показываем
+  if (isStandalone) return;
+
+  // ───── Сохранение события установки (Android Chrome) ─────
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    // Показать кнопку в меню (только когда событие готово)
+    if (installBtn) installBtn.hidden = false;
+  });
+
+  // На iOS события beforeinstallprompt нет, но мы всё равно можем показать инструкцию
+  if (isIOS && installBtn) {
+    installBtn.hidden = false;
+  }
+
+  // ───── Действие при клике на «Установить» ─────
+  function triggerInstall(){
+    if (window.ym) try { ym(109310273, 'reachGoal', 'pwa_install_click'); } catch(e){}
+
+    if (deferredPrompt) {
+      // Android Chrome — нативный prompt
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(choice){
+        if (choice.outcome === 'accepted') {
+          if (window.ym) try { ym(109310273, 'reachGoal', 'pwa_installed'); } catch(e){}
+        }
+        deferredPrompt = null;
+        if (installBtn) installBtn.hidden = true;
+      }).catch(function(){});
+    } else {
+      // iOS Safari или fallback — открываем инструкцию
+      sheet.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  if (installBtn) {
+    installBtn.addEventListener('click', function(){
+      // Если open drawer — закрыть его, чтобы пользователь увидел prompt/sheet
+      if (typeof closeDrawer === 'function') closeDrawer();
+      setTimeout(triggerInstall, 250);
+    });
+  }
+
+  // ───── Подсказка-toast — один раз за визит, не на маленьких визитах ─────
+  function shouldShowHint(){
+    try {
+      const d = localStorage.getItem(HINT_KEY);
+      if (d) {
+        const daysAgo = (Date.now() - parseInt(d, 10)) / (1000 * 60 * 60 * 24);
+        return daysAgo >= HINT_DISMISS_DAYS;
+      }
+    } catch(e) {}
+    return true;
+  }
+
+  function showHint(){
+    if (!shouldShowHint()) return;
+    if (window.innerWidth >= 900) return;          // только мобила
+    if (sheet.classList.contains('show')) return;  // sheet уже открыта — не дублировать
+    hint.classList.add('show');
+    try { localStorage.setItem(HINT_KEY, String(Date.now())); } catch(e) {}
+    if (window.ym) try { ym(109310273, 'reachGoal', 'pwa_hint_shown'); } catch(e){}
+  }
+
+  // Показываем подсказку через 25 сек если человек ещё на сайте
+  let hintTimer = setTimeout(showHint, HINT_DELAY_MS);
+
+  function hideHint(){
+    hint.classList.remove('show');
+    clearTimeout(hintTimer);
+  }
+
+  hintBtn.addEventListener('click', function(){
+    hideHint();
+    triggerInstall();
+  });
+  hintX.addEventListener('click', function(){
+    hideHint();
+    if (window.ym) try { ym(109310273, 'reachGoal', 'pwa_hint_dismissed'); } catch(e){}
+  });
+
+  // Авто-скрытие подсказки через 12 сек, если не отреагировали
+  hint.addEventListener('animationstart', function(){
+    setTimeout(function(){
+      if (hint.classList.contains('show')) hideHint();
+    }, 12000);
+  });
+
+  // ───── iOS sheet close ─────
+  function closeSheet(){
+    sheet.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  sheetCloseBtn.addEventListener('click', closeSheet);
+  sheet.addEventListener('click', function(e){
+    if (e.target === sheet) closeSheet();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && sheet.classList.contains('show')) closeSheet();
+  });
+
+  // ───── После реальной установки ─────
+  window.addEventListener('appinstalled', function(){
+    hideHint();
+    if (installBtn) installBtn.hidden = true;
+    if (window.ym) try { ym(109310273, 'reachGoal', 'pwa_installed'); } catch(e){}
+  });
+})();
+</script>
+
 </body>
 </html>
