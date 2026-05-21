@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
-  "trailingSlash": true,
+  "trailingSlash": false,
 
   "redirects": [
     { "source": "/(.*)",
@@ -11,10 +11,20 @@
   ],
 
   "rewrites": [
+    { "source": "/routes",         "destination": "/index.html" },
+    { "source": "/routes/",        "destination": "/index.html" },
     { "source": "/routes/:path*",  "destination": "/index.html" },
+    { "source": "/places",         "destination": "/index.html" },
+    { "source": "/places/",        "destination": "/index.html" },
     { "source": "/places/:path*",  "destination": "/index.html" },
+    { "source": "/seafood",        "destination": "/index.html" },
+    { "source": "/seafood/",       "destination": "/index.html" },
     { "source": "/seafood/:path*", "destination": "/index.html" },
+    { "source": "/meet",           "destination": "/index.html" },
+    { "source": "/meet/",          "destination": "/index.html" },
     { "source": "/meet/:path*",    "destination": "/index.html" },
+    { "source": "/today",          "destination": "/index.html" },
+    { "source": "/today/",         "destination": "/index.html" },
     { "source": "/today/:path*",   "destination": "/index.html" },
     { "source": "/place/:id",      "destination": "/index.html" },
     { "source": "/place/:id/",     "destination": "/index.html" },
