@@ -7096,18 +7096,11 @@ function openPlace(id){
   }).join('');
   const curIdx=PLACES.findIndex(x=>x.id===id);
   const nextP=PLACES[(curIdx+1)%PLACES.length];
-  const chronicle=currentLang==='zh'?[]:p.chronicle||[];
   document.getElementById('pd-body').innerHTML=`
     <div>
       ${(p.photos&&p.photos.length)?`<div class="detail-photos">${p.photos.map(url=>`<div class="detail-photo"><img src="${clImg(url,1200)}" alt="" loading="lazy" decoding="async" width="1200" height="600"></div>`).join('')}</div>`:''}
       <p class="pd-atmo">${_d(p,'atmo')}</p>
-      <div class="pd-sec-h">${_t('pd_hist_char')}</div>
       <div class="pd-text">${_d(p,'body')}</div>
-      ${chronicle&&chronicle.length?`
-      <div class="pd-chronicle">
-        <div class="pd-chronicle-h">📜 ${currentLang==='zh'?'地点编年史':'Хроника места'}</div>
-        ${chronicle.map(c=>`<div class="pd-chron-item"><div class="pd-chron-year">${c.year}</div><div class="pd-chron-text">${c.text}</div></div>`).join('')}
-      </div>`:''}
       <div class="pd-sec-h">${_t('pd_facts')}</div>
       <div class="pd-facts">${p.facts.map(f=>`<div class="pd-fact"><div class="pd-fact-icon">${f.icon}</div><div class="pd-fact-t">${_d(f,'t')}</div><div class="pd-fact-v">${_d(f,'v')}</div></div>`).join('')}</div>
       <div class="pd-when">

@@ -6502,7 +6502,45 @@ function placeForm(p,i){
     <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo=this.value">${esc(p.atmo)}</textarea></div>
   <div class="form-row form-full"><label class="form-label">Атмосфера <span class="zh-badge">中文</span></label>
     <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo_zh=this.value">${esc(p.atmo_zh)}</textarea></div>
-</div></div>`;
+</div>
+<div class="form-section-h">Факты</div>
+<div id="facts-list-${i}">
+  ${(p.facts||[]).map((f,fi)=>factRow(i,fi,f)).join('')}
+</div>
+<button class="btn btn-secondary" style="margin-top:10px" onclick="addFact(${i})">+ Добавить факт</button>
+</div>`;
+}
+
+function factRow(i,fi,f){
+  return `
+  <div class="form-grid" style="border:1px solid var(--line);padding:12px;margin-bottom:10px;border-radius:4px" id="fact-${i}-${fi}">
+    <div class="form-row"><label class="form-label">Иконка (emoji)</label>
+      <input class="form-input" value="${esc(f.icon||'')}" onchange="DATA.places[${i}].facts[${fi}].icon=this.value" placeholder="📐"></div>
+    <div class="form-row"><label class="form-label">&nbsp;</label>
+      <button class="btn btn-danger" onclick="delFact(${i},${fi})">Удалить факт</button></div>
+    <div class="form-row"><label class="form-label">Заголовок (RU)</label>
+      <input class="form-input" value="${esc(f.t||'')}" onchange="DATA.places[${i}].facts[${fi}].t=this.value" placeholder="Высота"></div>
+    <div class="form-row"><label class="form-label">Заголовок <span class="zh-badge">中文</span></label>
+      <input class="form-input" value="${esc(f.t_zh||'')}" onchange="DATA.places[${i}].facts[${fi}].t_zh=this.value" placeholder="海拔"></div>
+    <div class="form-row form-full"><label class="form-label">Значение (RU)</label>
+      <input class="form-input" value="${esc(f.v||'')}" onchange="DATA.places[${i}].facts[${fi}].v=this.value" placeholder="199 м"></div>
+    <div class="form-row form-full"><label class="form-label">Значение <span class="zh-badge">中文</span></label>
+      <input class="form-input" value="${esc(f.v_zh||'')}" onchange="DATA.places[${i}].facts[${fi}].v_zh=this.value" placeholder="199米"></div>
+  </div>`;
+}
+
+function addFact(i){
+  if(!DATA.places[i].facts)DATA.places[i].facts=[];
+  DATA.places[i].facts.push({icon:'✦',t:'',t_zh:'',v:'',v_zh:''});
+  renderPlaces();
+  setTimeout(()=>{const b=document.getElementById('pi-'+i+'-body');if(b&&!b.classList.contains('open'))toggleCard('pi-'+i);},60);
+}
+
+function delFact(i,fi){
+  if(!confirm('Удалить этот факт?'))return;
+  DATA.places[i].facts.splice(fi,1);
+  renderPlaces();
+  setTimeout(()=>{const b=document.getElementById('pi-'+i+'-body');if(b&&!b.classList.contains('open'))toggleCard('pi-'+i);},60);
 }
 function addPlace(){
   const id='L-'+String(DATA.places.length+1).padStart(2,'0');
