@@ -6878,11 +6878,11 @@ async function exportSite(){
   }
 
   // ── 3. Sanity check: убеждаемся что не сломали JS ──
+  // Проверяем только специфические признаки бага «съеденные символы после ];»
   const brokenPatterns = [
     /\];nst\s/,           // съели 'co' от const
     /\];onst\s/,          // съели 'c'
     /\];st\s/,            // съели 'con'
-    /\][^;]/,             // ] без точки с запятой после
   ];
   for(const pat of brokenPatterns){
     if(pat.test(siteHtml)){
