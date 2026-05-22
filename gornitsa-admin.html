@@ -6806,9 +6806,11 @@ async function exportSite(){
     if(startIdx === -1){ console.warn('Not found: '+name); continue; }
     const endIdx = siteHtml.indexOf('\n];', startIdx);
     if(endIdx === -1){ console.warn('End not found: '+name); continue; }
-    const oldBlock = siteHtml.slice(startIdx, endIdx + 4);
+    // endIdx указывает на '\n', '\n];' = 3 символа.
+    // НЕ берём 4-й (следующий после ';'), иначе съедим '\n' или 'c' от 'const' дальше.
+    const blockEnd = endIdx + 3;
     const newBlock = 'const '+name+'='+JSON.stringify(data, null, 2)+';';
-    siteHtml = siteHtml.slice(0, startIdx) + newBlock + siteHtml.slice(startIdx + oldBlock.length);
+    siteHtml = siteHtml.slice(0, startIdx) + newBlock + siteHtml.slice(blockEnd);
   }
 
   // ── 2. Apply texts (data-i18n and static HTML nodes) ──
@@ -6875,7 +6877,23 @@ async function exportSite(){
     siteHtml = siteHtml.replace(/(api\.openweathermap\.org[^&'"]*appid=)[^&'"&]*/g, '$1'+tx.weather_key);
   }
 
-  // ── 3. Export ──
+  // ── 3. Sanity check: убеждаемся что не сломали JS ──
+  const brokenPatterns = [
+    /\];nst\s/,           // съели 'co' от const
+    /\];onst\s/,          // съели 'c'
+    /\];st\s/,            // съели 'con'
+    /\][^;]/,             // ] без точки с запятой после
+  ];
+  for(const pat of brokenPatterns){
+    if(pat.test(siteHtml)){
+      const m = siteHtml.match(pat);
+      console.error('SYNTAX ERROR detected before export:', m && m[0]);
+      toast('✗ Внутренняя ошибка экспорта — файл повреждён. Нажми кнопку ещё раз.');
+      return;
+    }
+  }
+
+  // ── 4. Export ──
   const blob = new Blob([siteHtml], {type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
