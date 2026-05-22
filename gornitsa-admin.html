@@ -130,6 +130,13 @@ input,textarea,select{font:inherit;color:inherit}
 .form-select{width:100%;padding:9px 11px;border:1.5px solid var(--border);background:var(--ivory);font-size:14px;outline:none;border-radius:2px;cursor:pointer}
 .form-hint{font-size:11px;color:var(--ink-3);margin-top:4px;line-height:1.4}
 .form-section-h{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:14px 0 8px;border-bottom:1px solid var(--border-2);margin-bottom:14px}
+/* CAT CHECKBOXES — мультивыбор категорий локации */
+.cat-checkboxes{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0}
+.cat-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:var(--ivory);border:1.5px solid var(--border);font-size:13px;cursor:pointer;transition:all .15s var(--ease);user-select:none;border-radius:2px}
+.cat-chip:hover{border-color:var(--ink-3)}
+.cat-chip.on{background:rgba(193,43,38,.08);border-color:var(--red);color:var(--red);font-weight:700}
+.cat-chip input[type="checkbox"]{margin:0;cursor:pointer;accent-color:var(--red);width:14px;height:14px}
+.cat-chip input[type="checkbox"]:checked + span{color:var(--red)}
 /* PHOTO UPLOAD */
 .photo-zone{border:2px dashed var(--border);background:var(--ivory);padding:20px;text-align:center;cursor:pointer;transition:all .2s;border-radius:2px;position:relative;margin-bottom:10px}
 .photo-zone:hover,.photo-zone.drag{border-color:var(--red);background:rgba(193,43,38,.02)}
@@ -229,6 +236,7 @@ input,textarea,select{font:inherit;color:inherit}
       <div class="sb-item" onclick="showPanel('places')"><span class="sb-icon">📍</span>Локации</div>
       <div class="sb-item" onclick="showPanel('seafood')"><span class="sb-icon">🦀</span>Рыбный ряд</div>
       <div class="sb-item" onclick="showPanel('meets')"><span class="sb-icon">🤝</span>Встречи</div>
+      <div class="sb-item" onclick="showPanel('realmeets')"><span class="sb-icon">✅</span>Реальные встречи</div>
       <div class="sb-item" onclick="showPanel('news')"><span class="sb-icon">📰</span>Новости</div>
       <div class="sb-item" onclick="showPanel('texts')"><span class="sb-icon">✏️</span>Тексты сайта</div>
       <div class="sb-section">Публикация</div>
@@ -275,6 +283,7 @@ input,textarea,select{font:inherit;color:inherit}
         <span class="quick-link" onclick="showPanel('places')">📍 Локации</span>
         <span class="quick-link" onclick="showPanel('seafood')">🦀 Рыбный ряд</span>
         <span class="quick-link" onclick="showPanel('meets')">🤝 Встречи</span>
+        <span class="quick-link" onclick="showPanel('realmeets')">✅ Реальные встречи</span>
         <span class="quick-link" onclick="showPanel('news')">📰 Новости</span>
         <span class="quick-link" onclick="showPanel('settings')">⚙️ Настройки</span>
       </div>
@@ -358,6 +367,22 @@ input,textarea,select{font:inherit;color:inherit}
       <div class="section-head"><h2>Встречи</h2><p>12 встреч · Живые мероприятия от участников сообщества</p></div>
       <div id="meets-list" class="card-list"></div>
       <button class="btn-add" onclick="addMeet()">＋ Добавить встречу</button>
+    </div>
+
+    <!-- REAL MEETS -->
+    <div class="panel" id="panel-realmeets">
+      <div class="section-head">
+        <h2>Реальные встречи</h2>
+        <p>Проверенные встречи с настоящими контактами автора. Появляются на сайте в третьем подразделе «✅ Реальные встречи (проверены)».</p>
+      </div>
+      <div style="background:rgba(42,107,58,.08);border:1.5px solid rgba(42,107,58,.28);padding:14px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px">
+        <div style="font-size:20px;flex-shrink:0">✅</div>
+        <div style="flex:1;font-size:13px;color:var(--ink-3);line-height:1.55">
+          <b style="color:var(--ink)">Как это работает:</b> добавляешь сюда только проверенные встречи. У каждой указываешь хотя бы один контакт автора (Telegram, Max, Instagram, ВКонтакте). Когда пользователь нажмёт «Написать» — увидит окно с кнопками всех мессенджеров автора.
+        </div>
+      </div>
+      <div id="realmeets-list" class="card-list"></div>
+      <button class="btn-add" onclick="addRealMeet()">＋ Добавить реальную встречу</button>
     </div>
 
     <!-- NEWS -->
@@ -5930,7 +5955,9 @@ function changePassword(){
 }
 
 /* ── Data ── */
-let DATA={routes:[],places:[],seafood:[],meets:[],news:[],log:[],settings:{}};
+let DATA={routes:[],places:[],seafood:[],meets:[],realmeets:[],news:[],log:[],settings:{}};
+
+const DEFAULT_REAL_MEETS=[];
 
 function getDefaults(){
   return{
@@ -5938,6 +5965,7 @@ function getDefaults(){
     places:JSON.parse(JSON.stringify(DEFAULT_PLACES)),
     seafood:JSON.parse(JSON.stringify(DEFAULT_SEAFOOD)),
     meets:JSON.parse(JSON.stringify(DEFAULT_MEETS)),
+    realmeets:JSON.parse(JSON.stringify(DEFAULT_REAL_MEETS)),
     news:JSON.parse(JSON.stringify(DEFAULT_NEWS)),
     log:JSON.parse(JSON.stringify(DEFAULT_LOG))
   };
@@ -5952,6 +5980,7 @@ function initApp(){
   renderPlaces();
   renderSeafood();
   renderMeets();
+  renderRealMeets();
   renderNews();
   renderTexts();
 }
@@ -5966,6 +5995,7 @@ function loadData(){
       DATA.places  =s.places  ||d.places;
       DATA.seafood =s.seafood ||d.seafood;
       DATA.meets   =s.meets   ||d.meets;
+      DATA.realmeets=Array.isArray(s.realmeets)?s.realmeets:d.realmeets;
       DATA.news    =s.news    ||d.news;
       DATA.log     =s.log     ||d.log;
       DATA.settings=s.settings||{};
@@ -5980,7 +6010,7 @@ function saveAll(){
   const h1=(document.getElementById('cfg-h1')||{}).value||'';
   const sub=(document.getElementById('cfg-sub')||{}).value||'';
   if(h1||sub)DATA.settings={h1,sub};
-  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings};
+  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,realmeets:DATA.realmeets,news:DATA.news,log:DATA.log,settings:DATA.settings};
   _store.set(CMS_KEY,JSON.stringify(cms));
   const btn=document.getElementById('save-btn');
   btn.textContent='✓ Сохранено';btn.classList.add('saved');
@@ -5992,12 +6022,12 @@ function resetToDefaults(){
   if(!confirm('Сбросить весь контент к исходным данным сайта?\nТекстовые изменения будут отменены. Нельзя отменить.'))return;
   _store.remove(CMS_KEY);
   const d=getDefaults();Object.assign(DATA,d);DATA.settings={};DATA.texts={};
-  renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();renderTexts();
+  renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderRealMeets();renderNews();renderTexts();
   toast('✓ Данные сброшены к исходным');
 }
 
 /* ── Panels ── */
-const TITLES={dashboard:'Дашборд',settings:'Настройки',routes:'Маршруты',places:'Локации',seafood:'Рыбный ряд',meets:'Встречи',news:'Новости',texts:'Тексты сайта'};
+const TITLES={dashboard:'Дашборд',settings:'Настройки',routes:'Маршруты',places:'Локации',seafood:'Рыбный ряд',meets:'Встречи',realmeets:'Реальные встречи',news:'Новости',texts:'Тексты сайта'};
 
 /* ── Texts panel ── */
 const TEXTS_FIELDS = [
@@ -6054,7 +6084,7 @@ function saveTexts(){
   // Merge into DATA.settings for backwards compat
   if(!DATA.settings) DATA.settings = {};
   DATA.settings.texts = DATA.texts;
-  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings,texts:DATA.texts};
+  const cms={routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,realmeets:DATA.realmeets,news:DATA.news,log:DATA.log,settings:DATA.settings,texts:DATA.texts};
   _store.set(CMS_KEY,JSON.stringify(cms));
   toast('✓ Тексты сохранены');
 }
@@ -6076,6 +6106,7 @@ function renderDashboard(){
     {n:DATA.places.length,l:'Локаций',h:'Места и достопримечательности',p:'places'},
     {n:DATA.seafood.length,l:'Позиций',h:'Рыбный ряд',p:'seafood'},
     {n:DATA.meets.length,l:'Встреч',h:'Активных встреч',p:'meets'},
+    {n:(DATA.realmeets||[]).length,l:'Реальных',h:'Проверенные встречи',p:'realmeets'},
     {n:DATA.news.length,l:'Новостей',h:'Карточки новостей',p:'news'},
     {n:DATA.log.length,l:'Записей',h:'Лента событий',p:'news'}
   ];
@@ -6453,6 +6484,8 @@ function renderPlaces(){
 }
 
 function placeForm(p,i){
+  // Миграция «на лету»: если есть только cat и нет tags — создаём tags из cat
+  if(!Array.isArray(p.tags)) p.tags = p.cat ? [p.cat] : [];
   return `
 <div style="padding-top:14px">
 <div class="form-section-h">Фотографии локации</div>
@@ -6469,8 +6502,8 @@ function placeForm(p,i){
 <div class="form-grid">
   <div class="form-row"><label class="form-label">ID</label>
     <input class="form-input" value="${esc(p.id)}" onchange="DATA.places[${i}].id=this.value"></div>
-  <div class="form-row"><label class="form-label">Категория</label>
-    <select class="form-select" onchange="DATA.places[${i}].cat=this.value">
+  <div class="form-row form-full"><label class="form-label">Категории (можно несколько)</label>
+    <div class="cat-checkboxes" id="place-cats-${i}">
       ${[
         ['view','Смотровые'],
         ['sea','У моря'],
@@ -6480,8 +6513,16 @@ function placeForm(p,i){
         ['date','Свидание'],
         ['solo','Одному'],
         ['kids','С детьми']
-      ].map(([c,label])=>`<option value="${c}"${p.cat===c?' selected':''}>${label}</option>`).join('')}
-    </select></div>
+      ].map(([c,label])=>{
+        const checked=isPlaceCat(p,c);
+        return `<label class="cat-chip${checked?' on':''}">
+          <input type="checkbox" value="${c}"${checked?' checked':''} onchange="togglePlaceCat(${i},'${c}',this)">
+          <span>${label}</span>
+        </label>`;
+      }).join('')}
+    </div>
+    <div class="form-hint" style="font-size:12px;color:var(--ink-3);margin-top:6px">Выбери все подходящие. Первая выбранная — главная (показывается в бейдже карточки). Локация будет находиться по любому из выбранных фильтров.</div>
+  </div>
   <div class="form-row"><label class="form-label">Иконка (emoji)</label>
     <input class="form-input" value="${esc(p.icon)}" onchange="DATA.places[${i}].icon=this.value" placeholder="🏮"></div>
   <div class="form-row"><label class="form-label">Связанный маршрут</label>
@@ -6509,6 +6550,37 @@ function placeForm(p,i){
 </div>
 <button class="btn btn-secondary" style="margin-top:10px" onclick="addFact(${i})">+ Добавить факт</button>
 </div>`;
+}
+
+/* Проверка: входит ли категория в список tags локации (или равна основной cat) */
+function isPlaceCat(p,c){
+  if(Array.isArray(p.tags) && p.tags.length) return p.tags.indexOf(c)>=0;
+  return p.cat===c;
+}
+
+/* Переключение чекбокса категории — синхронизирует tags[] и cat */
+function togglePlaceCat(i,c,el){
+  const p=DATA.places[i];
+  if(!Array.isArray(p.tags)) p.tags = p.cat ? [p.cat] : [];
+  const idx=p.tags.indexOf(c);
+  if(el.checked){
+    if(idx<0) p.tags.push(c);
+  } else {
+    // Не даём снять последнюю категорию — у локации должна быть хотя бы одна
+    if(p.tags.length<=1){
+      el.checked = true;
+      toast('У локации должна быть хотя бы одна категория');
+      return;
+    }
+    if(idx>=0) p.tags.splice(idx,1);
+  }
+  // Главная категория (cat) — первая в tags
+  if(p.tags.length){
+    p.cat = p.tags[0];
+  }
+  // Визуальная подсветка выбранного чипа
+  const chip=el.closest('.cat-chip');
+  if(chip) chip.classList.toggle('on', el.checked);
 }
 
 function factRow(i,fi,f){
@@ -6691,6 +6763,137 @@ function addMeet(){
   renderMeets();setTimeout(()=>toggleCard('mi-'+(DATA.meets.length-1)),60);
 }
 
+/* ── Real Meets (проверены модерацией) ── */
+function renderRealMeets(){
+  const el=document.getElementById('realmeets-list');
+  if(!el) return;
+  if(!DATA.realmeets) DATA.realmeets=[];
+  if(!DATA.realmeets.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">Реальных встреч пока нет</div><div style="font-size:13px;color:var(--ink-3);margin-top:8px">Добавь первую — после сохранения она появится на сайте в разделе «Знакомлюсь» → «Реальные встречи».</div></div>';
+    return;
+  }
+  el.innerHTML=DATA.realmeets.map((m,i)=>{
+    const a=m.author||{};
+    const C=m.contacts||{};
+    const contactCount=['tg','max','ig','vk'].filter(k=>(C[k]||'').toString().trim()).length;
+    return `
+    <div class="card-item" id="rmi-${i}">
+      <div class="card-header" onclick="toggleCard('rmi-${i}')">
+        <div style="width:28px;height:28px;border-radius:50%;background:${esc(a.clr||'#2A6B3A')};color:white;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${esc(a.ava||'?')}</div>
+        <div class="card-title-wrap">
+          <div class="card-title">${esc(m.title||'Без названия')}</div>
+          <div class="card-subtitle">${esc(a.name||'')} · ${esc(m.dow||'')} ${esc(m.day||'')} · ${esc(m.tm||'')} · ${contactCount} контакт(ов)</div>
+        </div>
+        <div class="card-actions">
+          <span class="badge" style="background:rgba(42,107,58,.12);color:var(--green);border:1px solid rgba(42,107,58,.3);padding:2px 8px;font-size:11px;font-weight:700;letter-spacing:.05em">✓ ПРОВЕРЕНА</span>
+          <div class="card-toggle" id="rmi-${i}-tog">▾</div>
+          <div class="card-delete-btn" onclick="event.stopPropagation();deleteRealMeet(${i})">✕</div>
+        </div>
+      </div>
+      <div class="card-body" id="rmi-${i}-body">${realMeetForm(m,i)}</div>
+    </div>`;
+  }).join('');
+}
+
+function realMeetForm(m,i){
+  const a=m.author||{};
+  const C=m.contacts||{};
+  return `
+<div style="padding-top:14px">
+<div class="form-section-h">Встреча</div>
+<div class="form-grid">
+  <div class="form-row form-full"><label class="form-label">Заголовок (RU)</label>
+    <input class="form-input" value="${esc(m.title)}" onchange="DATA.realmeets[${i}].title=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Заголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.title_zh)}" onchange="DATA.realmeets[${i}].title_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок (RU)</label>
+    <input class="form-input" value="${esc(m.sub)}" onchange="DATA.realmeets[${i}].sub=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Подзаголовок <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.sub_zh)}" onchange="DATA.realmeets[${i}].sub_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Описание (RU)</label>
+    <textarea class="form-textarea" onchange="DATA.realmeets[${i}].folk=this.value">${esc(m.folk)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Описание <span class="zh-badge">中文</span></label>
+    <textarea class="form-textarea" onchange="DATA.realmeets[${i}].folk_zh=this.value">${esc(m.folk_zh)}</textarea></div>
+  <div class="form-row"><label class="form-label">Категория</label>
+    <select class="form-select" onchange="DATA.realmeets[${i}].cat=this.value">
+      ${[['sunset','Закат'],['sea','Море'],['food','Поесть'],['travel','Поездки'],['talk','Поговорить'],['sport','Спорт']].map(([v,l])=>`<option value="${v}"${m.cat===v?' selected':''}>${l}</option>`).join('')}
+    </select></div>
+  <div class="form-row"><label class="form-label">Горячая?</label>
+    <select class="form-select" onchange="DATA.realmeets[${i}].hot=this.value==='1'">
+      <option value=""${!m.hot?' selected':''}>Нет</option><option value="1"${m.hot?' selected':''}>Да</option>
+    </select></div>
+  <div class="form-row"><label class="form-label">День (число)</label>
+    <input class="form-input" value="${esc(m.day)}" onchange="DATA.realmeets[${i}].day=this.value" placeholder="10"></div>
+  <div class="form-row"><label class="form-label">Время</label>
+    <input class="form-input" value="${esc(m.tm)}" onchange="DATA.realmeets[${i}].tm=this.value" placeholder="18:47"></div>
+  <div class="form-row"><label class="form-label">День недели (RU)</label>
+    <input class="form-input" value="${esc(m.dow)}" onchange="DATA.realmeets[${i}].dow=this.value" placeholder="Сб"></div>
+  <div class="form-row"><label class="form-label">День недели <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(m.dow_zh)}" onchange="DATA.realmeets[${i}].dow_zh=this.value"></div>
+  <div class="form-row"><label class="form-label">Мест занято</label>
+    <input class="form-input" type="number" value="${m.seats||0}" onchange="DATA.realmeets[${i}].seats=Number(this.value)"></div>
+  <div class="form-row"><label class="form-label">Всего мест</label>
+    <input class="form-input" type="number" value="${m.total||0}" onchange="DATA.realmeets[${i}].total=Number(this.value)"></div>
+  <div class="form-row form-full"><label class="form-label">Вайбы / теги (через запятую)</label>
+    <input class="form-input" value="${esc((m.vibes||[]).join(', '))}" onchange="DATA.realmeets[${i}].vibes=this.value.split(',').map(s=>s.trim()).filter(Boolean)" placeholder="⛵ 6 часов в море, 💰 1 400 ₽ с человека"></div>
+</div>
+
+<div class="form-section-h">Организатор</div>
+<div class="form-grid">
+  <div class="form-row"><label class="form-label">Имя</label>
+    <input class="form-input" value="${esc(a.name)}" onchange="if(!DATA.realmeets[${i}].author)DATA.realmeets[${i}].author={};DATA.realmeets[${i}].author.name=this.value"></div>
+  <div class="form-row"><label class="form-label">Аватар (буква)</label>
+    <input class="form-input" value="${esc(a.ava)}" maxlength="2" onchange="if(!DATA.realmeets[${i}].author)DATA.realmeets[${i}].author={};DATA.realmeets[${i}].author.ava=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Роль / о себе (RU)</label>
+    <input class="form-input" value="${esc(a.role)}" onchange="if(!DATA.realmeets[${i}].author)DATA.realmeets[${i}].author={};DATA.realmeets[${i}].author.role=this.value" placeholder="местный, живёт здесь 4 года"></div>
+  <div class="form-row form-full"><label class="form-label">Роль <span class="zh-badge">中文</span></label>
+    <input class="form-input" value="${esc(a.role_zh)}" onchange="if(!DATA.realmeets[${i}].author)DATA.realmeets[${i}].author={};DATA.realmeets[${i}].author.role_zh=this.value"></div>
+  <div class="form-row form-full"><label class="form-label">Цвет аватара (hex)</label>
+    <input class="form-input" value="${esc(a.clr)}" onchange="if(!DATA.realmeets[${i}].author)DATA.realmeets[${i}].author={};DATA.realmeets[${i}].author.clr=this.value" placeholder="#2A6B3A"></div>
+</div>
+
+<div class="form-section-h">Контакты автора</div>
+<div style="background:rgba(42,107,58,.06);border-left:3px solid var(--green);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--ink-3);line-height:1.55">
+  Заполни хотя бы один контакт. Введи <b>username</b> без @ или полную ссылку. Пользователь увидит окно с кнопками всех заполненных мессенджеров.
+</div>
+<div class="form-grid">
+  <div class="form-row"><label class="form-label">✈️ Telegram (@username или ссылка)</label>
+    <input class="form-input" value="${esc(C.tg)}" onchange="if(!DATA.realmeets[${i}].contacts)DATA.realmeets[${i}].contacts={};DATA.realmeets[${i}].contacts.tg=this.value" placeholder="username или https://t.me/username"></div>
+  <div class="form-row"><label class="form-label">Ⓜ Max (username или ссылка)</label>
+    <input class="form-input" value="${esc(C.max)}" onchange="if(!DATA.realmeets[${i}].contacts)DATA.realmeets[${i}].contacts={};DATA.realmeets[${i}].contacts.max=this.value" placeholder="username или https://max.ru/username"></div>
+  <div class="form-row"><label class="form-label">📷 Instagram (username или ссылка)</label>
+    <input class="form-input" value="${esc(C.ig)}" onchange="if(!DATA.realmeets[${i}].contacts)DATA.realmeets[${i}].contacts={};DATA.realmeets[${i}].contacts.ig=this.value" placeholder="username или https://instagram.com/username"></div>
+  <div class="form-row"><label class="form-label">VK (id, username или ссылка)</label>
+    <input class="form-input" value="${esc(C.vk)}" onchange="if(!DATA.realmeets[${i}].contacts)DATA.realmeets[${i}].contacts={};DATA.realmeets[${i}].contacts.vk=this.value" placeholder="username или https://vk.com/username"></div>
+</div>
+</div>`;
+}
+
+function addRealMeet(){
+  if(!DATA.realmeets) DATA.realmeets=[];
+  DATA.realmeets.push({
+    cat:'talk',hot:false,
+    author:{name:'Новый автор',role:'',role_zh:'',ava:'Н',clr:'#2A6B3A'},
+    title:'Новая реальная встреча',title_zh:'',
+    sub:'',sub_zh:'',
+    folk:'',folk_zh:'',
+    vibes:[],vibes_zh:[],
+    seats:0,total:10,
+    tm:'18:00',day:'',mo:'',
+    dow:'',dow_zh:'',
+    contacts:{tg:'',max:'',ig:'',vk:''}
+  });
+  renderRealMeets();
+  setTimeout(()=>toggleCard('rmi-'+(DATA.realmeets.length-1)),60);
+}
+
+function deleteRealMeet(i){
+  if(!confirm('Удалить эту реальную встречу?'))return;
+  DATA.realmeets.splice(i,1);
+  renderRealMeets();
+  toast('✓ Встреча удалена');
+}
+
 /* ── News ── */
 let _newsTab='cards';
 function switchNewsTab(tab,btn){
@@ -6817,7 +7020,7 @@ function esc(v){
 
 /* ── Export / Import ── */
 function exportData(){
-  const blob=new Blob([JSON.stringify({routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,news:DATA.news,log:DATA.log,settings:DATA.settings},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({routes:DATA.routes,places:DATA.places,seafood:DATA.seafood,meets:DATA.meets,realmeets:DATA.realmeets,news:DATA.news,log:DATA.log,settings:DATA.settings},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download='gornitsa-cms-'+new Date().toISOString().slice(0,10)+'.json';a.click();
   toast('✓ Данные экспортированы');
@@ -6845,12 +7048,13 @@ async function exportSite(){
 
   // ── 1. Replace data arrays ──
   const replacements = [
-    { name:'ROUTES',   data: DATA.routes  },
-    { name:'PLACES',   data: DATA.places  },
-    { name:'SEAFOOD',  data: DATA.seafood },
-    { name:'MEETS',    data: DATA.meets   },
+    { name:'ROUTES',     data: DATA.routes  },
+    { name:'PLACES',     data: DATA.places  },
+    { name:'SEAFOOD',    data: DATA.seafood },
+    { name:'MEETS',      data: DATA.meets   },
+    { name:'REAL_MEETS', data: DATA.realmeets||[] },
     { name:'NEWS_CARDS', data: DATA.news  },
-    { name:'NEWS_LOG', data: DATA.log     },
+    { name:'NEWS_LOG',   data: DATA.log     },
   ];
   for(const {name, data} of replacements){
     const startMarker = 'const '+name+'=[';
@@ -6966,10 +7170,11 @@ function importData(e){
       if(d.places)DATA.places=d.places;
       if(d.seafood)DATA.seafood=d.seafood;
       if(d.meets)DATA.meets=d.meets;
+      if(d.realmeets)DATA.realmeets=d.realmeets;
       if(d.news)DATA.news=d.news;
       if(d.log)DATA.log=d.log;
       if(d.settings)DATA.settings=d.settings;
-      renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderNews();
+      renderDashboard();renderSettings();renderRoutes();renderPlaces();renderSeafood();renderMeets();renderRealMeets();renderNews();
       toast('✓ Данные импортированы');
     }catch(err){toast('Ошибка импорта: '+err.message);}
   };

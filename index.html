@@ -187,7 +187,8 @@ a{color:inherit;text-decoration:none}
 .home-pitch{font-family:var(--body);font-size:14px;color:var(--ink-3);max-width:540px;line-height:1.7;margin-bottom:52px;animation:fadeUp .7s var(--ease) .34s both;border-left:2px solid var(--border);padding-left:16px}
 
 /* Mood cards */
-.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;animation:fadeUp .7s var(--ease) .44s both}
+.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1140px;animation:fadeUp .7s var(--ease) .44s both}
+@media(max-width:1150px){.moods{grid-template-columns:repeat(2,1fr);max-width:720px}}
 .mood{background:var(--paper);border:1.5px solid var(--border);padding:28px 24px 24px;cursor:pointer;position:relative;transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .15s}
 .mood::before{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--red);transition:height .3s var(--ease)}
 .mood:hover::before{height:100%}
@@ -422,6 +423,31 @@ a{color:inherit;text-decoration:none}
 .meet-demo-title{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--red);margin-bottom:4px}
 .meet-demo-sub{font-size:13px;color:var(--ink-3);line-height:1.55}
 @media(max-width:760px){.meet-demo-banner{margin:0 16px}}
+/* Real meets — banner & verified badge */
+.meet-real-banner{display:flex;align-items:flex-start;gap:14px;background:rgba(42,107,58,.08);border:1.5px solid rgba(42,107,58,.28);padding:18px 20px;margin:0 40px 0 40px}
+.meet-real-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.meet-real-title{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--green);margin-bottom:4px}
+.meet-real-sub{font-size:13px;color:var(--ink-3);line-height:1.55}
+@media(max-width:760px){.meet-real-banner{margin:0 16px}}
+.meet-real-empty{text-align:center;padding:60px 20px;color:var(--ink-3);max-width:480px;margin:0 auto}
+.meet-real-empty-icon{font-size:36px;margin-bottom:14px;opacity:.7}
+.meet-real-empty-h{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--ink);margin-bottom:8px}
+.meet-real-empty-sub{font-size:14px;line-height:1.55}
+.meet-verified-badge{position:absolute;top:18px;right:18px;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:rgba(42,107,58,.08);border:1px solid rgba(42,107,58,.22);padding:3px 9px;display:flex;align-items:center;gap:4px}
+.meet.is-real::before{content:none !important}
+/* Contact modal — кнопки мессенджеров */
+.meet-contacts-intro{margin-bottom:16px;color:var(--ink-3);font-size:14px;line-height:1.55}
+.meet-contacts-list{display:flex;flex-direction:column;gap:10px}
+.meet-contact-btn{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--paper);border:1.5px solid var(--border);text-decoration:none;color:var(--ink);transition:all .18s var(--ease);cursor:pointer;font:inherit;text-align:left;width:100%}
+.meet-contact-btn:hover{border-color:var(--red);background:rgba(193,43,38,.04);transform:translateY(-1px)}
+.meet-contact-btn-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#fff;font-weight:700}
+.meet-contact-btn-tg{background:#2AABEE}
+.meet-contact-btn-max{background:linear-gradient(135deg,#0098FF,#FF6B00)}
+.meet-contact-btn-ig{background:linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045)}
+.meet-contact-btn-vk{background:#0077FF}
+.meet-contact-btn-label{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--ink);line-height:1.2}
+.meet-contact-btn-sub{font-size:12px;color:var(--ink-3);margin-top:2px;word-break:break-all}
+.meet-contact-btn-arr{margin-left:auto;color:var(--ink-3);font-size:18px;flex-shrink:0}
 @media(max-width:760px){.meet-examples-toggle{padding:14px 20px}.meet-examples-body{padding:16px 20px 20px}.meet-examples-grid{grid-template-columns:1fr}}
 .meet{background:var(--paper);border:1.5px solid var(--border);padding:26px;position:relative;transition:transform .28s var(--ease),box-shadow .28s var(--ease)}
 .meet:hover{transform:translateY(-3px);box-shadow:0 12px 40px -8px rgba(30,20,13,.13)}
@@ -528,6 +554,11 @@ a{color:inherit;text-decoration:none}
 .footer li{font-family:var(--body);font-size:14px;cursor:pointer;transition:color .15s}
 .footer li:hover{color:var(--ivory)}
 .footer-btm{margin-top:28px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-contact{margin-top:28px;padding-top:24px;border-top:1px solid rgba(246,239,225,.07);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.footer-contact-label{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,239,225,.4)}
+.footer-contact-link{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;background:rgba(246,239,225,.05);border:1px solid rgba(246,239,225,.12);border-radius:2px;color:var(--ivory);text-decoration:none;font-family:var(--body);font-size:14px;font-weight:500;transition:all .15s}
+.footer-contact-link:hover{background:rgba(246,239,225,.1);border-color:rgba(246,239,225,.25)}
+.footer-contact-ico{font-size:15px;color:#2AABEE}
 .footer-copy{font-family:var(--body);font-size:12px;color:rgba(246,239,225,.25)}
 .footer-coords{font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(246,239,225,.15)}
 
@@ -1289,49 +1320,64 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     <p class="home-sub" data-i18n="home_sub">Горница - городская платформа Владивостока</p>
     <p class="home-pitch" data-i18n="home_pitch">Открываешь - и понимаешь, чем заняться сегодня. Маршруты с тайм-кодом, выгодные морепродукты, живые встречи с людьми по интересам. Не агрегатор, а гид от местных жителей.</p>
     <div class="moods">
-      <div class="mood" role="button" tabindex="0" onclick="showLockModal('routes')" onkeydown="if(event.key==='Enter'||event.key===' ')showLockModal('routes')"  aria-label="Гуляю — маршруты по Владивостоку" style="opacity:.85">
-        <div class="mood-num" data-i18n="mood1_num">01 · маршруты</div>
-        <div class="mood-title" data-i18n="mood1_title">Гуляю</div>
-        <div class="mood-desc" data-i18n="mood1_desc">16 тропинок с точным тайм-кодом и знанием, которое есть только у местных.</div>
+      <div class="mood" role="button" tabindex="0" onclick="go('places')" onkeydown="if(event.key==='Enter'||event.key===' ')go('places')" aria-label="Локации — куда пойти во Владивостоке">
+        <div class="mood-num">01 · локации</div>
+        <div class="mood-title">Локации</div>
+        <div class="mood-desc">30 проверенных мест Владивостока — от обзорных точек до закатных мысов.</div>
         <div class="mood-scenarios">
-          <div class="mood-scenario" data-i18n="mood1_s1">Городские прогулки и urban exploration</div>
-          <div class="mood-scenario" data-i18n="mood1_s2">Исторические маршруты и форты</div>
-          <div class="mood-scenario" data-i18n="mood1_s3">Мысы, острова и виды на море</div>
-          <div class="mood-scenario" data-i18n="mood1_s4">Закатные точки и hidden gems</div>
+          <div class="mood-scenario">Смотровые и виды на бухту</div>
+          <div class="mood-scenario">Море, мысы и острова</div>
+          <div class="mood-scenario">Исторический центр и форты</div>
+          <div class="mood-scenario">Закатные точки и hidden gems</div>
         </div>
         <div class="mood-foot">
-          <span class="mood-count" data-i18n="mood1_count">16 маршрутов · 2–6 часов</span>
+          <span class="mood-count">30 локаций · с inside-знанием</span>
+          <span class="mood-arrow">→</span>
+        </div>
+      </div>
+      <div class="mood" role="button" tabindex="0" onclick="go('meet')" onkeydown="if(event.key==='Enter'||event.key===' ')go('meet')" aria-label="Знакомлюсь — встречи">
+        <div class="mood-num">02 · встречи</div>
+        <div class="mood-title">Знакомлюсь</div>
+        <div class="mood-desc">Живые встречи без социальных сетей. Написал — пришёл.</div>
+        <div class="mood-scenarios">
+          <div class="mood-scenario">Яхта, SUP, закат — найди компанию</div>
+          <div class="mood-scenario">Аренда яхты вскладчину</div>
+          <div class="mood-scenario">Удалёнщики, новички в городе</div>
+          <div class="mood-scenario">Поговорить, обсудить, познакомиться</div>
+        </div>
+        <div class="mood-foot">
+          <span class="mood-count">12 встреч ближайших 10 дней</span>
+          <span class="mood-arrow">→</span>
+        </div>
+      </div>
+      <div class="mood" role="button" tabindex="0" onclick="showLockModal('routes')" onkeydown="if(event.key==='Enter'||event.key===' ')showLockModal('routes')"  aria-label="Гуляю — маршруты по Владивостоку" style="opacity:.85">
+        <div class="mood-num">03 · маршруты</div>
+        <div class="mood-title">Гуляю</div>
+        <div class="mood-desc">16 тропинок с точным тайм-кодом и знанием, которое есть только у местных.</div>
+        <div class="mood-scenarios">
+          <div class="mood-scenario">Городские прогулки и urban exploration</div>
+          <div class="mood-scenario">Исторические маршруты и форты</div>
+          <div class="mood-scenario">Мысы, острова и виды на море</div>
+          <div class="mood-scenario">Закатные точки и hidden gems</div>
+        </div>
+        <div class="mood-foot">
+          <span class="mood-count">16 маршрутов · 2–6 часов</span>
           <span style="font-size:16px;opacity:.5">🔒</span>
         </div>
       </div>
       <div class="mood" role="button" tabindex="0" onclick="showLockModal('seafood')" onkeydown="if(event.key==='Enter'||event.key===' ')showLockModal('seafood')" aria-label="Ем — рыбный ряд" style="opacity:.85">
-        <div class="mood-num" data-i18n="mood2_num">02 · рыбный ряд</div>
-        <div class="mood-title" data-i18n="mood2_title">Ем</div>
-        <div class="mood-desc" data-i18n="mood2_desc">Свежий улов напрямую с прилавка. Бронь до конца дня — пять минут.</div>
+        <div class="mood-num">04 · рыбный ряд</div>
+        <div class="mood-title">Ем</div>
+        <div class="mood-desc">Свежий улов напрямую с прилавка. Бронь до конца дня — пять минут.</div>
         <div class="mood-scenarios">
-          <div class="mood-scenario" data-i18n="mood2_s1">Гребешок живой, ещё пахнет йодом</div>
-          <div class="mood-scenario" data-i18n="mood2_s2">Краб, устрицы, морской ёж</div>
-          <div class="mood-scenario" data-i18n="mood2_s3">Сезонный улов — без переплаты</div>
-          <div class="mood-scenario" data-i18n="mood2_s4">Проверенные прилавки, цены местных</div>
+          <div class="mood-scenario">Гребешок живой, ещё пахнет йодом</div>
+          <div class="mood-scenario">Краб, устрицы, морской ёж</div>
+          <div class="mood-scenario">Сезонный улов — без переплаты</div>
+          <div class="mood-scenario">Проверенные прилавки, цены местных</div>
         </div>
         <div class="mood-foot">
-          <span class="mood-count" data-i18n="mood2_count">10 позиций сегодня</span>
+          <span class="mood-count">10 позиций сегодня</span>
           <span style="font-size:16px;opacity:.5">🔒</span>
-        </div>
-      </div>
-      <div class="mood" role="button" tabindex="0" onclick="go('meet')" onkeydown="if(event.key==='Enter'||event.key===' ')go('meet')" aria-label="Знакомлюсь — встречи">
-        <div class="mood-num" data-i18n="mood3_num">03 · встречи</div>
-        <div class="mood-title" data-i18n="mood3_title">Знакомлюсь</div>
-        <div class="mood-desc" data-i18n="mood3_desc">Живые встречи без социальных сетей. Написал — пришёл.</div>
-        <div class="mood-scenarios">
-          <div class="mood-scenario" data-i18n="mood3_s1">Яхта, SUP, закат — найди компанию</div>
-          <div class="mood-scenario" data-i18n="mood3_s2">Аренда яхты вскладчину</div>
-          <div class="mood-scenario" data-i18n="mood3_s3">Удалёнщики, новички в городе</div>
-          <div class="mood-scenario" data-i18n="mood3_s4">Поговорить, обсудить, познакомиться</div>
-        </div>
-        <div class="mood-foot">
-          <span class="mood-count" data-i18n="mood3_count">12 встреч ближайших 10 дней</span>
-          <span class="mood-arrow">→</span>
         </div>
       </div>
     </div>
@@ -1346,8 +1392,6 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <div class="today-item" onclick="showLockModal('seafood')"><div class="today-dot"></div><div class="today-txt" data-i18n="today2">Гребешок живой · 650 ₽/шт</div></div>
       <div class="today-div"></div>
       <div class="today-item" onclick="go('meet')"><div class="today-dot"></div><div class="today-txt" data-i18n="today3">Яхта на 10 · ищут ещё 6</div></div>
-      <div class="today-div"></div>
-      <div class="today-item" onclick="go('news')"><div class="today-dot"></div><div class="today-txt" data-i18n="today4">Фестиваль «Меридиан» · коса Токаревского</div></div>
     </div>
   </div>
 
@@ -1399,6 +1443,13 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
           <meta itemprop="addressCountry" content="RU">
         </ul>
       </div>
+    </div>
+    <div class="footer-contact">
+      <span class="footer-contact-label">Связаться</span>
+      <a class="footer-contact-link" href="https://t.me/M_VDK25" target="_blank" rel="noopener" aria-label="Написать в Telegram @M_VDK25">
+        <span class="footer-contact-ico" aria-hidden="true">✈</span>
+        <span>Telegram · @M_VDK25</span>
+      </a>
     </div>
     <div class="footer-btm">
       <div class="footer-copy" data-i18n="footer_copy">© ГорницаВДК · 2026 · Владивосток</div>
@@ -1563,7 +1614,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
         <div class="meet-demo-icon">⚠️</div>
         <div>
           <div class="meet-demo-title">Это учебные примеры, не настоящие встречи</div>
-          <div class="meet-demo-sub">Здесь показано, как выглядят карточки встреч. Кнопки «Написать» не работают — это демо. Когда появятся реальные встречи, они заменят эти примеры.</div>
+          <div class="meet-demo-sub">Здесь показано, как выглядят карточки встреч. Кнопки «Написать» не работают — это демо. Реальные встречи — в разделе ниже.</div>
         </div>
       </div>
       <!-- Фильтры -->
@@ -1580,6 +1631,44 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       </div>
       <!-- Карточки -->
       <div class="meets-grid" id="meets-grid"></div>
+    </div>
+  </div>
+
+  <!-- РЕАЛЬНЫЕ встречи — проверены модерацией -->
+  <div class="meet-examples-wrap" style="border-top:none">
+    <button class="meet-examples-toggle" onclick="toggleRealMeets(this)" aria-expanded="false">
+      <span>✅ Реальные встречи (проверены)</span>
+      <span class="meet-ex-arrow">▾</span>
+    </button>
+    <div id="real-meets-body" style="display:none">
+      <!-- Плашка-объяснение -->
+      <div class="meet-real-banner">
+        <div class="meet-real-icon">✅</div>
+        <div>
+          <div class="meet-real-title">Это реальные встречи — нажми «Написать», чтобы связаться</div>
+          <div class="meet-real-sub">Каждая встреча проверена администрацией. Контакты автора — настоящие. Нажми «Написать» и выбери удобный мессенджер.</div>
+        </div>
+      </div>
+      <!-- Фильтры -->
+      <div class="filters" style="border-top:none">
+        <div class="filters-in">
+          <button class="f-btn on" onclick="filterRealMeets('all',this)" data-i18n="f_all">Все</button>
+          <button class="f-btn" onclick="filterRealMeets('sunset',this)" data-i18n="f_sunset">Закат</button>
+          <button class="f-btn" onclick="filterRealMeets('sea',this)" data-i18n="f_sea">Море</button>
+          <button class="f-btn" onclick="filterRealMeets('sport',this)" data-i18n="f_sport">Спорт</button>
+          <button class="f-btn" onclick="filterRealMeets('talk',this)" data-i18n="f_talk">Поговорить</button>
+          <button class="f-btn" onclick="filterRealMeets('food',this)" data-i18n="f_food">Поесть</button>
+          <button class="f-btn" onclick="filterRealMeets('travel',this)" data-i18n="f_travel">Поездки</button>
+        </div>
+      </div>
+      <!-- Карточки -->
+      <div class="meets-grid" id="real-meets-grid"></div>
+      <!-- Если пусто -->
+      <div id="real-meets-empty" class="meet-real-empty" style="display:none">
+        <div class="meet-real-empty-icon">🌱</div>
+        <div class="meet-real-empty-h">Пока нет ни одной реальной встречи</div>
+        <div class="meet-real-empty-sub">Стань первым — предложи встречу через кнопку ниже. После проверки она появится здесь.</div>
+      </div>
     </div>
   </div>
   <div class="meet-create-wrap">
@@ -6786,6 +6875,8 @@ const MEETS=[
     "dow_zh": "周日",
     "tg": "olya_kids"
   }
+];
+const REAL_MEETS=[
 ];const NEWS_CARDS=[
   {
     "date": "",
@@ -7271,6 +7362,131 @@ function filterMeets(cat,btn){
   renderMeets(cat);
 }
 
+/* ═════════ REAL MEETS (проверены модерацией) ═════════ */
+function toggleRealMeets(btn){
+  const body=document.getElementById('real-meets-body');
+  if(!body)return;
+  const open=body.style.display==='none'||body.style.display==='';
+  body.style.display=open?'block':'none';
+  btn.setAttribute('aria-expanded',open?'true':'false');
+  if(open) renderRealMeets('all');
+}
+
+function renderRealMeets(cat){
+  const grid=document.getElementById('real-meets-grid');
+  const empty=document.getElementById('real-meets-empty');
+  if(!grid)return;
+  const src=(typeof REAL_MEETS!=='undefined'&&Array.isArray(REAL_MEETS))?REAL_MEETS:[];
+  const list=cat==='all'?src:src.filter(m=>m.cat===cat);
+  if(!list.length){
+    grid.innerHTML='';
+    grid.style.display='none';
+    if(empty) empty.style.display='block';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  grid.style.display='';
+  const mn=_t('months');
+  grid.innerHTML=list.map((m,idx)=>{
+    const total=m.total||1;
+    const seats=(typeof m.seats==='number')?m.seats:0;
+    const fill=Math.round((total-seats)/total*100);
+    const vibes=(currentLang==='zh'&&m.vibes_zh)?m.vibes_zh:(m.vibes||[]);
+    const dow=(currentLang==='zh'&&m.dow_zh)?m.dow_zh:(m.dow||'');
+    const author=m.author||{};
+    const firstName=(author.name||'').split(' ')[0]||'';
+    return`<div class="meet is-real" data-real-idx="${idx}">
+      <div class="meet-verified-badge">✓ Проверено</div>
+      <div class="meet-author">
+        <div class="meet-ava" style="background:${author.clr||'#1D3F6E'}">${author.ava||'?'}</div>
+        <div><div class="meet-aname">${author.name||''}</div><div class="meet-arole">${_d(author,'role')}</div></div>
+      </div>
+      <div class="meet-title">${_d(m,'title')}${m.sub?'<br><em>'+_d(m,'sub')+'</em>':''}</div>
+      <div class="meet-folk">${_d(m,'folk')}</div>
+      <div class="meet-vibes">${vibes.map(v=>`<span class="meet-vibe">${v}</span>`).join('')}</div>
+      <div class="meet-foot">
+        <div class="meet-when">${dow} ${m.day||''} ${mn[parseInt(m.day)-1]||m.mo||''} · <b>${m.tm||''}</b></div>
+        <div class="meet-seats"><div class="meet-snum">${seats} / ${total} ${_t('meet_seats_label')}</div><div class="meet-sbar"><div class="meet-sfill" style="width:${fill}%"></div></div></div>
+      </div>
+      <div class="meet-action"><button class="btn-primary" onclick="openMeetContacts(${idx})">${_t('meet_write_btn')} ${firstName} →</button></div>
+    </div>`;
+  }).join('');
+}
+
+function filterRealMeets(cat,btn){
+  const bar=btn?btn.closest('.filters-in'):null;
+  if(bar)bar.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  renderRealMeets(cat);
+}
+
+/* Нормализация контактов: возвращает массив {type, value, url, label, sub} */
+function _normalizeContacts(m){
+  const out=[];
+  if(!m) return out;
+  const C=m.contacts||{};
+  // Telegram: m.tg или m.contacts.tg / .telegram
+  const tg=(C.tg||C.telegram||m.tg||'').toString().trim().replace(/^@/,'');
+  if(tg){
+    out.push({type:'tg',label:'Telegram',sub:'@'+tg,url:'https://t.me/'+tg});
+  }
+  // Max (Mail.ru Max)
+  const mx=(C.max||m.max||'').toString().trim().replace(/^@/,'');
+  if(mx){
+    const url=mx.startsWith('http')?mx:('https://max.ru/'+mx);
+    out.push({type:'max',label:'Max',sub:'@'+mx.replace(/^https?:\/\/[^/]+\//,''),url:url});
+  }
+  // Instagram
+  const ig=(C.ig||C.instagram||m.ig||m.instagram||'').toString().trim().replace(/^@/,'');
+  if(ig){
+    const url=ig.startsWith('http')?ig:('https://instagram.com/'+ig);
+    out.push({type:'ig',label:'Instagram',sub:'@'+ig.replace(/^https?:\/\/[^/]+\//,''),url:url});
+  }
+  // VK
+  const vk=(C.vk||C.vkontakte||m.vk||'').toString().trim().replace(/^@/,'');
+  if(vk){
+    const url=vk.startsWith('http')?vk:('https://vk.com/'+vk);
+    out.push({type:'vk',label:'ВКонтакте',sub:vk.replace(/^https?:\/\/[^/]+\//,''),url:url});
+  }
+  return out;
+}
+
+function openMeetContacts(idx){
+  const src=(typeof REAL_MEETS!=='undefined'&&Array.isArray(REAL_MEETS))?REAL_MEETS:[];
+  const m=src[idx];
+  if(!m){toast('Встреча не найдена');return;}
+  const author=m.author||{};
+  const contacts=_normalizeContacts(m);
+  const title=(currentLang==='zh'&&m.title_zh)?m.title_zh:(m.title||'');
+  const headTxt=currentLang==='zh'?'选择联系方式':'Связаться с автором';
+  let body='';
+  body+=`<div class="meet-contacts-intro">`;
+  body+=`<b>${esc(author.name||'')}</b> · <span style="color:var(--ink-3)">${esc(_d(author,'role'))}</span><br>`;
+  body+=`<span style="color:var(--ink-3);font-size:13px">${currentLang==='zh'?'活动':'Встреча'}: ${esc(title)}</span>`;
+  body+=`</div>`;
+  if(!contacts.length){
+    body+=`<div style="text-align:center;padding:20px;color:var(--ink-3)">${currentLang==='zh'?'作者未留下联系方式':'Автор не оставил контактов'}</div>`;
+  } else {
+    body+=`<div class="meet-contacts-list">`;
+    contacts.forEach(c=>{
+      const ic=c.type==='tg'?'✈':c.type==='max'?'M':c.type==='ig'?'📷':'VK';
+      body+=`<a class="meet-contact-btn" href="${c.url}" target="_blank" rel="noopener noreferrer">
+        <div class="meet-contact-btn-icon meet-contact-btn-${c.type}">${ic}</div>
+        <div>
+          <div class="meet-contact-btn-label">${c.label}</div>
+          <div class="meet-contact-btn-sub">${c.sub}</div>
+        </div>
+        <div class="meet-contact-btn-arr">→</div>
+      </a>`;
+    });
+    body+=`</div>`;
+  }
+  openModal(headTxt,body);
+}
+
+/* Простой escaper для модалки контактов */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
 function openCreateModal(){
   openModal(_t('meet_modal_h'),`
     <p class="form-intro">${_t('meet_form_intro')}</p>
@@ -7554,6 +7770,7 @@ const _store=(function(){
     try{if(cms.places&&cms.places.length){PLACES.length=0;cms.places.forEach(p=>PLACES.push(p));}}catch(e){console.warn('[CMS] places:',e)}
     try{if(cms.seafood&&cms.seafood.length){SEAFOOD.length=0;cms.seafood.forEach(s=>SEAFOOD.push(s));}}catch(e){console.warn('[CMS] seafood:',e)}
     try{if(cms.meets&&cms.meets.length){MEETS.length=0;cms.meets.forEach(m=>MEETS.push(m));}}catch(e){console.warn('[CMS] meets:',e)}
+    try{if(cms.realmeets&&Array.isArray(cms.realmeets)){REAL_MEETS.length=0;cms.realmeets.forEach(m=>REAL_MEETS.push(m));}}catch(e){console.warn('[CMS] realmeets:',e)}
     try{if(cms.news&&cms.news.length){NEWS_CARDS.length=0;cms.news.forEach(n=>NEWS_CARDS.push(n));}}catch(e){console.warn('[CMS] news:',e)}
     try{if(cms.log&&cms.log.length){NEWS_LOG.length=0;cms.log.forEach(n=>NEWS_LOG.push(n));}}catch(e){console.warn('[CMS] log:',e)}
     try{
