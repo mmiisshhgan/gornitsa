@@ -6422,13 +6422,18 @@ function addRoute(){
 function renderPlaces(){
   const el=document.getElementById('places-list');
   if(!DATA.places.length){el.innerHTML='<div class="empty"><div class="empty-icon">📍</div><div class="empty-text">Локаций пока нет</div></div>';return;}
+  const CAT_LABELS = {
+    view:'Смотровые', sea:'У моря', history:'История', park:'Зелень',
+    food:'Шашлыки', date:'Свидание', solo:'Одному', kids:'С детьми',
+    city:'Город', nature:'Природа'
+  };
   el.innerHTML=DATA.places.map((p,i)=>`
     <div class="card-item" id="pi-${i}">
       <div class="card-header" onclick="toggleCard('pi-${i}')">
         <span style="font-size:20px;flex-shrink:0">${p.icon||'📍'}</span>
         <div class="card-title-wrap">
           <div class="card-title">${esc(p.nm||'Без названия')}</div>
-          <div class="card-subtitle">${esc(p.nm_zh||'')} · ${esc(p.cat||'')}</div>
+          <div class="card-subtitle">${esc(p.nm_zh||'')} · ${esc(CAT_LABELS[p.cat]||p.cat||'')}</div>
         </div>
         <div class="card-actions">
           <div class="card-toggle" id="pi-${i}-tog">▾</div>
@@ -6466,7 +6471,16 @@ function placeForm(p,i){
     <input class="form-input" value="${esc(p.id)}" onchange="DATA.places[${i}].id=this.value"></div>
   <div class="form-row"><label class="form-label">Категория</label>
     <select class="form-select" onchange="DATA.places[${i}].cat=this.value">
-      ${['view','sea','city','history','nature','park'].map(c=>`<option value="${c}"${p.cat===c?' selected':''}>${c}</option>`).join('')}
+      ${[
+        ['view','Смотровые'],
+        ['sea','У моря'],
+        ['history','История'],
+        ['park','Зелень'],
+        ['food','Шашлыки'],
+        ['date','Свидание'],
+        ['solo','Одному'],
+        ['kids','С детьми']
+      ].map(([c,label])=>`<option value="${c}"${p.cat===c?' selected':''}>${label}</option>`).join('')}
     </select></div>
   <div class="form-row"><label class="form-label">Иконка (emoji)</label>
     <input class="form-input" value="${esc(p.icon)}" onchange="DATA.places[${i}].icon=this.value" placeholder="🏮"></div>

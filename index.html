@@ -1442,7 +1442,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
 <!-- ROUTE DETAIL -->
 <section class="screen" id="sc-route-detail">
   <div class="rd-wrap">
-    <button class="rd-back" id="rd-back-btn" onclick="go('routes')" data-i18n="rd_back">← Все маршруты</button>
+    <button class="rd-back" id="rd-back-btn" onclick="goBackFromRoute()" data-i18n="rd_back">← На главную</button>
   </div>
   <div class="rd-body" id="rd-body"></div>
 </section>
@@ -1469,7 +1469,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <button class="f-btn" onclick="filterPlaces('history',this)" data-i18n="f_history">История</button>
       <button class="f-btn" onclick="filterPlaces('park',this)" data-i18n="f_park">Зелень</button>
       <button class="f-btn" onclick="filterPlaces('food',this)" data-i18n="f_food_places">Шашлыки и кофе</button>
-      <button class="f-btn" onclick="filterPlaces('date',this)" data-i18n="f_date">На двоих</button>
+      <button class="f-btn" onclick="filterPlaces('date',this)" data-i18n="f_date">Свидание</button>
       <button class="f-btn" onclick="filterPlaces('solo',this)" data-i18n="f_solo">Одному</button>
       <button class="f-btn" onclick="filterPlaces('kids',this)" data-i18n="f_kids">С детьми</button>
     </div>
@@ -1537,12 +1537,16 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <div class="meet-examples-grid">
         <div class="meet-ex-card"><div class="meet-ex-ico">💰</div><div class="meet-ex-ttl">Экономия вскладчину</div><div class="meet-ex-dsc">Яхта на 10 — по 1 400 ₽ вместо 14 000. Паром на Попова пополам. Такси в Сафари-парк на четверых. Одно и то же — в разы дешевле.</div></div>
         <div class="meet-ex-card"><div class="meet-ex-ico">🧑‍💼</div><div class="meet-ex-ttl">Нетворкинг без нетворкинга</div><div class="meet-ex-dsc">Коворкинг в кофейне каждую среду. Просто сидишь, работаешь — и оказывается, что рядом дизайнер или инвестор. Без визиток и светских бесед.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">🏃</div><div class="meet-ex-ttl">Спорт без зала</div><div class="meet-ex-dsc">Утренние пробежки на Спортивной набережной, баскетбол на Эгершельде, бадминтон в парке. Регулярная компания держит мотивацию лучше любой подписки.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">📸</div><div class="meet-ex-ttl">Увидеть город чужими глазами</div><div class="meet-ex-dsc">Фотограф показывает точку на сопке, которую ты не нашёл бы сам. Архитектор объясняет, почему вот это здание важнее, чем кажется.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">👨‍👩‍👧</div><div class="meet-ex-ttl">Семьи с детьми</div><div class="meet-ex-dsc">Совместные выезды в Сафари-парк, аквапарк, на пляж. Дети находят друзей, родители — собеседников. Логистика делится на всех.</div></div>
         <div class="meet-ex-card"><div class="meet-ex-ico">🌅</div><div class="meet-ex-ttl">Побыть среди людей, не разговаривая</div><div class="meet-ex-dsc">Закат на Токаревской — интроверт-friendly. Молчишь, смотришь. Рядом есть люди — и этого уже достаточно.</div></div>
         <div class="meet-ex-card"><div class="meet-ex-ico">🏄</div><div class="meet-ex-ttl">Попробовать новое бесплатно</div><div class="meet-ex-dsc">SUP с инструктором — бесплатное вводное занятие. Доски есть. Никаких обязательств. Понравится — запишешься на курс.</div></div>
-        <div class="meet-ex-card"><div class="meet-ex-ico">🐯</div><div class="meet-ex-ttl">Поехать куда хотел, но не ехал один</div><div class="meet-ex-dsc">Сафари-парк, остров Попова, рассвет на Орлином — всё это проще и веселее с кем-то. Горница помогает найти попутчика за час.</div></div>
-        <div class="meet-ex-card"><div class="meet-ex-ico">🇬🇧</div><div class="meet-ex-ttl">Практика без курсов</div><div class="meet-ex-dsc">English club раз в неделю — живой разговор с носителями. Никакой грамматики в тетради, только общение.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">🐯</div><div class="meet-ex-ttl">Поехать туда, куда не ехал один</div><div class="meet-ex-dsc">Сафари-парк, остров Попова, рассвет на Орлином — всё это проще и веселее с кем-то. Горница помогает найти попутчика за час.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">🇬🇧</div><div class="meet-ex-ttl">Языковая практика</div><div class="meet-ex-dsc">English club раз в неделю — живой разговор с носителями. Никакой грамматики в тетради, только общение.</div></div>
         <div class="meet-ex-card"><div class="meet-ex-ico">🦪</div><div class="meet-ex-ttl">Местная еда по местным ценам</div><div class="meet-ex-dsc">Гребешки прямо с лодки — по цене оптовика, не ресторана. Мангал у воды. Незнакомцы у костра к концу вечера уже не незнакомцы.</div></div>
-        <div class="meet-ex-card"><div class="meet-ex-ico">📸</div><div class="meet-ex-ttl">Увидеть город чужими глазами</div><div class="meet-ex-dsc">Фотограф показывает точку на сопке, которую ты не нашёл бы сам. Архитектор объясняет, почему вот это здание важнее, чем кажется.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">🐕</div><div class="meet-ex-ttl">Прогулки с собаками</div><div class="meet-ex-dsc">Регулярные встречи владельцев — собаки общаются, люди тоже. Безопасные локации, время согласовано, никто не один с псом в парке.</div></div>
+        <div class="meet-ex-card"><div class="meet-ex-ico">🎨</div><div class="meet-ex-ttl">Творчество и хобби</div><div class="meet-ex-dsc">Скетч-сессии у моря, книжный клуб, гитары на пляже, настольные игры по средам. Найди тех, кто увлечён тем же.</div></div>
       </div>
     </div>
   </div>
@@ -1661,7 +1665,7 @@ let currentLang = 'ru';
 const LANG = {
   ru: {
     CAT:{city:'По городу',sea:'К морю',history:'История',nature:'Природа'},
-    PCAT:{view:'Смотровая',sea:'У моря',history:'История',park:'Зелень',city:'Город',nature:'Природа'},
+    PCAT:{view:'Смотровая',sea:'У моря',history:'История',park:'Зелень',food:'Шашлыки',date:'Свидание',solo:'Одному',kids:'С детьми',city:'Город',nature:'Природа'},
     months:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
     days:['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
     vlad_short:'Владивосток',
@@ -1691,12 +1695,12 @@ const LANG = {
     meet_cat_sunset:'Закат', meet_cat_sea:'Море', meet_cat_food:'Еда',
     meet_cat_travel:'Поездки', meet_cat_talk:'Разговор', meet_cat_sport:'Спорт',
     f_all:'Все', f_view:'Смотровые', f_sea_places:'У моря', f_history:'История',
-    f_park:'Зелень', f_food_places:'Шашлыки и кофе', f_date:'На двоих',
+    f_park:'Зелень', f_food_places:'Шашлыки и кофе', f_date:'Свидание',
     f_solo:'Одному', f_kids:'С детьми',
   },
   zh: {
     CAT:{city:'城市漫步',sea:'海边之旅',history:'历史探访',nature:'自然风光'},
-    PCAT:{view:'观景台',sea:'海滨',history:'历史',park:'绿地',city:'城市',nature:'自然'},
+    PCAT:{view:'观景台',sea:'海滨',history:'历史',park:'绿地',food:'烧烤',date:'约会',solo:'独自',kids:'带孩子',city:'城市',nature:'自然'},
     months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
     days:['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
     vlad_short:'海参崴',
@@ -1726,7 +1730,7 @@ const LANG = {
     meet_cat_sunset:'日落', meet_cat_sea:'海洋', meet_cat_food:'美食',
     meet_cat_travel:'出行', meet_cat_talk:'交流', meet_cat_sport:'运动',
     f_all:'全部', f_view:'观景台', f_sea_places:'海边', f_history:'历史',
-    f_park:'绿地', f_food_places:'烤肉与咖啡', f_date:'双人',
+    f_park:'绿地', f_food_places:'烤肉与咖啡', f_date:'约会',
     f_solo:'独行', f_kids:'亲子',
   }
 };
@@ -6998,6 +7002,15 @@ function filterRoutes(cat,btn){
   renderRoutes(cat);
 }
 
+/* Возврат с детального экрана маршрута: на главную, а не в заблокированный список */
+function goBackFromRoute(){
+  if(typeof route === 'function'){
+    route(null, 'home');
+  } else if(typeof go === 'function'){
+    go('home');
+  }
+}
+
 function openRoute(id){
   const r=ROUTES.find(x=>x.id===id);if(!r)return;
   if(typeof ym!=='undefined')ym(109310273,'hit',location.href,{title:'Маршрут: '+r.title,referer:document.referrer});
@@ -7312,7 +7325,59 @@ function newsAction(n){
   return n.cross.id ? "openRoute('" + n.cross.id + "')" : "go('" + n.cross.sc + "')";
 }
 function renderNews(){
-  document.getElementById('news-grid').innerHTML=NEWS_CARDS.map(function(n){
+  // ── Сортировка: ближайшие события сверху ──
+  // Парсим дату формата "24 апреля", "1 июля", "27.04" в число дней
+  // от условной точки отсчёта. Чем меньше — тем ближе/раньше.
+  var MONTHS_RU = {
+    'январ':0,'феврал':1,'март':2,'апрел':3,'мая':4,'июн':5,'июл':6,
+    'август':7,'сентябр':8,'октябр':9,'ноябр':10,'декабр':11
+  };
+  function parseNewsDate(s){
+    if(!s) return 99999; // без даты — в конец
+    s = s.toLowerCase().trim();
+    // Формат "27.04" или "27.04.2026"
+    var dotMatch = s.match(/^(\d{1,2})\.(\d{1,2})(?:\.(\d{2,4}))?$/);
+    if(dotMatch){
+      var d = parseInt(dotMatch[1],10);
+      var m = parseInt(dotMatch[2],10) - 1;
+      var y = dotMatch[3] ? parseInt(dotMatch[3],10) : (new Date()).getFullYear();
+      if(y < 100) y += 2000;
+      return new Date(y, m, d).getTime();
+    }
+    // Формат "24 апреля", "1 июля"
+    var wordMatch = s.match(/(\d{1,2})\s*([а-я]+)/);
+    if(wordMatch){
+      var d2 = parseInt(wordMatch[1],10);
+      var monthWord = wordMatch[2];
+      var mIdx = -1;
+      for(var key in MONTHS_RU){
+        if(monthWord.indexOf(key)===0){ mIdx = MONTHS_RU[key]; break; }
+      }
+      if(mIdx >= 0){
+        var now = new Date();
+        var year = now.getFullYear();
+        // Если месяц уже прошёл — это следующий год (для предстоящих событий)
+        // но для прошедших с этого года всё равно показываем по году
+        return new Date(year, mIdx, d2).getTime();
+      }
+    }
+    return 99999;
+  }
+  // Сортируем копию массива (исходный не трогаем — порядок в админке остаётся свой)
+  var now = Date.now();
+  var sortedNews = NEWS_CARDS.slice().sort(function(a,b){
+    var ta = parseNewsDate(a.date);
+    var tb = parseNewsDate(b.date);
+    // Группа 1: предстоящие (дата >= сегодня) — сортировка по возрастанию
+    // Группа 2: прошедшие — после предстоящих, в обратном порядке (свежие выше)
+    var aFuture = ta >= now - 86400000;  // считаем сегодня «предстоящим» в течение суток
+    var bFuture = tb >= now - 86400000;
+    if(aFuture && !bFuture) return -1;
+    if(!aFuture && bFuture) return 1;
+    if(aFuture && bFuture) return ta - tb;  // оба предстоящие → ближайшее выше
+    return tb - ta;                          // оба прошедшие → свежее выше
+  });
+  document.getElementById('news-grid').innerHTML=sortedNews.map(function(n){
     var action = newsAction(n);
     var cardClick = action ? ' onclick="' + action + '"' : '';
     var crossLabel = n.cross ? (currentLang==='zh'&&n.cross.label_zh?n.cross.label_zh:n.cross.label) : '';
@@ -7339,8 +7404,10 @@ function renderNews(){
 function renderHomePreviews(){
   const tCAT=_t('CAT');
   const tPCAT=_t('PCAT');
-  // Hot routes — 3 cards
-  document.getElementById('home-routes').innerHTML=ROUTES.slice(0,3).map(r=>`
+  // Hot routes — только маршруты, явно отмеченные как "hot" (Т-01 и Т-02)
+  const HOT_ROUTE_IDS = ['Т-01', 'Т-02'];
+  const hotRoutes = HOT_ROUTE_IDS.map(id => ROUTES.find(r => r.id === id)).filter(Boolean);
+  document.getElementById('home-routes').innerHTML=hotRoutes.map(r=>`
     <div class="route-card" onclick="openRoute('${r.id}')">
       <div class="route-id">${r.id}</div>
       <div class="route-cat">${(tCAT&&tCAT[r.cat])||r.cat} · ${r.time}</div>
@@ -7351,7 +7418,7 @@ function renderHomePreviews(){
   // Places preview — 3 cards
   document.getElementById('home-places').innerHTML=PLACES.slice(0,3).map(p=>`
     <div class="place-card" onclick="openPlace('${p.id}')">
-      <div class="place-emoji">${p.icon}</div>
+      ${(p.photos&&p.photos[0])?`<div class="card-photo"><img src="${clImg(p.photos[0],800)}" alt="${p.nm}" loading="lazy" decoding="async" width="800" height="400"></div>`:`<div class="place-emoji">${p.icon}</div>`}
       <div class="place-body">
         <div class="place-cat-badge">${(tPCAT&&tPCAT[p.cat])||p.cat}</div>
         <div class="place-name">${_d(p,'nm')}</div>
