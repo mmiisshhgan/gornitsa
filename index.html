@@ -371,6 +371,25 @@ a{color:inherit;text-decoration:none}
 .pd-atmo-card-h{font-family:var(--body);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:8px}
 .pd-atmo-card-t{font-family:var(--body);font-style:italic;font-size:13px;color:var(--ink-2);line-height:1.6}
 
+/* ═══ RATING BLOCK ═══ */
+.pd-rating{margin:40px 0 8px;padding:28px 32px;background:var(--paper);border:1.5px solid var(--border)}
+.pd-rating-h{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--ink);margin-bottom:6px}
+.pd-rating-sub{font-size:13px;color:var(--ink-3);margin-bottom:20px;line-height:1.5}
+.pd-stars{display:flex;gap:6px;margin-bottom:18px}
+.pd-star{font-size:32px;cursor:pointer;color:#ccc;transition:color .12s,transform .12s;line-height:1;user-select:none}
+.pd-star.on,.pd-star.hover{color:#F5A623}
+.pd-star:hover{transform:scale(1.18)}
+.pd-rating-textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);background:var(--ivory);font-size:14px;font-family:var(--body);line-height:1.55;outline:none;resize:vertical;min-height:88px;box-sizing:border-box;transition:border-color .15s;border-radius:2px}
+.pd-rating-textarea:focus{border-color:var(--ink)}
+.pd-rating-send{margin-top:12px;padding:12px 28px;background:var(--red);color:var(--ivory);border:none;font-family:var(--serif);font-weight:700;font-size:15px;cursor:pointer;transition:opacity .15s;letter-spacing:.02em}
+.pd-rating-send:hover{opacity:.86}
+.pd-rating-send:disabled{opacity:.45;cursor:not-allowed}
+.pd-rating-done{display:flex;align-items:center;gap:14px;padding:18px 0 4px;color:var(--ink)}
+.pd-rating-done-icon{font-size:28px}
+.pd-rating-done-h{font-family:var(--serif);font-weight:700;font-size:16px;margin-bottom:3px}
+.pd-rating-done-sub{font-size:13px;color:var(--ink-3)}
+@media(max-width:760px){.pd-rating{padding:20px 18px}.pd-star{font-size:28px}}
+
 /* ═══ SEAFOOD ═══ */
 .sf-grid{max-width:1200px;margin:0 auto;padding:44px 40px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .sf-card{background:var(--paper);border:1.5px solid var(--border);padding:26px;display:flex;flex-direction:column;gap:14px;transition:transform .28s var(--ease),box-shadow .28s var(--ease)}
@@ -821,18 +840,55 @@ a{color:inherit;text-decoration:none}
 /* Seafood */
 .card-photo--sf{height:150px}
 
-/* Detail view — полное фото без обрезки, любой формат */
-.detail-photos{margin-bottom:24px}
+/* Detail view — фото коллажом */
+.detail-photos{margin-bottom:24px;display:grid;gap:4px;overflow:hidden}
+.detail-photos.ph-1{grid-template-columns:1fr}
+.detail-photos.ph-1 .detail-photo{height:420px}
+.detail-photos.ph-2{grid-template-columns:1fr 1fr}
+.detail-photos.ph-2 .detail-photo{height:360px}
+.detail-photos.ph-3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
+.detail-photos.ph-3 .detail-photo:first-child{grid-row:1/3;height:400px}
+.detail-photos.ph-3 .detail-photo:not(:first-child){height:198px}
+.detail-photos.ph-4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.detail-photos.ph-4 .detail-photo{height:240px}
 .detail-photo{
-  width:100%;background:#111;
-  margin-bottom:6px;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  min-height:160px;
+  overflow:hidden;background:#111;position:relative;cursor:pointer;
 }
 .detail-photo img{
-  max-width:100%;max-height:65vh;
-  width:auto;height:auto;
-  display:block;object-fit:contain;
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform .35s ease;
+}
+.detail-photo:hover img{transform:scale(1.03)}
+.detail-photo-more{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(30,20,13,.55);
+  font-family:var(--serif);font-weight:700;font-size:22px;color:var(--ivory);
+  letter-spacing:.02em;pointer-events:none;
+}
+.photo-lb{position:fixed;inset:0;z-index:9000;background:rgba(10,8,6,.92);
+  display:flex;align-items:center;justify-content:center;opacity:0;
+  transition:opacity .2s;pointer-events:none}
+.photo-lb.on{opacity:1;pointer-events:all}
+.photo-lb-img{max-width:92vw;max-height:88vh;object-fit:contain;display:block;
+  box-shadow:0 20px 80px rgba(0,0,0,.7)}
+.photo-lb-close{position:fixed;top:18px;right:22px;color:var(--ivory);
+  font-size:28px;cursor:pointer;opacity:.75;transition:opacity .15s;z-index:9001}
+.photo-lb-close:hover{opacity:1}
+.photo-lb-prev,.photo-lb-next{position:fixed;top:50%;transform:translateY(-50%);
+  color:var(--ivory);font-size:36px;cursor:pointer;opacity:.65;transition:opacity .15s;
+  z-index:9001;padding:16px;user-select:none}
+.photo-lb-prev{left:8px}.photo-lb-next{right:8px}
+.photo-lb-prev:hover,.photo-lb-next:hover{opacity:1}
+.photo-lb-counter{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  color:rgba(246,239,225,.6);font-size:13px;z-index:9001}
+@media(max-width:760px){
+  .detail-photos.ph-1 .detail-photo{height:240px}
+  .detail-photos.ph-2 .detail-photo{height:180px}
+  .detail-photos.ph-3{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+  .detail-photos.ph-3 .detail-photo:first-child{grid-row:auto;height:180px}
+  .detail-photos.ph-3 .detail-photo:not(:first-child){height:140px}
+  .detail-photos.ph-4 .detail-photo{height:140px}
 }
 
 /* Step photos — одно фото на всю ширину */
@@ -1675,7 +1731,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     <div class="meet-create">
       <div>
         <div class="meet-create-h" data-i18n="meet_create_h">Создай встречу — <em>и найдутся люди</em></div>
-        <div class="meet-create-sub" data-i18n="meet_create_sub">Запиши встречу в Горницу. После проверки — появится у всех. Оставь Telegram — люди напишут напрямую.</div>
+        <div class="meet-create-sub" data-i18n="meet_create_sub">Запиши встречу в Горницу. После проверки — появится у всех. Оставь соц. сети — люди напишут напрямую.</div>
         <div class="meet-create-examples">
           <span class="meet-ex" data-i18n="meet_ex1">«Яхта на 8 — скидываемся»</span>
           <span class="meet-ex" data-i18n="meet_ex2">«SUP для новичков»</span>
@@ -7205,6 +7261,137 @@ function filterPlaces(cat,btn){
   renderPlaces(cat);
 }
 
+/* ═════════ PHOTO COLLAGE + LIGHTBOX ═════════ */
+let _lbPhotos=[], _lbIdx=0;
+
+function buildPhotoCollage(photos, alt){
+  if(!photos||!photos.length) return '';
+  const n=photos.length;
+  // Показываем максимум 4 ячейки в коллаже, остальные открываются через лайтбокс
+  const show=Math.min(n,4);
+  const cls='ph-'+show;
+  let cells='';
+  for(let i=0;i<show;i++){
+    const url=clImg(photos[i],1200);
+    const isLast=(i===show-1)&&(n>show);
+    cells+=`<div class="detail-photo" onclick="openLightbox(${i})" title="Открыть фото">
+      <img src="${url}" alt="${alt||''}" loading="${i===0?'eager':'lazy'}" decoding="async">
+      ${isLast?`<div class="detail-photo-more">+${n-show+1}</div>`:''}
+    </div>`;
+  }
+  // Сохраняем список всех фото для лайтбокса
+  return `<div class="detail-photos ${cls}" id="detail-collage" data-photos='${JSON.stringify(photos).replace(/'/g,"&#39;")}'>${cells}</div>`;
+}
+
+function openLightbox(startIdx){
+  const el=document.getElementById('detail-collage');
+  if(!el) return;
+  try{ _lbPhotos=JSON.parse(el.dataset.photos.replace(/&#39;/g,"'")); }catch(e){ return; }
+  _lbIdx=startIdx||0;
+  // Создаём/обновляем лайтбокс-оверлей
+  let lb=document.getElementById('photo-lb');
+  if(!lb){
+    lb=document.createElement('div');
+    lb.id='photo-lb';
+    lb.className='photo-lb';
+    lb.innerHTML=`
+      <span class="photo-lb-close" onclick="closeLightbox()">✕</span>
+      <span class="photo-lb-prev" onclick="lbMove(-1)">‹</span>
+      <img class="photo-lb-img" id="lb-img" src="" alt="">
+      <span class="photo-lb-next" onclick="lbMove(1)">›</span>
+      <div class="photo-lb-counter" id="lb-counter"></div>`;
+    lb.addEventListener('click',function(e){ if(e.target===lb)closeLightbox(); });
+    document.body.appendChild(lb);
+  }
+  lbShow();
+  lb.classList.add('on');
+  document.addEventListener('keydown',lbKey);
+}
+
+function lbShow(){
+  const img=document.getElementById('lb-img');
+  const counter=document.getElementById('lb-counter');
+  if(img) img.src=clImg(_lbPhotos[_lbIdx],1600);
+  if(counter) counter.textContent=(_lbIdx+1)+' / '+_lbPhotos.length;
+}
+function lbMove(dir){
+  _lbIdx=(_lbIdx+dir+_lbPhotos.length)%_lbPhotos.length;
+  lbShow();
+}
+function closeLightbox(){
+  const lb=document.getElementById('photo-lb');
+  if(lb) lb.classList.remove('on');
+  document.removeEventListener('keydown',lbKey);
+}
+function lbKey(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') lbMove(1);
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp') lbMove(-1);
+  else if(e.key==='Escape') closeLightbox();
+}
+
+/* PLACE RATING */
+const TG_BOT_URL='https://api.telegram.org/bot8727528942:AAGEzG3JTtzNzJsLhxsTAsoqnyWAIeBWB5w/sendMessage';
+const TG_CHAT_ID='6188497717';
+function _ratingKey(id){return 'gr_rated_'+id;}
+function _hasRated(id){try{return !!localStorage.getItem(_ratingKey(id));}catch(e){return false;}}
+function _markRated(id,s){try{localStorage.setItem(_ratingKey(id),String(s));}catch(e){}}
+
+function buildRatingBlock(placeId,placeNm){
+  if(_hasRated(placeId)){
+    const s=localStorage.getItem(_ratingKey(placeId))||'';
+    return '<div class="pd-rating-done"><div class="pd-rating-done-icon">\u2705</div><div><div class="pd-rating-done-h">\u0421\u043f\u0430\u0441\u0438\u0431\u043e \u0437\u0430 \u043e\u0442\u0437\u044b\u0432! '+'\u2b50'.repeat(Number(s)||1)+'</div><div class="pd-rating-done-sub">\u0422\u0432\u043e\u044f \u043e\u0446\u0435\u043d\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430 \u2014 \u043c\u044b \u0441\u0442\u0430\u0440\u0430\u0435\u043c\u0441\u044f \u0434\u0435\u043b\u0430\u0442\u044c \u043b\u0443\u0447\u0448\u0435.</div></div></div>';
+  }
+  return '<div class="pd-rating-h">\u041a\u0430\u043a \u0442\u0435\u0431\u0435 \u044d\u0442\u043e \u043c\u0435\u0441\u0442\u043e?</div>'
+    +'<div class="pd-rating-sub">\u041f\u043e\u0441\u0442\u0430\u0432\u044c \u043e\u0446\u0435\u043d\u043a\u0443 \u0438 \u043f\u0440\u0438 \u0436\u0435\u043b\u0430\u043d\u0438\u0438 \u043e\u0441\u0442\u0430\u0432\u044c \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439. \u041c\u044b \u043f\u043e\u043b\u0443\u0447\u0438\u043c \u0435\u0433\u043e \u0432 Telegram \u0438 \u0443\u0447\u0442\u0451\u043c.</div>'
+    +'<div class="pd-stars" id="stars-'+placeId+'">'
+    +[1,2,3,4,5].map(function(n){return '<span class="pd-star" data-n="'+n+'" onmouseenter="hoverStars(\''+placeId+'\','+n+')" onmouseleave="resetStars(\''+placeId+'\')" onclick="pickStar(\''+placeId+'\','+n+',\''+placeNm.replace(/'/g,"\\'")+'\')">\u2605</span>';}).join('')
+    +'</div>'
+    +'<textarea class="pd-rating-textarea" id="review-'+placeId+'" placeholder="\u0427\u0442\u043e \u043f\u043e\u043d\u0440\u0430\u0432\u0438\u043b\u043e\u0441\u044c? \u0427\u0442\u043e \u0441\u0442\u043e\u0438\u0442 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c? (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)" maxlength="600"></textarea>'
+    +'<button class="pd-rating-send" id="rating-btn-'+placeId+'" onclick="submitRating(\''+placeId+'\',\''+placeNm.replace(/'/g,"\\'")+'\')">\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043e\u0446\u0435\u043d\u043a\u0443</button>';
+}
+
+var _pickedStars={};
+function hoverStars(id,n){
+  document.querySelectorAll('#stars-'+id+' .pd-star').forEach(function(s){
+    s.classList.toggle('hover',Number(s.dataset.n)<=n);s.classList.remove('on');
+  });
+}
+function resetStars(id){
+  var picked=_pickedStars[id]||0;
+  document.querySelectorAll('#stars-'+id+' .pd-star').forEach(function(s){
+    s.classList.remove('hover');s.classList.toggle('on',Number(s.dataset.n)<=picked);
+  });
+}
+function pickStar(id,n){
+  _pickedStars[id]=n;resetStars(id);
+  var ta=document.getElementById('review-'+id);
+  if(ta){ta.placeholder=(n<=2?'\u0427\u0442\u043e \u043f\u043e\u0448\u043b\u043e \u043d\u0435 \u0442\u0430\u043a? \u0420\u0430\u0441\u0441\u043a\u0430\u0436\u0438 \u2014 \u0438\u0441\u043f\u0440\u0430\u0432\u0438\u043c.':n===3?'\u0427\u0442\u043e \u043c\u043e\u0433\u043b\u043e \u0431\u044b\u0442\u044c \u043b\u0443\u0447\u0448\u0435?':'\u0427\u0442\u043e \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u043f\u043e\u043d\u0440\u0430\u0432\u0438\u043b\u043e\u0441\u044c?')+' (\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e)';}
+}
+
+function submitRating(placeId,placeNm){
+  var stars=_pickedStars[placeId]||0;
+  if(!stars){if(typeof toast==='function')toast('\u041f\u043e\u0441\u0442\u0430\u0432\u044c \u043e\u0446\u0435\u043d\u043a\u0443 \u2014 \u0432\u044b\u0431\u0435\u0440\u0438 \u043e\u0442 1 \u0434\u043e 5 \u0437\u0432\u0451\u0437\u0434 \u2b50');return;}
+  var ta=document.getElementById('review-'+placeId);
+  var comment=(ta&&ta.value.trim())||'';
+  var btn=document.getElementById('rating-btn-'+placeId);
+  if(btn){btn.disabled=true;btn.textContent='\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u2026';}
+  var starsStr='\u2b50'.repeat(stars)+'\u2606'.repeat(5-stars);
+  var now=new Date().toLocaleString('ru-RU',{timeZone:'Asia/Vladivostok',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var text='\u2b50 <b>\u041d\u043e\u0432\u044b\u0439 \u043e\u0442\u0437\u044b\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044e</b>\n\n\ud83d\udccd <b>'+placeNm+'</b>\n\u041e\u0446\u0435\u043d\u043a\u0430: '+starsStr+' ('+stars+'/5)\n'+(comment?'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439:\n'+comment:'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439: \u043d\u0435 \u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d')+'\n\n\ud83d\udd50 '+now+' (VL)';
+  fetch(TG_BOT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:text,parse_mode:'HTML'})})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(!data.ok)throw new Error(data.description||'TG error');
+    _markRated(placeId,stars);
+    var wrap=document.getElementById('pd-rating-'+placeId);
+    if(wrap)wrap.innerHTML='<div class="pd-rating-done"><div class="pd-rating-done-icon">\u2705</div><div><div class="pd-rating-done-h">\u0421\u043f\u0430\u0441\u0438\u0431\u043e! '+'\u2b50'.repeat(stars)+'</div><div class="pd-rating-done-sub">\u0422\u0432\u043e\u0439 \u043e\u0442\u0437\u044b\u0432 \u043f\u043e\u043b\u0443\u0447\u0435\u043d \u2014 \u0443\u0447\u0442\u0451\u043c \u043f\u0440\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u0438 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b.</div></div></div>';
+  })
+  .catch(function(){
+    if(btn){btn.disabled=false;btn.textContent='\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u043e\u0446\u0435\u043d\u043a\u0443';}
+    if(typeof toast==='function')toast('\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c. \u041f\u0440\u043e\u0432\u0435\u0440\u044c \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442 \u0438 \u043f\u043e\u043f\u0440\u043e\u0431\u0443\u0439 \u0435\u0449\u0451 \u0440\u0430\u0437.');
+  });
+}
+
 function openPlace(id){
   const p=PLACES.find(x=>x.id===id);if(!p)return;
   if(typeof ym!=='undefined')ym(109310273,'hit',location.href,{title:'Локация: '+p.nm,referer:document.referrer});
@@ -7224,9 +7411,9 @@ function openPlace(id){
   const nextP=PLACES[(curIdx+1)%PLACES.length];
   document.getElementById('pd-body').innerHTML=`
     <div>
-      ${(p.photos&&p.photos.length)?`<div class="detail-photos">${p.photos.map(url=>`<div class="detail-photo"><img src="${clImg(url,1200)}" alt="" loading="lazy" decoding="async" width="1200" height="600"></div>`).join('')}</div>`:''}
+      ${(p.photos&&p.photos.length)?buildPhotoCollage(p.photos,p.nm):''}
       <p class="pd-atmo">${_d(p,'atmo')}</p>
-      <div class="pd-text">${_d(p,'body')}</div>
+      ${_d(p,'body')?`<div class="pd-text">${_d(p,'body')}</div>`:''}
       <div class="pd-sec-h">${_t('pd_facts')}</div>
       <div class="pd-facts">${p.facts.map(f=>`<div class="pd-fact"><div class="pd-fact-icon">${f.icon}</div><div class="pd-fact-t">${_d(f,'t')}</div><div class="pd-fact-v">${_d(f,'v')}</div></div>`).join('')}</div>
       <div class="pd-when">
@@ -7234,6 +7421,9 @@ function openPlace(id){
         <div class="pd-when-grid">${p.when.map(w=>`<div class="pd-when-item"><div class="pd-when-icon">${w.icon}</div><div><div class="pd-when-t">${_d(w,'t')}</div><div class="pd-when-d">${_d(w,'d')}</div></div></div>`).join('')}</div>
       </div>
       ${nearbyHtml?`<div class="pd-nearby-h">${_t('pd_nearby')}</div>${nearbyHtml}`:''}
+      <div class="pd-rating" id="pd-rating-${p.id}">
+        ${buildRatingBlock(p.id, _d(p,'nm'))}
+      </div>
       <div class="pd-next" onclick="openPlace('${nextP.id}')">
         <div><div class="pd-next-label">${_t('pd_next')}</div><div class="pd-next-nm">${_d(nextP,'nm')} ${nextP.icon}</div></div>
         <div class="pd-next-arr">→</div>

@@ -6543,6 +6543,11 @@ function placeForm(p,i){
     <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo=this.value">${esc(p.atmo)}</textarea></div>
   <div class="form-row form-full"><label class="form-label">Атмосфера <span class="zh-badge">中文</span></label>
     <textarea class="form-textarea" style="min-height:90px" onchange="DATA.places[${i}].atmo_zh=this.value">${esc(p.atmo_zh)}</textarea></div>
+  <div class="form-row form-full"><label class="form-label">Основной текст / описание (RU) — HTML</label>
+    <textarea class="form-textarea" style="min-height:130px" onchange="DATA.places[${i}].body=this.value">${esc(p.body||'')}</textarea>
+    <div class="form-hint">Поддерживается HTML: &lt;b&gt;жирный&lt;/b&gt;, &lt;em&gt;курсив&lt;/em&gt;, &lt;p&gt;абзацы&lt;/p&gt;. Чтобы убрать текст — очисти поле.</div></div>
+  <div class="form-row form-full"><label class="form-label">Основной текст / описание <span class="zh-badge">中文</span> — HTML</label>
+    <textarea class="form-textarea" style="min-height:130px" onchange="DATA.places[${i}].body_zh=this.value">${esc(p.body_zh||'')}</textarea></div>
 </div>
 <div class="form-section-h">Факты</div>
 <div id="facts-list-${i}">
