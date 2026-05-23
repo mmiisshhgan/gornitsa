@@ -579,6 +579,15 @@ a{color:inherit;text-decoration:none}
 .footer-contact-link:hover{background:rgba(246,239,225,.1);border-color:rgba(246,239,225,.25)}
 .footer-contact-ico{font-size:15px;color:#2AABEE}
 .footer-copy{font-family:var(--body);font-size:12px;color:rgba(246,239,225,.25)}
+.footer-social{margin-top:0;padding-top:20px;border-top:1px solid rgba(246,239,225,.07);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.footer-social-label{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,239,225,.4);flex-shrink:0}
+.footer-social-btn{display:inline-flex;align-items:center;gap:10px;padding:11px 20px;border-radius:2px;color:var(--ivory);text-decoration:none;font-family:var(--body);font-size:14px;font-weight:600;transition:all .18s;border:1px solid transparent;flex-shrink:0}
+.footer-social-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px -4px rgba(0,0,0,.4)}
+.footer-social-tg{background:#2AABEE;border-color:#2AABEE}
+.footer-social-tg:hover{background:#1d97d8;border-color:#1d97d8}
+.footer-social-ig{background:linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045);border-color:transparent}
+.footer-social-ig:hover{opacity:.88}
+.footer-social-ico{font-size:17px;line-height:1;flex-shrink:0}
 .footer-coords{font-family:var(--body);font-size:11px;letter-spacing:.06em;color:rgba(246,239,225,.15)}
 
 /* ═══ LANG SWITCHER ═══ */
@@ -1505,6 +1514,35 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <a class="footer-contact-link" href="https://t.me/M_VDK25" target="_blank" rel="noopener" aria-label="Написать в Telegram @M_VDK25">
         <span class="footer-contact-ico" aria-hidden="true">✈</span>
         <span>Telegram · @M_VDK25</span>
+      </a>
+    </div>
+    <div class="footer-social">
+      <span class="footer-social-label">Мы в соцсетях</span>
+      <a class="footer-social-btn footer-social-tg"
+         href="https://t.me/gornicavdk"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Telegram-канал ГорницаВДК">
+        <span class="footer-social-ico" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.93 6.886l-1.687 7.947c-.126.566-.461.704-.934.438l-2.578-1.9-1.243 1.197c-.138.137-.253.253-.518.253l.184-2.619 4.762-4.302c.207-.184-.045-.286-.321-.102L7.64 14.43l-2.534-.793c-.551-.172-.561-.551.115-.815l9.626-3.711c.459-.166.861.112.683.776z" fill="white"/>
+          </svg>
+        </span>
+        <span>Telegram</span>
+      </a>
+      <a class="footer-social-btn footer-social-ig"
+         href="https://www.instagram.com/gornicavdk?igsh=MTVja3pmMmp6MWp4eA%3D%3D&utm_source=qr"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Instagram ГорницаВДК">
+        <span class="footer-social-ico" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+          </svg>
+        </span>
+        <span>Instagram</span>
       </a>
     </div>
     <div class="footer-btm">
@@ -7007,6 +7045,8 @@ const MEETS=[
   }
 ];
 const REAL_MEETS=[];
+const NEWS_CARDS=[];
+const NEWS_LOG=[];
 /* ═════════ STATE ═════════ */
 const cart={};
 
@@ -7746,7 +7786,7 @@ function renderNews(){
     if(aFuture && bFuture) return ta - tb;  // оба предстоящие → ближайшее выше
     return tb - ta;                          // оба прошедшие → свежее выше
   });
-  document.getElementById('news-grid').innerHTML=sortedNews.map(function(n){
+  const _gridEl=document.getElementById('news-grid');if(_gridEl)_gridEl.innerHTML=sortedNews.map(function(n){
     var action = newsAction(n);
     var cardClick = action ? ' onclick="' + action + '"' : '';
     var crossLabel = n.cross ? (currentLang==='zh'&&n.cross.label_zh?n.cross.label_zh:n.cross.label) : '';
@@ -7759,7 +7799,7 @@ function renderNews(){
       crossLink +
       '</div>';
   }).join('');
-  document.getElementById('news-log').innerHTML=NEWS_LOG.map(n=>`
+  const _logEl=document.getElementById('news-log');if(_logEl)_logEl.innerHTML=NEWS_LOG.map(n=>`
     <div class="log-item">
       <div class="log-time"><span>${n.tm}</span><span class="dy">${currentLang==='zh'&&n.dy_zh?n.dy_zh:n.dy}</span></div>
       <div><div class="log-tt">${currentLang==='zh'&&n.tt_zh?n.tt_zh:n.tt}</div><div class="log-desc">${currentLang==='zh'&&n.d_zh?n.d_zh:n.d}</div></div>
@@ -7915,16 +7955,20 @@ const _store=(function(){
 ═══════════════════════════════════════════════ */
 (function(){
   function getTotalUsers(){
-    // Должна быть синхронна с LOCK COUNTER ниже
-    const START = new Date(2026, 4, 17);
-    const TARGET = 1000;
-    const DAYS = 24;
+    // Синхронно с LOCK COUNTER — старт 23 мая 2026 в момент запуска
+    const START = new Date(2026, 4, 23, 12, 0, 0); // 23 мая 2026, 12:00
+    const START_N = 20;
+    const TARGET_N = 1000;
+    const TOTAL_DAYS = 33; // цель к 25 июня 2026
     const now = new Date();
     const dayFloat = (now - START) / 86400000;
-    if(dayFloat <= 0) return 35;
-    const t = Math.min(1.5, dayFloat / DAYS);
-    const sCurve = t * t * (3 - 2 * Math.min(1,t));
-    return Math.floor(35 + sCurve * (TARGET - 35));
+    if(dayFloat <= 0) return START_N;
+    if(dayFloat >= TOTAL_DAYS) return TARGET_N + Math.floor((dayFloat - TOTAL_DAYS) * 15);
+    const t = Math.min(1, dayFloat / TOTAL_DAYS);
+    const sCurve = t * t * (3 - 2 * t);
+    const linear = t;
+    const blend = sCurve * 0.75 + linear * 0.25;
+    return Math.max(START_N, Math.floor(START_N + blend * (TARGET_N - START_N)));
   }
 
   function onlineNow(){
@@ -8003,12 +8047,12 @@ const _store=(function(){
     }
   };
 
-  // Старт: 17 мая 2026. Цель: 1000 к 10 июня 2026 (24 дня).
-  // К 1 июля (45 дней) — естественно перерастём за счёт продолжения роста.
-  const START_DATE = new Date(2026, 4, 17);   // май = 4
-  const TARGET_DATE = new Date(2026, 5, 10);  // 10 июня
+  // Старт: 23 мая 2026, 12:00 — момент запуска в массы.
+  // Цель: 1000 к 25 июня 2026 (33 дня).
+  const START_DATE = new Date(2026, 4, 23, 12, 0, 0);
+  const TARGET_DATE = new Date(2026, 5, 25);  // 25 июня
   const TARGET_USERS = 1000;
-  const TOTAL_DAYS = Math.round((TARGET_DATE - START_DATE) / 86400000); // 24
+  const TOTAL_DAYS = 33;
 
   // Псевдослучайный шум, детерминированный по дню (одинаковый у всех)
   function seededNoise(day){
@@ -8020,46 +8064,40 @@ const _store=(function(){
     return ((h / 4294967295) * 2) - 1;
   }
 
-  // Кумулятивное число пользователей на конкретный день после запуска.
-  // Строго монотонно растущая кривая — без скачков назад.
-  // Старт ~35 (друзья в первый день), плавный S-образный рост до 1000 к 10 июня.
-  function usersOnDay(day){
-    if(day < 0) return 0;
-    if(day === 0) return 35;
-
-    // После целевой даты — продолжаем расти линейно (~12-15 в день)
-    if(day >= TOTAL_DAYS){
-      return TARGET_USERS + (day - TOTAL_DAYS) * 13;
-    }
-
-    const t = day / TOTAL_DAYS; // 0..1
-    // S-кривая (smoothstep) — медленный старт, ускорение в середине, плато
+  // Непрерывная кривая — растёт постоянно, без скачков по дням.
+  // Старт 20 человек, цель 1000 к 25 июня (33 дня).
+  // Смесь S-кривой + линейного компонента: рост с первой минуты.
+  const START_N = 20;
+  function usersAtFloat(dayFloat){
+    if(dayFloat <= 0) return START_N;
+    if(dayFloat >= TOTAL_DAYS) return TARGET_USERS + Math.floor((dayFloat - TOTAL_DAYS) * 15);
+    const t = dayFloat / TOTAL_DAYS;
     const sCurve = t * t * (3 - 2 * t);
-    // Лёгкий вирусный компонент для первых дней
-    const viral = Math.pow(t, 0.7);
-    const blend = sCurve * 0.65 + viral * 0.35;
-
-    return Math.max(35, Math.floor(35 + blend * (TARGET_USERS - 35)));
+    const linear = t;
+    const blend = sCurve * 0.75 + linear * 0.25;
+    return Math.max(START_N, Math.floor(START_N + blend * (TARGET_USERS - START_N)));
   }
+  // Обратная совместимость: usersOnDay теперь через float
+  function usersOnDay(day){ return usersAtFloat(day); }
 
-  // Текущее число пользователей — фиксировано на день, чтоб не "дрожало"
+  // Текущее число пользователей — непрерывно, растёт каждую минуту
   function currentUsers(){
     const now = new Date();
     const msFromStart = now - START_DATE;
-    if(msFromStart < 0) return 0;
-    const dayInt = Math.floor(msFromStart / 86400000);
-    return usersOnDay(dayInt);
+    if(msFromStart < 0) return START_N;
+    const dayFloat = msFromStart / 86400000;
+    return usersAtFloat(dayFloat);
   }
 
-  // Сколько присоединилось сегодня — разница со вчерашним
+  // Сколько присоединилось за последние 24 часа
   function joinedToday(){
     const now = new Date();
     const msFromStart = now - START_DATE;
     if(msFromStart < 0) return 0;
-    const dayInt = Math.floor(msFromStart / 86400000);
-    const today = usersOnDay(dayInt);
-    const yesterday = usersOnDay(dayInt - 1);
-    return Math.max(0, today - yesterday);
+    const dayFloat = msFromStart / 86400000;
+    const current = usersAtFloat(dayFloat);
+    const yesterday = usersAtFloat(Math.max(0, dayFloat - 1));
+    return Math.max(0, current - yesterday);
   }
 
   // Форматирование числа с пробелами: 1 234
@@ -8159,6 +8197,26 @@ const _store=(function(){
     requestAnimationFrame(tick);
   }
 
+  // Обновляет счётчик в открытой модалке (тихо, без анимации с 0)
+  function refreshLockCounter(){
+    const el = document.getElementById('lock-counter-now');
+    const barEl = document.getElementById('lock-bar-fill');
+    const todayEl = document.getElementById('lock-today-count');
+    const etaEl = document.getElementById('lock-eta');
+    if(!el) return;
+    const users = currentUsers();
+    const today = joinedToday();
+    const percent = Math.min(100, (users / TARGET_USERS) * 100);
+    const prev = parseInt(el.textContent.replace(/\s/g,''), 10) || users;
+    // Плавно подтягиваем если выросло
+    if(users > prev){
+      animateCount(el, users, 800);
+      if(barEl) barEl.style.width = percent + '%';
+    }
+    if(todayEl) todayEl.textContent = fmt(today);
+    if(etaEl) etaEl.textContent = etaToTarget();
+  }
+
   window.showLockModal = function(section){
     const data = LOCK_DATA[section];
     if(!data) return;
@@ -8174,7 +8232,7 @@ const _store=(function(){
       dLeft === 1 ? 'завтра' :
       'через ' + dLeft + ' ' + (dLeft%10===1 && dLeft%100!==11 ? 'день' : (dLeft%10>=2 && dLeft%10<=4 && (dLeft%100<10||dLeft%100>=20) ? 'дня' : 'дней'));
 
-    // Счётчик
+    // Счётчик — начальные значения
     const users = currentUsers();
     const today = joinedToday();
     const percent = Math.min(100, (users / TARGET_USERS) * 100);
@@ -8189,12 +8247,19 @@ const _store=(function(){
     modal.classList.add('on');
     document.body.style.overflow = 'hidden';
 
-    // Анимация после открытия — один раз, плавно от 0 до текущего значения
+    // Анимация при открытии — плавно от 0 до текущего
     setTimeout(function(){
       animateCount(document.getElementById('lock-counter-now'), users, 1400);
       document.getElementById('lock-bar-fill').style.width = percent + '%';
       renderChart();
     }, 220);
+
+    // Живой тик: обновляем счётчик каждые 30 сек пока модалка открыта
+    clearInterval(window._lockTick);
+    window._lockTick = setInterval(function(){
+      refreshLockCounter();
+      renderChart();
+    }, 30000);
   };
 
   window.hideLockModal = function(e){
@@ -8305,6 +8370,11 @@ applyLang(currentLang);
 // ════════════════════════════════════════════════════════════════════════════
 // 5. ROUTER + SEO INJECTORS
 // ════════════════════════════════════════════════════════════════════════════
+
+// Stub: route/routeLock доступны сразу, до инициализации IIFE
+if(typeof window.route !== 'function') window.route = function(ev,s){ if(ev)ev.preventDefault(); if(typeof go==='function')go(s); return false; };
+if(typeof window.routeLock !== 'function') window.routeLock = function(ev,k){ if(ev)ev.preventDefault(); if(typeof showLockModal==='function')showLockModal(k); return false; };
+
 (function(){
   'use strict';
 
