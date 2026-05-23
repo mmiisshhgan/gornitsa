@@ -67,17 +67,12 @@
 <meta name="google-site-verification" content="EXEPUm46CheKCQZ1vWPVthHFjdY9jbuDWhmMd7G6n1A">
 
 <!-- ─── Иконки + manifest ─── -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#C12B26">
-<link rel="manifest" id="manifest-link" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23C12B26'/><text x='50' y='68' text-anchor='middle' font-size='56' font-family='Georgia,serif' fill='%23F6EFE1'>Г</text></svg>">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23C12B26'/><text x='50' y='68' text-anchor='middle' font-size='56' font-family='Georgia,serif' fill='%23F6EFE1'>Г</text></svg>">
+<link rel="manifest" id="manifest-link">
 
 <!-- ─── Performance: preconnect ─── -->
-<!-- preconnect только к Cloudinary — изображения нужны сразу -->
-<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
-<link rel="dns-prefetch" href="https://res.cloudinary.com">
+<!-- Cloudinary preconnect добавляется динамически при первом клике -->
 
 <!-- ─── Fonts: загружаем асинхронно после load, не блокируем рендер ─── -->
 <!-- Google Fonts подгружается JS-ом только если сеть доступна, с таймаутом 3с -->
@@ -693,7 +688,8 @@ a{color:inherit;text-decoration:none}
   .route-title{font-size:19px}
   /* Route detail */
   .rd-wrap{padding:20px 16px 0}
-  .rd-body{padding:24px 16px 60px;gap:32px;overflow-x:hidden}
+  .rd-body{padding:24px 16px 60px;gap:32px}
+  .rd-body img,.rd-body .detail-photos{max-width:100%;box-sizing:border-box}
   .rd-step{grid-template-columns:64px 1fr;gap:0 14px}
   .rd-step:not(:last-child)::after{left:28px}
   .rd-trans{padding-left:78px}
@@ -1831,7 +1827,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
           names.forEach(function(name) { caches.delete(name); });
         });
       }
-      window.location.reload(true);
+      // Не делаем reload — просто очищаем кеши, новый контент подтянется сам
     } else {
       localStorage.setItem('gornitsa_version', CURRENT_VERSION);
     }
@@ -7043,62 +7039,171 @@ const MEETS=[
 const REAL_MEETS=[];
 const NEWS_CARDS=[
   {
-    "date": "23 мая",
-    "cat": "Открытие",
-    "h": "ГорницаВДК запустилась",
-    "d": "Городской гид Владивостока теперь в сети. 30 локаций, маршруты, рыбный ряд и встречи — всё в одном месте.",
-    "cross": {"sc": "places", "label": "Смотреть локации →"}
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Патрокл — открытие нового двухуровневого пляжа к 1 июля.",
+    "h_zh": "",
+    "d": "DNS / Concrete Jungle строят набережную с «морской тропой», игровой зоной, кафе, сценой, спортплощадками. ",
+    "d_zh": "",
+    "cross": null
   },
   {
-    "date": "24 мая",
-    "cat": "Природа",
-    "h": "Нерпы на Токаревской",
-    "d": "В мае ларги иногда ещё выплывают к маяку. Лучшее время — утро, часов в 8-9, пока нет народа.",
-    "cross": {"sc": "places", "label": "Маршрут на Токаревскую →"}
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Шамора (Лазурная) — закрытая часть пляжа, реконструкция до 2030. ",
+    "h_zh": "",
+    "d": "Часть берега отгорожена забором, привычные кафе исчезли, оставшиеся подняли цены. План администрации — превратить Шамору в курортную зону. Туристам на лето 2026 — ожидать тесноты и роста цен.",
+    "d_zh": "",
+    "cross": null
   },
   {
-    "date": "25 мая",
-    "cat": "Погода",
-    "h": "Туманное утро — хорошее фото",
-    "d": "Туман над Золотым Рогом утром даёт кинематографичные кадры. Смотровая Бурачка и Назимова — лучшие точки.",
-    "cross": {"sc": "places", "label": "Смотровые →"}
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Открытие сезона морских прогулок",
+    "h_zh": "",
+    "d": "Главные маршруты — остров Шкота с гастрономической паузой, мыс Тобизина + котики, ночные огни мостов, бухта Стеклянная. Цены — от индивидуальных 60 000 ₽/борт до групповых от 1500 ₽",
+    "d_zh": "",
+    "cross": null
   },
   {
-    "date": "1 июня",
-    "cat": "Открытие",
-    "h": "Рыбный ряд открывается",
-    "d": "С 1 июня — живой гребешок, краб, устрицы и морской ёж с местных прилавков. Цены — без туристической наценки.",
-    "cross": {"sc": "seafood", "label": "В рыбный ряд →"}
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Концепция обновленной набережной.",
+    "h_zh": "",
+    "d": "Администрация представила продолжение Спортивной набережной от «Олимпийца» до Кунгасного пляжа: брусчатка, освещение, две детские площадки, озеленение. Финансирует — инвестор-застройщик, не город.",
+    "d_zh": "",
+    "cross": null
   },
   {
-    "date": "6 июня",
-    "cat": "Событие",
-    "h": "Парк Минного городка открывает первую очередь",
-    "d": "6 июня открываются аттракционы и 55-метровое колесо обозрения. 39 гектаров леса в центре города — после тридцати лет ожидания.",
-    "cross": {"sc": "places", "label": "Парк Минного городка →"}
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Сезон клещей открыт.",
+    "h_zh": "",
+    "d": "Майская классика: при прогулках в Минном городке, на сопках, в лесопарках — закрытая одежда, осмотр после возвращения. В горбольнице №1 принимают клещей на анализ.\n",
+    "d_zh": "",
+    "cross": null
+  },
+  {
+    "date": "",
+    "date_zh": "",
+    "cat": "Новости",
+    "cat_zh": "新闻",
+    "h": "Центр и Эгершельд — без горячей воды 86 дней. ",
+    "h_zh": "",
+    "d": "Центр и Эгершельд — без горячей воды 86 дней (с 2 июня по 26 августа). 40 улиц, 324 дома. Это весь июнь–август. Бронируете жильё гостям или сами селите — проверяйте адрес заранее.\nОбщая опрессовка по городу — с 12 мая по 22 июня. Кратковременные отключения по районам идут волнами.",
+    "d_zh": "",
+    "cross": null
   }
 ];
 const NEWS_LOG=[
   {
-    "tm": "09:00",
-    "dy": "Сегодня",
-    "tt": "Сайт запущен",
-    "d": "ГорницаВДК открылась для всех. Добро пожаловать во Владивосток.",
-    "cat": "Запуск"
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "День ВМФ — 26 июля.",
+    "tt_zh": "",
+    "d": "День ВМФ — 26 июля (последнее воскресенье июля). Концерт на Спортивной набережной, морские мероприятия в Золотом Роге.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
   },
   {
-    "tm": "Май",
-    "dy": "Сезон",
-    "tt": "Лучшее время для мысов",
-    "d": "Май и сентябрь — идеальные месяцы для Токаревской кошки, мыса Тобизина и Горы Русской. Море ещё холодное, зато нет толпы.",
-    "cat": "Совет"
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Гонка Героев — 18 июля, полигон «Горностай». ",
+    "tt_zh": "",
+    "d": "Гонка Героев — 18 июля, полигон «Горностай». Гонка с препятствиями: командный, массовый старт, чемпионат. В цену входят медаль, манишка, парковка, душ, камера хранения. Участие от 3 700 ₽.\n",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
   },
   {
-    "tm": "Лето",
-    "dy": "Прогноз",
-    "tt": "Кунгасный и Первый пляж",
-    "d": "С июня по август — искусственная волна на Кунгасном, шашлык на Первом пляже, катамараны в Спортивной гавани.",
-    "cat": "Сезон"
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "День города Владивостока — 4 июля",
+    "tt_zh": "",
+    "d": "День города Владивостока — 4 июля (дата основания — 2 июля). Концерты, гастрофестиваль, огненное шоу, фейерверк. 166-летие города.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Всероссийский фестиваль дальневосточных гребешков «На Гребне!» — 1–15 июля.",
+    "tt_zh": "",
+    "d": "Всероссийский фестиваль дальневосточных гребешков «На Гребне!» — 1–15 июля, более 20 ресторанов Владивостока. Меню из 3 блюд по фиксированной цене + сет из трёх свежих гребешков. ",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Оркестр CAGMO — «Симфония Linkin Park при свечах» — 17 июня, 19:00",
+    "tt_zh": "",
+    "d": "Оркестр CAGMO — «Симфония Linkin Park при свечах» — 17 июня, 19:00, Приморская краевая филармония. Симфонические кавер-версии в формате камерного концерта. Билеты от 1 900 ₽.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Сергей Лазарев — 14 и 15 июня, «Фетисов-Арена».",
+    "tt_zh": "",
+    "d": "Сергей Лазарев — 14 и 15 июня, «Фетисов-Арена». Шоу «Шоумен». Билеты от 2 500 ₽.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Ленинград — 12 июня, 19:00, «Фетисов-Арена».",
+    "tt_zh": "",
+    "d": "Ленинград — 12 июня, 19:00, «Фетисов-Арена». Гастроли Шнурова с большой программой. Билеты от 4 000 ₽.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "ssshhhiiittt! — 10 июня, 20:00, Дворец культуры профсоюзов.",
+    "tt_zh": "",
+    "d": "ssshhhiiittt! — 10 июня, 20:00, Дворец культуры профсоюзов. Альт-рок-команда из Москвы. Билеты от 2 600 ₽.\n",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
+  },
+  {
+    "tm": "",
+    "dy": "",
+    "dy_zh": "",
+    "tt": "Dabro — 29 мая, 19:00, «Фетисов-Арена».",
+    "tt_zh": "",
+    "d": "Dabro — 29 мая, 19:00, «Фетисов-Арена». Поп-дуэт с хитами вроде «Юность». Билеты от 3 500 ₽.",
+    "d_zh": "",
+    "cat": "По городу",
+    "cat_zh": ""
   }
 ];
 /* ═════════ STATE ═════════ */
@@ -7192,7 +7297,14 @@ function goBackFromRoute(){
   }
 }
 
+function _ensureCloudinaryPreconnect(){
+  if(window._clPreconnected) return;
+  window._clPreconnected = true;
+  var l1=document.createElement('link'); l1.rel='preconnect'; l1.href='https://res.cloudinary.com'; l1.crossOrigin=''; document.head.appendChild(l1);
+  var l2=document.createElement('link'); l2.rel='dns-prefetch'; l2.href='https://res.cloudinary.com'; document.head.appendChild(l2);
+}
 function openRoute(id){
+  _ensureCloudinaryPreconnect();
   const r=ROUTES.find(x=>x.id===id);if(!r)return;
   if(typeof ym!=='undefined')ym(109310273,'hit',location.href,{title:'Маршрут: '+r.title,referer:document.referrer});
   const steps=r.steps.map(s=>{
@@ -7422,6 +7534,7 @@ function submitRating(placeId,placeNm){
 }
 
 function openPlace(id){
+  _ensureCloudinaryPreconnect();
   const p=PLACES.find(x=>x.id===id);if(!p)return;
   if(typeof ym!=='undefined')ym(109310273,'hit',location.href,{title:'Локация: '+p.nm,referer:document.referrer});
   const tPCAT=_t('PCAT');
@@ -8742,56 +8855,14 @@ document.addEventListener('visibilitychange', function(){
   }
 });
 
-// 6b. Fonts — асинхронная загрузка с таймаутом, не блокирует рендер
-window.addEventListener('load', function(){
-/* ═════════ FONTS: асинхронная загрузка ═════════
-   Шрифты Google грузятся только после load и только
-   если запрос укладывается в 3 секунды (нет VPN-блока).
-   Страница сразу рендерится с system-шрифтами, потом
-   плавно подменяется через font-display:swap.
-═══════════════════════════════════════════════ */
-(function(){
-  // Проверяем кеш — шрифт уже был загружен ранее?
-  try{
-    if(sessionStorage.getItem('fonts_loaded')){
-      // Браузер уже закешировал шрифты — подключаем без задержки
-      var lnk=document.createElement('link');
-      lnk.rel='stylesheet';
-      lnk.href='https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap';
-      document.head.appendChild(lnk);
-      return;
-    }
-  }catch(_){}
-
-  // Первый визит: грузим с таймаутом 3 секунды
-  var FONT_URL='https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap';
-  var done=false;
-  var timer=setTimeout(function(){
-    if(!done){ done=true; /* таймаут — показываем с системными шрифтами */ }
-  },3000);
-
-  // Загружаем через fetch чтобы поймать таймаут
-  if(window.fetch){
-    var ctrl=new AbortController();
-    var abort=setTimeout(function(){ctrl.abort();},2800);
-    fetch(FONT_URL,{signal:ctrl.signal,mode:'no-cors'})
-      .then(function(){
-        clearTimeout(abort);
-        if(!done){
-          done=true;
-          clearTimeout(timer);
-          var lnk=document.createElement('link');
-          lnk.rel='stylesheet';
-          lnk.href=FONT_URL;
-          lnk.onload=function(){
-            try{sessionStorage.setItem('fonts_loaded','1');}catch(_){}
-          };
-          document.head.appendChild(lnk);
-        }
-      })
-      .catch(function(){ clearTimeout(abort); clearTimeout(timer); });
-  }
-})();
+// 6b. Fonts — добавляем после load, не блокируем рендер
+window.addEventListener('load',function(){
+  var lnk=document.createElement('link');
+  lnk.rel='stylesheet';
+  lnk.media='print';
+  lnk.href='https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap';
+  lnk.onload=function(){this.media='all';};
+  document.head.appendChild(lnk);
 });
 
 // 7. Yandex.Metrika — загружаем асинхронно после загрузки страницы
