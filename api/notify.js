@@ -1,7 +1,8 @@
 // Прокси к Telegram Bot API. Держит токен бота в переменных окружения
 // (TG_BOT_TOKEN, TG_CHAT_ID) — они не должны попадать в клиентский код.
 // Настроить в Vercel: Project Settings → Environment Variables.
-export default async function handler(req, res) {
+// CommonJS (module.exports), т.к. в репозитории нет package.json с "type":"module".
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ ok: false, error: 'method_not_allowed' });
     return;
