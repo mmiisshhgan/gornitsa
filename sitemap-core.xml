@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gornitsa.ru/</loc>
+    <loc>https://gornicavdk.ru/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/"/>
   </url>
   <url>
-    <loc>https://gornitsa.ru/places/</loc>
+    <loc>https://gornicavdk.ru/privacy.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://gornicavdk.ru/places/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/places/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/places/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/places/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/places/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/places/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/places/"/>
   </url>
   <url>
-    <loc>https://gornitsa.ru/routes/</loc>
+    <loc>https://gornicavdk.ru/routes/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/routes/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/routes/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/routes/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/routes/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/routes/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/routes/"/>
   </url>
   <url>
-    <loc>https://gornitsa.ru/seafood/</loc>
+    <loc>https://gornicavdk.ru/seafood/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/seafood/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/seafood/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/seafood/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/seafood/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/seafood/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/seafood/"/>
   </url>
   <url>
-    <loc>https://gornitsa.ru/meet/</loc>
+    <loc>https://gornicavdk.ru/meet/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/meet/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/meet/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/meet/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/meet/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/meet/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/meet/"/>
   </url>
   <url>
-    <loc>https://gornitsa.ru/today/</loc>
+    <loc>https://gornicavdk.ru/today/</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://gornitsa.ru/today/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://gornitsa.ru/today/?lang=zh"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornitsa.ru/today/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://gornicavdk.ru/today/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://gornicavdk.ru/today/?lang=zh"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gornicavdk.ru/today/"/>
   </url>
 </urlset>
