@@ -78,7 +78,7 @@
 <!-- Google Fonts подгружается JS-ом только если сеть доступна, с таймаутом 3с -->
 
 <!-- ─── Security ─── -->
-<meta http-equiv="Content-Security-Policy" content="img-src * data: blob:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src * data: blob:; connect-src 'self' https://api.open-meteo.com https://mc.yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';">
 
 <!-- ─── Version ─── -->
 <meta name="app-version" content="202605190900">
@@ -96,7 +96,7 @@
 {"@type":"BreadcrumbList","@id":"https://gornicavdk.ru/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://gornicavdk.ru/"},{"@type":"ListItem","position":2,"name":"Локации","item":"https://gornicavdk.ru/places/"},{"@type":"ListItem","position":3,"name":"Маршруты","item":"https://gornicavdk.ru/routes/"},{"@type":"ListItem","position":4,"name":"Рыбный ряд","item":"https://gornicavdk.ru/seafood/"},{"@type":"ListItem","position":5,"name":"Встречи","item":"https://gornicavdk.ru/meet/"},{"@type":"ListItem","position":6,"name":"Сегодня","item":"https://gornicavdk.ru/today/"}]},
 {"@type":"Place","@id":"https://gornicavdk.ru/#place-vladivostok","name":"Владивосток","alternateName":["Vladivostok","海参崴"],"geo":{"@type":"GeoCoordinates","latitude":43.1155,"longitude":131.8855},"address":{"@type":"PostalAddress","addressLocality":"Владивосток","addressRegion":"Приморский край","addressCountry":"RU"},"containedInPlace":{"@type":"AdministrativeArea","name":"Приморский край"}},
 {"@type":"TouristInformationCenter","@id":"https://gornicavdk.ru/#tic","name":"ГорницаВДК — городской гид Владивостока","url":"https://gornicavdk.ru/","image":"https://gornicavdk.ru/og-cover.jpg","description":"Цифровой штаб Владивостока: маршруты, локации, морепродукты, события.","address":{"@type":"PostalAddress","addressLocality":"Владивосток","addressRegion":"Приморский край","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":43.1155,"longitude":131.8855},"areaServed":{"@type":"City","name":"Владивосток"},"parentOrganization":{"@id":"https://gornicavdk.ru/#organization"},"inLanguage":["ru","zh"]},
-{"@type":"FAQPage","@id":"https://gornicavdk.ru/#faq","mainEntity":[{"@type":"Question","name":"Что такое ГорницаВДК?","acceptedAnswer":{"@type":"Answer","text":"ГорницаВДК — это городской гид Владивостока. Внутри: 16 пеших маршрутов с тайм-кодом, 30 проверенных локаций, рыбный ряд с прилавка, события и встречи. Это не агрегатор отзывов, а доверенный местный источник, собранный жителями города."}},{"@type":"Question","name":"Куда пойти во Владивостоке в первый раз?","acceptedAnswer":{"@type":"Answer","text":"Базовый круг: Орлиное гнездо (199 м, обзор города), Светланская улица (исторический центр), Токаревская кошка (закатная точка, маяк), набережная Спортивной гавани, мост Золотой Рог. ГорницаВДК даёт точный тайм-код, по какому участку идти когда — чтобы не попасть в туристические ловушки и пробки."}},{"@type":"Question","name":"Где купить свежие морепродукты во Владивостоке?","acceptedAnswer":{"@type":"Answer","text":"В разделе «Рыбный ряд» ГорницаВДК — список проверенных прилавков с актуальным уловом дня: живой гребешок, краб, устрицы, морской ёж, корюшка, кальмар. Цены — местные, без туристической наценки. Можно отложить позицию: магазин держит её до конца дня, оплата на месте."}},{"@type":"Question","name":"Что посмотреть во Владивостоке за один день?","acceptedAnswer":{"@type":"Answer","text":"Маршрут «Светланская — дыхание города» в ГорницаВДК рассчитан на 2 ч 30 мин и проходит через железнодорожный вокзал, ГУМ, Светланскую улицу. Для морских видов — маршрут на Эгершельд к Токаревской кошке. Для высоты — фуникулёр и Орлиное гнездо."}},{"@type":"Question","name":"Когда лучший сезон во Владивостоке?","acceptedAnswer":{"@type":"Answer","text":"Май–июнь и сентябрь — лучшее сочетание погоды и видимости. Июль–август — тёплое море, но тайфуны и туманы. Октябрь — золотая осень, идеально для мысов и островов. Зима — ясная, но ветреная: для городских маршрутов и тёплых заведений."}},{"@type":"Question","name":"Чем ГорницаВДК отличается от обычной афиши Владивостока?","acceptedAnswer":{"@type":"Answer","text":"ГорницаВДК — не афиша и не агрегатор. Это городской штаб: маршруты, локации, морепродукты и встречи собраны людьми, которые живут во Владивостоке. Каждая точка проверена. Цены — без наценки. Тексты — с inside-знанием: где встать, куда смотреть, когда уходить."}}]}
+{"@type":"FAQPage","@id":"https://gornicavdk.ru/#faq","mainEntity":[{"@type":"Question","name":"Что такое ГорницаВДК?","acceptedAnswer":{"@type":"Answer","text":"ГорницаВДК — это городской гид Владивостока. Внутри: 15 пеших маршрутов с тайм-кодом, 30 проверенных локаций, рыбный ряд с прилавка, события и встречи. Это не агрегатор отзывов, а доверенный местный источник, собранный жителями города."}},{"@type":"Question","name":"Куда пойти во Владивостоке в первый раз?","acceptedAnswer":{"@type":"Answer","text":"Базовый круг: Орлиное гнездо (199 м, обзор города), Светланская улица (исторический центр), Токаревская кошка (закатная точка, маяк), набережная Спортивной гавани, мост Золотой Рог. ГорницаВДК даёт точный тайм-код, по какому участку идти когда — чтобы не попасть в туристические ловушки и пробки."}},{"@type":"Question","name":"Где купить свежие морепродукты во Владивостоке?","acceptedAnswer":{"@type":"Answer","text":"В разделе «Рыбный ряд» ГорницаВДК — список проверенных прилавков с актуальным уловом дня: живой гребешок, краб, устрицы, морской ёж, корюшка, кальмар. Цены — местные, без туристической наценки. Можно отложить позицию: магазин держит её до конца дня, оплата на месте."}},{"@type":"Question","name":"Что посмотреть во Владивостоке за один день?","acceptedAnswer":{"@type":"Answer","text":"Маршрут «Светланская — дыхание города» в ГорницаВДК рассчитан на 2 ч 30 мин и проходит через железнодорожный вокзал, ГУМ, Светланскую улицу. Для морских видов — маршрут на Эгершельд к Токаревской кошке. Для высоты — фуникулёр и Орлиное гнездо."}},{"@type":"Question","name":"Когда лучший сезон во Владивостоке?","acceptedAnswer":{"@type":"Answer","text":"Май–июнь и сентябрь — лучшее сочетание погоды и видимости. Июль–август — тёплое море, но тайфуны и туманы. Октябрь — золотая осень, идеально для мысов и островов. Зима — ясная, но ветреная: для городских маршрутов и тёплых заведений."}},{"@type":"Question","name":"Чем ГорницаВДК отличается от обычной афиши Владивостока?","acceptedAnswer":{"@type":"Answer","text":"ГорницаВДК — не афиша и не агрегатор. Это городской штаб: маршруты, локации, морепродукты и встречи собраны людьми, которые живут во Владивостоке. Каждая точка проверена. Цены — без наценки. Тексты — с inside-знанием: где встать, куда смотреть, когда уходить."}}]}
 ]}
 </script>
 <style>
@@ -551,6 +551,18 @@ a{color:inherit;text-decoration:none}
 /* Toast */
 :root{--toast-bottom:28px}
 .toast{position:fixed;bottom:var(--toast-bottom);left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--ivory);padding:13px 22px;font-family:var(--body);font-size:14px;border-radius:2px;opacity:0;pointer-events:none;transition:all .32s var(--ease),bottom .25s var(--ease);z-index:999;text-align:center;white-space:nowrap;max-width:calc(100vw - 32px)}
+
+.consent-banner{display:none;position:fixed;left:0;right:0;bottom:0;z-index:998;background:var(--ink);color:var(--ivory);padding:16px 24px;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 -8px 32px -8px rgba(0,0,0,.4)}
+.consent-banner.on{display:flex}
+.consent-txt{font-family:var(--body);font-size:13px;line-height:1.55;color:rgba(246,239,225,.85);max-width:760px;flex:1;min-width:240px}
+.consent-txt a{color:var(--ivory);text-decoration:underline}
+.consent-actions{display:flex;gap:10px;flex-shrink:0}
+.consent-decline,.consent-accept{padding:10px 16px;min-height:40px;font-family:var(--body);font-size:13px;font-weight:700;border-radius:2px;cursor:pointer;white-space:nowrap}
+.consent-decline{background:transparent;color:rgba(246,239,225,.7);border:1.5px solid rgba(246,239,225,.25)}
+.consent-decline:hover{color:var(--ivory);border-color:rgba(246,239,225,.5)}
+.consent-accept{background:var(--red);color:var(--ivory);border:1.5px solid var(--red)}
+.consent-accept:hover{background:var(--red-dk)}
+@media(max-width:640px){.consent-banner{padding:14px 16px}.consent-actions{width:100%}.consent-decline,.consent-accept{flex:1}}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ═══ FOOTER ═══ */
@@ -1196,18 +1208,13 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     </div>
     <nav class="hdr-nav" aria-label="Главная навигация ГорницаВДК">
       <a class="hdr-btn on" id="nav-home"    href="/"          onclick="return route(event,'home')"    data-i18n="nav_home">Главная</a>
-      <a class="hdr-btn locked" id="nav-routes"  href="/routes/"   onclick="return routeLock(event,'routes')"  data-i18n="nav_routes">Гуляю<span class="lock-ico" aria-hidden="true">🔒</span></a>
+      <a class="hdr-btn" id="nav-routes"  href="/routes/"   onclick="return route(event,'routes')"  data-i18n="nav_routes">Гуляю</a>
       <a class="hdr-btn" id="nav-places"  href="/places/"   onclick="return route(event,'places')"  data-i18n="nav_places">Локации</a>
-      <a class="hdr-btn locked" id="nav-seafood" href="/seafood/"  onclick="return routeLock(event,'seafood')" data-i18n="nav_seafood">Ем<span class="lock-ico" aria-hidden="true">🔒</span></a>
+      <a class="hdr-btn" id="nav-seafood" href="/seafood/"  onclick="return route(event,'seafood')" data-i18n="nav_seafood">Ем</a>
       <a class="hdr-btn" id="nav-meet"    href="/meet/"     onclick="return route(event,'meet')"    data-i18n="nav_meet">Знакомлюсь</a>
       <a class="hdr-btn" id="nav-news"    href="/today/"    onclick="return route(event,'news')"    data-i18n="nav_news">Сегодня</a>
     </nav>
     <div class="hdr-right">
-      <div class="hdr-online" id="hdr-online" title="Пользователей на сайте сейчас">
-        <span class="hdr-online-dot"></span>
-        <span class="hdr-online-n" id="hdr-online-n">—</span>
-        <span class="hdr-online-lbl">онлайн</span>
-      </div>
       <div class="lang-sw" id="hdr-lang-sw">
         <button id="ls-ru" class="on" onclick="setLang('ru')">RU</button>
         <button id="ls-zh" onclick="setLang('zh')">中文</button>
@@ -1228,9 +1235,9 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
 <div class="mob-drawer" id="mob-drawer">
   <nav class="mob-drawer-nav" aria-label="Мобильное меню ГорницаВДК">
     <a class="mob-nav-btn on" id="mnav-home"    href="/"         onclick="return route(event,'home',true)"><span class="mob-nav-icon" aria-hidden="true">🏠</span><span data-i18n="nav_home">Главная</span></a>
-    <a class="mob-nav-btn locked" id="mnav-routes"  href="/routes/"  onclick="return routeLock(event,'routes',true)"><span class="mob-nav-icon" aria-hidden="true">🗺</span><span data-i18n="mob_nav_routes">Гуляю · маршруты</span><span class="lock-ico" aria-hidden="true">🔒</span></a>
+    <a class="mob-nav-btn" id="mnav-routes"  href="/routes/"  onclick="return route(event,'routes',true)"><span class="mob-nav-icon" aria-hidden="true">🗺</span><span data-i18n="mob_nav_routes">Гуляю · маршруты</span></a>
     <a class="mob-nav-btn" id="mnav-places"  href="/places/"  onclick="return route(event,'places',true)"><span class="mob-nav-icon" aria-hidden="true">📍</span><span data-i18n="nav_places">Локации</span></a>
-    <a class="mob-nav-btn locked" id="mnav-seafood" href="/seafood/" onclick="return routeLock(event,'seafood',true)"><span class="mob-nav-icon" aria-hidden="true">🦀</span><span data-i18n="mob_nav_seafood">Ем · рыбный ряд</span><span class="lock-ico" aria-hidden="true">🔒</span></a>
+    <a class="mob-nav-btn" id="mnav-seafood" href="/seafood/" onclick="return route(event,'seafood',true)"><span class="mob-nav-icon" aria-hidden="true">🦀</span><span data-i18n="mob_nav_seafood">Ем · рыбный ряд</span></a>
     <a class="mob-nav-btn" id="mnav-meet"    href="/meet/"    onclick="return route(event,'meet',true)"><span class="mob-nav-icon" aria-hidden="true">🤝</span><span data-i18n="mob_nav_meet">Знакомлюсь · встречи</span></a>
     <a class="mob-nav-btn" id="mnav-news"    href="/today/"   onclick="return route(event,'news',true)"><span class="mob-nav-icon" aria-hidden="true">📰</span><span data-i18n="mob_nav_news">Сегодня · летопись</span></a>
 
@@ -1250,61 +1257,6 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
   </div>
 </div>
 
-<!-- ═══ LOCK MODAL ═══ -->
-<div class="lock-modal" id="lock-modal" onclick="hideLockModal(event)">
-  <div class="lock-panel" id="lock-panel" onclick="event.stopPropagation()">
-    <div class="lock-band">
-      <div class="lock-eyebrow" id="lock-eyebrow">Раздел в разработке</div>
-      <div class="lock-band-title" id="lock-band-title">Скоро <em>откроется</em></div>
-      <div class="lock-band-sub" id="lock-band-sub">Готовим раздел вдумчиво — чтобы каждая деталь была выверена.</div>
-    </div>
-    <div class="lock-body">
-      <div class="lock-section-label">Условия открытия</div>
-
-      <div class="lock-date">
-        <div class="lock-date-ico">📅</div>
-        <div class="lock-date-txt">
-          <div class="lock-date-k">По расписанию</div>
-          <div class="lock-date-v" id="lock-date-v">1 июля 2026</div>
-          <div class="lock-date-days" id="lock-date-days">через 45 дней</div>
-        </div>
-      </div>
-
-      <div class="lock-or">или раньше — если</div>
-
-      <div class="lock-counter">
-        <div class="lock-counter-head">
-          <span class="lock-counter-label">Всего на платформе</span>
-          <span class="lock-counter-live">растёт</span>
-        </div>
-        <div class="lock-counter-nums">
-          <span class="lock-counter-now" id="lock-counter-now">0</span>
-          <span class="lock-counter-of">из</span>
-          <span class="lock-counter-target">1 000</span>
-        </div>
-        <div class="lock-counter-sub">человек должны зарегистрироваться, чтобы раздел открылся раньше</div>
-        <div class="lock-bar"><div class="lock-bar-fill" id="lock-bar-fill" style="width:0%"></div></div>
-
-        <div class="lock-chart">
-          <div class="lock-chart-head">
-            <span>Динамика регистраций</span>
-            <span id="lock-chart-trend">↑ растёт</span>
-          </div>
-          <svg class="lock-chart-svg" id="lock-chart-svg" viewBox="0 0 300 60" preserveAspectRatio="none"></svg>
-        </div>
-
-        <div class="lock-counter-foot">
-          <span>Сегодня присоединилось: <b id="lock-today-count">0</b></span>
-          <span id="lock-eta"></span>
-        </div>
-      </div>
-
-      <div class="lock-close-row">
-        <button class="lock-close" onclick="hideLockModal()">Понятно, закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ═══════════════════════════════════════════════
      SEO BOT CONTENT — виден поисковым ботам
@@ -1315,11 +1267,11 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
 ═══════════════════════════════════════════════ -->
 <aside class="seo-bot" id="seo-bot-content" aria-hidden="true">
   <h1>ГорницаВДК — городской гид Владивостока</h1>
-  <p>ГорницаВДК — цифровой штаб Владивостока. Куда пойти, что съесть, с кем встретиться. 16 пеших маршрутов с тайм-кодом, 30 проверенных локаций, рыбный ряд со свежим уловом, события и живые встречи. Доверенный местный источник, собранный жителями.</p>
+  <p>ГорницаВДК — цифровой штаб Владивостока. Куда пойти, что съесть, с кем встретиться. 15 пеших маршрутов с тайм-кодом, 30 проверенных локаций, рыбный ряд со свежим уловом, события и живые встречи. Доверенный местный источник, собранный жителями.</p>
   <nav aria-label="Разделы ГорницаВДК">
     <h2>Разделы</h2>
     <ul>
-      <li><a href="/routes/">Маршруты Владивостока — 16 пеших маршрутов с тайм-кодом</a></li>
+      <li><a href="/routes/">Маршруты Владивостока — 15 пеших маршрутов с тайм-кодом</a></li>
       <li><a href="/places/">Локации Владивостока — 30 мест, которые стоит знать</a></li>
       <li><a href="/seafood/">Рыбный ряд — свежие морепродукты Владивостока с прилавка</a></li>
       <li><a href="/meet/">Встречи во Владивостоке — яхта, SUP, удалёнщики, знакомства</a></li>
@@ -1332,7 +1284,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     <ul id="seo-places-list"></ul>
   </section>
   <section>
-    <h2>16 пеших маршрутов по Владивостоку — с тайм-кодом</h2>
+    <h2>15 пеших маршрутов по Владивостоку — с тайм-кодом</h2>
     <p>Городские прогулки, исторические маршруты, мысы и острова, закатные точки и hidden gems Владивостока. Каждый маршрут — с точными временными метками и подсказками, что взять.</p>
     <ul id="seo-routes-list"></ul>
   </section>
@@ -1411,10 +1363,10 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
           <span class="mood-arrow">→</span>
         </div>
       </div>
-      <div class="mood" role="button" tabindex="0" onclick="showLockModal('routes')" onkeydown="if(event.key==='Enter'||event.key===' ')showLockModal('routes')"  aria-label="Гуляю — маршруты по Владивостоку" style="opacity:.85">
+      <div class="mood" role="button" tabindex="0" onclick="go('routes')" onkeydown="if(event.key==='Enter'||event.key===' ')go('routes')"  aria-label="Гуляю — маршруты по Владивостоку">
         <div class="mood-num">03 · маршруты</div>
         <div class="mood-title">Гуляю</div>
-        <div class="mood-desc">16 тропинок с точным тайм-кодом и знанием, которое есть только у местных.</div>
+        <div class="mood-desc">15 тропинок с точным тайм-кодом и знанием, которое есть только у местных.</div>
         <div class="mood-scenarios">
           <div class="mood-scenario">Городские прогулки и urban exploration</div>
           <div class="mood-scenario">Исторические маршруты и форты</div>
@@ -1422,11 +1374,11 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
           <div class="mood-scenario">Закатные точки и hidden gems</div>
         </div>
         <div class="mood-foot">
-          <span class="mood-count">16 маршрутов · 2–6 часов</span>
-          <span style="font-size:16px;opacity:.5">🔒</span>
+          <span class="mood-count">15 маршрутов · 2–6 часов</span>
+          <span class="mood-arrow">→</span>
         </div>
       </div>
-      <div class="mood" role="button" tabindex="0" onclick="showLockModal('seafood')" onkeydown="if(event.key==='Enter'||event.key===' ')showLockModal('seafood')" aria-label="Ем — рыбный ряд" style="opacity:.85">
+      <div class="mood" role="button" tabindex="0" onclick="go('seafood')" onkeydown="if(event.key==='Enter'||event.key===' ')go('seafood')" aria-label="Ем — рыбный ряд">
         <div class="mood-num">04 · рыбный ряд</div>
         <div class="mood-title">Ем</div>
         <div class="mood-desc">Свежий улов напрямую с прилавка. Бронь до конца дня — пять минут.</div>
@@ -1438,7 +1390,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
         </div>
         <div class="mood-foot">
           <span class="mood-count">10 позиций сегодня</span>
-          <span style="font-size:16px;opacity:.5">🔒</span>
+          <span class="mood-arrow">→</span>
         </div>
       </div>
     </div>
@@ -1450,7 +1402,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <div class="today-label" data-i18n="today_label">Сейчас</div>
       <div class="today-item" onclick="openRoute('Т-05')"><div class="today-dot"></div><div class="today-txt" data-i18n="today1">Токаревская кошка · закат 18:47</div></div>
       <div class="today-div"></div>
-      <div class="today-item" onclick="showLockModal('seafood')"><div class="today-dot"></div><div class="today-txt" data-i18n="today2">Гребешок живой · 650 ₽/шт</div></div>
+      <div class="today-item" onclick="go('seafood')"><div class="today-dot"></div><div class="today-txt" data-i18n="today2">Гребешок живой · 650 ₽/шт</div></div>
       <div class="today-div"></div>
       <div class="today-item" onclick="go('meet')"><div class="today-dot"></div><div class="today-txt" data-i18n="today3">Яхта на 10 · ищут ещё 6</div></div>
     </div>
@@ -1460,7 +1412,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
   <div class="home-sec">
     <div class="home-sec-head">
       <div class="home-sec-h" data-i18n="home_hot_routes">Горячие маршруты</div>
-      <button class="btn-ghost" onclick="showLockModal('routes')" data-i18n="home_all_routes">Все 16 🔒</button>
+      <button class="btn-ghost" onclick="go('routes')" data-i18n="home_all_routes">Все 15 →</button>
     </div>
     <div class="preview-grid" id="home-routes"></div>
   </div>
@@ -1485,9 +1437,9 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       <nav aria-label="Разделы ГорницаВДК · футер">
         <h2 class="footer-h" data-i18n="footer_sections">Разделы</h2>
         <ul>
-          <li><a href="/routes/"  onclick="return routeLock(event,'routes')"  data-i18n="footer_routes">Гуляю · маршруты 🔒</a></li>
+          <li><a href="/routes/"  onclick="return route(event,'routes')"  data-i18n="footer_routes">Гуляю · маршруты</a></li>
           <li><a href="/places/"  onclick="return route(event,'places')"      data-i18n="nav_places">Локации</a></li>
-          <li><a href="/seafood/" onclick="return routeLock(event,'seafood')" data-i18n="footer_seafood">Ем · рыбный ряд 🔒</a></li>
+          <li><a href="/seafood/" onclick="return route(event,'seafood')" data-i18n="footer_seafood">Ем · рыбный ряд</a></li>
           <li><a href="/meet/"    onclick="return route(event,'meet')"        data-i18n="footer_meet">Знакомлюсь · встречи</a></li>
           <li><a href="/today/"   onclick="return route(event,'news')"        data-i18n="footer_news">Сегодня · летопись</a></li>
         </ul>
@@ -1542,7 +1494,7 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
       </a>
     </div>
     <div class="footer-btm">
-      <div class="footer-copy" data-i18n="footer_copy">© ГорницаВДК · 2026 · Владивосток</div>
+      <div class="footer-copy" data-i18n="footer_copy">© ГорницаВДК · 2026 · Владивосток · <a href="/privacy.html" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a></div>
       <div class="footer-coords" itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
         <meta itemprop="latitude" content="43.1155">
         <meta itemprop="longitude" content="131.8855">
@@ -1559,10 +1511,10 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
     <div class="sec-head-in">
       <div class="sec-eyebrow" data-i18n="routes_eyebrow">Гуляю · Тропинки</div>
       <h2 class="sec-h" data-i18n="routes_h1">Владивосток <em>пешком</em></h2>
-      <p class="sec-sub" data-i18n="routes_sub">16 маршрутов с тайм-кодом, точками и деталями, которые знают только местные.</p>
+      <p class="sec-sub" data-i18n="routes_sub">15 маршрутов с тайм-кодом, точками и деталями, которые знают только местные.</p>
       <p class="sec-pitch" data-i18n="routes_pitch">Для тех, кто хочет узнать город не из Google Maps, а как свой. Каждая тропинка проверена и написана с inside-знанием: где встать, куда смотреть, когда уходить, что взять.</p>
       <div class="sec-meta">
-        <span class="sec-badge" data-i18n="routes_badge1"><b>16</b> маршрутов</span>
+        <span class="sec-badge" data-i18n="routes_badge1"><b>15</b> маршрутов</span>
         <span class="sec-badge" data-i18n="routes_badge2">от <b>2</b> до <b>6</b> часов</span>
         <span class="sec-badge" data-i18n="routes_badge3">обновлено в <b>мае 2026</b></span>
       </div>
@@ -1807,16 +1759,24 @@ html{ scroll-padding-top: calc(var(--hdr-h,60px) + 12px); }
 </div>
 
 <!-- MODAL -->
-<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-panel">
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()" role="dialog" aria-modal="true" aria-labelledby="modal-h">
+  <div class="modal-panel" tabindex="-1">
     <div class="modal-head">
       <h2 class="modal-h" id="modal-h">—</h2>
-      <button class="modal-x" onclick="closeModal()">✕</button>
+      <button class="modal-x" onclick="closeModal()" aria-label="Закрыть">✕</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<div class="consent-banner" id="consent-banner" role="dialog" aria-label="Согласие на обработку данных" aria-live="polite">
+  <p class="consent-txt">Мы используем аналитику (Яндекс.Метрика) и сохраняем данные из форм (бронь, встречи, отзывы), чтобы сайт работал и становился лучше. Подробнее — в <a href="/privacy.html">политике конфиденциальности</a>.</p>
+  <div class="consent-actions">
+    <button class="consent-decline" onclick="consentDecline()">Только необходимое</button>
+    <button class="consent-accept" onclick="consentAccept()">Принимаю</button>
+  </div>
+</div>
 
 <script>
 /* ═════════ CACHE BUSTER v202605140547 ═════════ */
@@ -2249,8 +2209,8 @@ const ROUTES=[
         "dc_zh": "最美丽的炮台——植物从砖缝中生长而出。"
       },
       {
-        "tr": "Возврат · 40 мин",
-        "tr_zh": "返回 · 40分钟"
+        "tr": "На такси или автобусом до центра · 40 мин",
+        "tr_zh": "乘出租车或公交前往市中心 · 40分钟"
       },
       {
         "tm": "12:30",
@@ -3024,12 +2984,12 @@ const ROUTES=[
   {
     "id": "Т-16",
     "cat": "sea",
-    "title": "Набережные: Ахлёстышева — Первый пляж — Морвокзал",
-    "title_zh": "滨海大道：阿赫廖斯蒂舍娃——第一海滩——海运车站",
-    "folk": "Тёплая вода, шашлык на берегу и вид на Золотой мост.",
-    "folk_zh": "温暖的海水、海边烤肉、金角大桥美景。",
-    "dist": "6 км",
-    "time": "4 часа",
+    "title": "Русский остров: Ахлёстышева — Первый пляж",
+    "title_zh": "俄罗斯岛：阿赫廖斯蒂舍娃——第一海滩",
+    "folk": "Тёплая вода, шашлык на берегу и вид на Золотой мост с воды.",
+    "folk_zh": "温暖的海水、海边烤肉、从海上眺望金角大桥。",
+    "dist": "3 км",
+    "time": "2 часа",
     "diff": "Лёгкая",
     "diff_zh": "轻松",
     "folkm": "Летний день у воды. С детьми — самое оно.",
@@ -3037,15 +2997,15 @@ const ROUTES=[
     "tips": [
       "Прокат самокатов на Ахлёстышева",
       "Мелко у берега — хорошо для детей",
-      "Морвокзал — нетуристическое место, тихо"
+      "Первый пляж — у самого моста, удобно уезжать обратно в город"
     ],
     "tips_zh": [
       "阿赫廖斯蒂舍娃有电动滑板车租赁",
       "近岸水浅——适合孩子",
-      "海运车站——非旅游景点，很安静"
+      "第一海滩就在大桥旁——方便返回市区"
     ],
-    "alert": "Летний маршрут. В межсезонье — только набережные.",
-    "alert_zh": "夏季路线。非夏季只有滨海大道可走。",
+    "alert": "Летний маршрут. В межсезонье — только набережная Ахлёстышева.",
+    "alert_zh": "夏季路线。非夏季只有阿赫廖斯蒂舍娃滨海大道可走。",
     "steps": [
       {
         "tm": "10:30",
@@ -3057,30 +3017,17 @@ const ROUTES=[
         "tip_zh": "近岸水浅——适合孩子。"
       },
       {
-        "tr": "По набережной · 30 мин",
-        "tr_zh": "沿滨海大道 · 30分钟"
+        "tr": "По набережной, в сторону моста · 30 мин",
+        "tr_zh": "沿滨海大道往大桥方向 · 30分钟"
       },
       {
         "tm": "11:30",
         "pl": "Первый городской пляж",
         "pl_zh": "第一城市海滩",
-        "dc": "Кафе с шашлыком у воды. Вид на город с моря.",
-        "dc_zh": "水边有烤肉咖啡馆。从海上看城市的角度。",
+        "dc": "Кафе с шашлыком у воды. Вид на город с моря. Сразу у моста — удобная точка, откуда ехать обратно в центр.",
+        "dc_zh": "水边有烤肉咖啡馆。从海上看城市的角度。就在大桥旁——方便乘车返回市区。",
         "tip": "Плыви и смотри на город — вид с воды другой.",
-        "tip_zh": "游泳时看城市——从水中看又是另一番景象。"
-      },
-      {
-        "tr": "Пешком · 40 мин",
-        "tr_zh": "步行 · 40分钟"
-      },
-      {
-        "tm": "12:30",
-        "pl": "Морской вокзал",
-        "pl_zh": "海运车站",
-        "dc": "Лавочки с видом на Золотой мост, Чуркин и центр. Маленький фонтан.",
-        "dc_zh": "长椅俯瞰金角大桥、朱尔金半岛和市中心。小喷泉。",
-        "tip": "Хорошая точка для отдыха и перекуса.",
-        "tip_zh": "休息和小吃的好地方。",
+        "tip_zh": "游泳时看城市——从水中看又是另一番景象。",
         "end": true
       }
     ],
@@ -7048,9 +6995,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Патрокл — открытие нового двухуровневого пляжа к 1 июля.",
-    "h_zh": "",
+    "h_zh": "帕特罗克尔——7月1日前新双层海滩开放。",
     "d": "DNS / Concrete Jungle строят набережную с «морской тропой», игровой зоной, кафе, сценой, спортплощадками. ",
-    "d_zh": "",
+    "d_zh": "DNS / Concrete Jungle 正在修建带有「海上步道」、儿童游乐区、咖啡馆、舞台和运动场地的滨海大道。",
     "cross": null
   },
   {
@@ -7059,9 +7006,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Шамора (Лазурная) — закрытая часть пляжа, реконструкция до 2030. ",
-    "h_zh": "",
+    "h_zh": "沙莫拉（拉祖尔纳亚）——部分海滩关闭，重建工程持续到2030年。",
     "d": "Часть берега отгорожена забором, привычные кафе исчезли, оставшиеся подняли цены. План администрации — превратить Шамору в курортную зону. Туристам на лето 2026 — ожидать тесноты и роста цен.",
-    "d_zh": "",
+    "d_zh": "部分海岸线已用围栏封闭，熟悉的咖啡馆消失，剩下的涨了价。市政府计划把沙莫拉打造成度假区。2026年夏天游客要有心理准备：人多、价格涨。",
     "cross": null
   },
   {
@@ -7070,9 +7017,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Открытие сезона морских прогулок",
-    "h_zh": "",
+    "h_zh": "海上观光季开启",
     "d": "Главные маршруты — остров Шкота с гастрономической паузой, мыс Тобизина + котики, ночные огни мостов, бухта Стеклянная. Цены — от индивидуальных 60 000 ₽/борт до групповых от 1500 ₽",
-    "d_zh": "",
+    "d_zh": "主要航线：什科塔岛（含美食小憩）、托比津角看海豹、跨海大桥夜景、玻璃湾。价格：包船6万卢布起，拼团1500卢布起。",
     "cross": null
   },
   {
@@ -7081,9 +7028,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Концепция обновленной набережной.",
-    "h_zh": "",
+    "h_zh": "滨海大道改造方案公布。",
     "d": "Администрация представила продолжение Спортивной набережной от «Олимпийца» до Кунгасного пляжа: брусчатка, освещение, две детские площадки, озеленение. Финансирует — инвестор-застройщик, не город.",
-    "d_zh": "",
+    "d_zh": "市政府公布了从「奥林匹克」到孔加斯内海滩的运动滨海大道延伸方案：石板路、照明、两个儿童游乐场、绿化。资金来自开发商投资，而非市财政。",
     "cross": null
   },
   {
@@ -7092,9 +7039,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Сезон клещей открыт.",
-    "h_zh": "",
+    "h_zh": "蜱虫季开始了。",
     "d": "Майская классика: при прогулках в Минном городке, на сопках, в лесопарках — закрытая одежда, осмотр после возвращения. В горбольнице №1 принимают клещей на анализ.\n",
-    "d_zh": "",
+    "d_zh": "五月的老规矩：在米内城、山丘和森林公园散步时，穿好防护衣物，回来后仔细检查身体。市第一医院可以送检蜱虫样本。",
     "cross": null
   },
   {
@@ -7103,9 +7050,9 @@ const NEWS_CARDS=[
     "cat": "Новости",
     "cat_zh": "新闻",
     "h": "Центр и Эгершельд — без горячей воды 86 дней. ",
-    "h_zh": "",
+    "h_zh": "市中心和埃格尔谢利德——停热水86天。",
     "d": "Центр и Эгершельд — без горячей воды 86 дней (с 2 июня по 26 августа). 40 улиц, 324 дома. Это весь июнь–август. Бронируете жильё гостям или сами селите — проверяйте адрес заранее.\nОбщая опрессовка по городу — с 12 мая по 22 июня. Кратковременные отключения по районам идут волнами.",
-    "d_zh": "",
+    "d_zh": "市中心和埃格尔谢利德半岛将停热水86天（6月2日至8月26日），涉及40条街道、324栋楼，覆盖整个6-8月。给客人订房或自己安排住宿前，请提前核实地址。\n全市管道压力测试：5月12日至6月22日，各区将分批短时停水。",
     "cross": null
   }
 ];
@@ -7475,8 +7422,7 @@ function _lbKey(e){
 }
 
 /* PLACE RATING */
-const TG_BOT_URL='https://api.telegram.org/bot8727528942:AAGEzG3JTtzNzJsLhxsTAsoqnyWAIeBWB5w/sendMessage';
-const TG_CHAT_ID='6188497717';
+const NOTIFY_URL='/api/notify';
 function _ratingKey(id){return 'gr_rated_'+id;}
 function _hasRated(id){try{return !!localStorage.getItem(_ratingKey(id));}catch(e){return false;}}
 function _markRated(id,s){try{localStorage.setItem(_ratingKey(id),String(s));}catch(e){}}
@@ -7522,8 +7468,8 @@ function submitRating(placeId,placeNm){
   if(btn){btn.disabled=true;btn.textContent='\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u2026';}
   var starsStr='\u2b50'.repeat(stars)+'\u2606'.repeat(5-stars);
   var now=new Date().toLocaleString('ru-RU',{timeZone:'Asia/Vladivostok',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  var text='\u2b50 <b>\u041d\u043e\u0432\u044b\u0439 \u043e\u0442\u0437\u044b\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044e</b>\n\n\ud83d\udccd <b>'+placeNm+'</b>\n\u041e\u0446\u0435\u043d\u043a\u0430: '+starsStr+' ('+stars+'/5)\n'+(comment?'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439:\n'+comment:'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439: \u043d\u0435 \u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d')+'\n\n\ud83d\udd50 '+now+' (VL)';
-  fetch(TG_BOT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:text,parse_mode:'HTML'})})
+  var text='\u2b50 <b>\u041d\u043e\u0432\u044b\u0439 \u043e\u0442\u0437\u044b\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044e</b>\n\n\ud83d\udccd <b>'+esc(placeNm)+'</b>\n\u041e\u0446\u0435\u043d\u043a\u0430: '+starsStr+' ('+stars+'/5)\n'+(comment?'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439:\n'+esc(comment):'\ud83d\udcac \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439: \u043d\u0435 \u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d')+'\n\n\ud83d\udd50 '+now+' (VL)';
+  fetch(NOTIFY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,parse_mode:'HTML'})})
   .then(function(r){return r.json();})
   .then(function(data){
     if(!data.ok)throw new Error(data.description||'TG error');
@@ -7642,10 +7588,29 @@ function submitCart(){
   const name=(document.getElementById('cf-name')||{}).value||'';
   const phone=(document.getElementById('cf-phone')||{}).value||'';
   if(!name.trim()||!phone.trim()){toast(_t('sf_toast_need'));return}
-  closeModal();
-  Object.keys(cart).forEach(k=>delete cart[k]);
-  updateCart();renderSeafood();
-  toast(_t('sf_toast_ok'));
+
+  const keys=Object.keys(cart).filter(k=>cart[k]>0);
+  const total=keys.reduce((s,k)=>s+SEAFOOD[k].p*cart[k],0);
+  const rows=keys.map(k=>'• '+esc(SEAFOOD[k].nm)+' × '+cart[k]+' — '+(SEAFOOD[k].p*cart[k]).toLocaleString('ru')+' ₽').join('\n');
+  const now=new Date().toLocaleString('ru-RU',{timeZone:'Asia/Vladivostok',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const text='🦀 <b>Новая бронь · Рыбный ряд</b>\n\n'+rows+'\n\n💰 <b>Итого:</b> '+total.toLocaleString('ru')+' ₽\n\n👤 <b>Имя:</b> '+esc(name.trim())+'\n📞 <b>Телефон:</b> '+esc(phone.trim())+'\n\n🕐 '+now+' (VL)';
+
+  const btn=document.querySelector('.form-submit');
+  if(btn){btn.disabled=true;btn.textContent='Отправляю…';}
+
+  fetch(NOTIFY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,parse_mode:'HTML'})})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(!data.ok)throw new Error(data.description||'TG error');
+    closeModal();
+    Object.keys(cart).forEach(k=>delete cart[k]);
+    updateCart();renderSeafood();
+    toast(_t('sf_toast_ok'));
+  })
+  .catch(function(){
+    if(btn){btn.disabled=false;btn.textContent=_t('sf_submit');}
+    toast('Не удалось отправить бронь. Проверь интернет и попробуй ещё раз.');
+  });
 }
 
 function toggleMeetCards(btn){
@@ -7864,22 +7829,21 @@ function submitMeet(){
   if(btn){ btn.disabled=true; btn.textContent='Отправляю…'; }
 
   const text =
-    '🤝 *Новая заявка на встречу*\n\n' +
-    '📌 *Название:* ' + title + '\n' +
-    '📝 *Описание:* ' + (desc||'—') + '\n' +
-    '📅 *Дата:* ' + (date||'—') + '\n' +
-    '🕐 *Время:* ' + (time||'—') + '\n' +
-    '👥 *Мест:* ' + (seats||'—') + '\n' +
-    '🏷 *Категория:* ' + (cat||'—') + '\n' +
-    '✈️ *Telegram:* @' + tg.replace(/^@/,'');
+    '🤝 <b>Новая заявка на встречу</b>\n\n' +
+    '📌 <b>Название:</b> ' + esc(title) + '\n' +
+    '📝 <b>Описание:</b> ' + esc(desc||'—') + '\n' +
+    '📅 <b>Дата:</b> ' + esc(date||'—') + '\n' +
+    '🕐 <b>Время:</b> ' + esc(time||'—') + '\n' +
+    '👥 <b>Мест:</b> ' + esc(seats||'—') + '\n' +
+    '🏷 <b>Категория:</b> ' + esc(cat||'—') + '\n' +
+    '✈️ <b>Telegram:</b> @' + esc(tg.replace(/^@/,''));
 
-  fetch('https://api.telegram.org/bot8727528942:AAGEzG3JTtzNzJsLhxsTAsoqnyWAIeBWB5w/sendMessage', {
+  fetch(NOTIFY_URL, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
-      chat_id: '6188497717',
       text: text,
-      parse_mode: 'Markdown'
+      parse_mode: 'HTML'
     })
   })
   .then(function(r){ return r.json(); })
@@ -8009,9 +7973,36 @@ function renderHomePreviews(){
 }
 
 /* ═════════ MODAL ═════════ */
-function openModal(h,body){document.getElementById('modal-h').textContent=h;document.getElementById('modal-body').innerHTML=body;document.getElementById('modal').classList.add('on');document.body.style.overflow='hidden'}
-function closeModal(){document.getElementById('modal').classList.remove('on');document.body.style.overflow=''}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+var _modalLastFocus=null;
+function openModal(h,body){
+  document.getElementById('modal-h').textContent=h;
+  document.getElementById('modal-body').innerHTML=body;
+  document.getElementById('modal').classList.add('on');
+  document.body.style.overflow='hidden';
+  _modalLastFocus=document.activeElement;
+  var panel=document.querySelector('#modal .modal-panel');
+  if(panel)setTimeout(function(){panel.focus();},0);
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('on');
+  document.body.style.overflow='';
+  if(_modalLastFocus&&typeof _modalLastFocus.focus==='function')_modalLastFocus.focus();
+  _modalLastFocus=null;
+}
+function _modalFocusables(){
+  return Array.prototype.slice.call(document.querySelectorAll('#modal a[href],#modal button:not([disabled]),#modal input:not([disabled]),#modal textarea:not([disabled]),#modal select:not([disabled]),#modal [tabindex]:not([tabindex="-1"])'));
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('modal').classList.contains('on'))return;
+  if(e.key==='Escape'){closeModal();return;}
+  if(e.key==='Tab'){
+    var f=_modalFocusables();
+    if(!f.length)return;
+    var first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  }
+});
 
 /* ═════════ TOAST ═════════ */
 function toast(msg,ms=3000){
@@ -8119,331 +8110,6 @@ const _store=(function(){
   }catch(e){console.warn('[CMS Bridge] Failed to parse CMS data:',e)}
 })();
 
-/* ═════════ ONLINE COUNTER (в шапке) ═════════
-   Показывает живое число "пользователей сейчас".
-   Зависит от времени суток (пик 19-22, минимум 3-7),
-   масштабируется от общей базы пользователей.
-═══════════════════════════════════════════════ */
-(function(){
-  function getTotalUsers(){
-    // Синхронно с LOCK COUNTER — старт 23 мая 2026 в момент запуска
-    const START = new Date(2026, 4, 23, 12, 0, 0); // 23 мая 2026, 12:00
-    const START_N = 20;
-    const TARGET_N = 1000;
-    const TOTAL_DAYS = 33; // цель к 25 июня 2026
-    const now = new Date();
-    const dayFloat = (now - START) / 86400000;
-    if(dayFloat <= 0) return START_N;
-    if(dayFloat >= TOTAL_DAYS) return TARGET_N + Math.floor((dayFloat - TOTAL_DAYS) * 15);
-    const t = Math.min(1, dayFloat / TOTAL_DAYS);
-    const sCurve = t * t * (3 - 2 * t);
-    const linear = t;
-    const blend = sCurve * 0.75 + linear * 0.25;
-    return Math.max(START_N, Math.floor(START_N + blend * (TARGET_N - START_N)));
-  }
-
-  function onlineNow(){
-    const hour = new Date().getHours() + new Date().getMinutes()/60;
-    // Кривая активности по часам: пик 20:00, минимум 4:00
-    // Используем смещённый синус: peak в 20, trough в 4
-    const phase = ((hour - 4) / 24) * 2 * Math.PI;
-    const activity = 0.5 + 0.5 * Math.sin(phase - Math.PI/2); // 0..1, пик в 20:00
-
-    // Базовый процент: 2-8% от общей базы онлайн в пик
-    const total = getTotalUsers();
-    const peakRatio = 0.06; // 6% общей базы в пиковый час
-    const minRatio = 0.012; // 1.2% в самый тихий час
-    const ratio = minRatio + (peakRatio - minRatio) * activity;
-
-    let online = Math.round(total * ratio);
-
-    // Минимальное значение чтоб не показывать 0-2
-    online = Math.max(8, online);
-
-    // Лёгкий шум ±10% (но детерминированный по минуте, чтоб не дёргалось)
-    const minute = Math.floor(Date.now() / 60000);
-    const noise = (((minute * 2654435761) >>> 0) / 4294967295 * 2 - 1) * 0.1;
-    online = Math.round(online * (1 + noise));
-
-    return Math.max(8, online);
-  }
-
-  function updateOnline(){
-    const el = document.getElementById('hdr-online-n');
-    if(!el) return;
-    const target = onlineNow();
-    const cur = parseInt(el.textContent, 10) || target;
-    // Плавный счёт-вверх/вниз
-    if(cur === target){ el.textContent = target; return; }
-    const step = cur < target ? 1 : -1;
-    const diff = Math.abs(target - cur);
-    let i = 0;
-    const intv = setInterval(function(){
-      i++;
-      const v = cur + step * i;
-      el.textContent = v;
-      if(i >= diff){ clearInterval(intv); el.textContent = target; }
-    }, 60);
-  }
-
-  // Старт через короткую задержку (после рендера)
-  setTimeout(updateOnline, 500);
-  // Обновление каждые 8-15 сек (имитация "кто-то зашёл/вышел")
-  function scheduleNext(){
-    const delay = 8000 + Math.random() * 7000;
-    setTimeout(function(){ updateOnline(); scheduleNext(); }, delay);
-  }
-  scheduleNext();
-})();
-
-/* ═════════ LOCK MODAL + COUNTER ═════════
-   Счётчик пользователей растёт детерминированно по дате.
-   Стартовая дата: 17 мая 2026. Целевая: 5000 к 10 июня 2026.
-═══════════════════════════════════════════════ */
-(function(){
-  const LOCK_DATA = {
-    routes: {
-      eyebrow: 'Гуляю · в разработке',
-      title: 'Маршруты <em>скоро</em>',
-      sub: '16 маршрутов с тайм-кодом, проверенных местными. Каждую тропинку выверяем до минуты — чтобы открыть только когда всё идеально.',
-      date: '1 июля 2026',
-      dateObj: new Date(2026, 6, 1)
-    },
-    seafood: {
-      eyebrow: 'Ем · в разработке',
-      title: 'Рыбный ряд <em>скоро</em>',
-      sub: 'Свежий улов от проверенных прилавков. Договариваемся напрямую с продавцами — чтобы цены были честные, а товар живой.',
-      date: '1 июня 2026',
-      dateObj: new Date(2026, 5, 1)
-    }
-  };
-
-  // Старт: 23 мая 2026, 12:00 — момент запуска в массы.
-  // Цель: 1000 к 25 июня 2026 (33 дня).
-  const START_DATE = new Date(2026, 4, 23, 12, 0, 0);
-  const TARGET_DATE = new Date(2026, 5, 25);  // 25 июня
-  const TARGET_USERS = 1000;
-  const TOTAL_DAYS = 33;
-
-  // Псевдослучайный шум, детерминированный по дню (одинаковый у всех)
-  function seededNoise(day){
-    // hash 32-bit, нормализованный в [-1, 1]
-    let h = day * 2654435761 >>> 0;
-    h ^= h >>> 16; h = Math.imul(h, 2246822507) >>> 0;
-    h ^= h >>> 13; h = Math.imul(h, 3266489909) >>> 0;
-    h ^= h >>> 16;
-    return ((h / 4294967295) * 2) - 1;
-  }
-
-  // Непрерывная кривая — растёт постоянно, без скачков по дням.
-  // Старт 20 человек, цель 1000 к 25 июня (33 дня).
-  // Смесь S-кривой + линейного компонента: рост с первой минуты.
-  const START_N = 20;
-  function usersAtFloat(dayFloat){
-    if(dayFloat <= 0) return START_N;
-    if(dayFloat >= TOTAL_DAYS) return TARGET_USERS + Math.floor((dayFloat - TOTAL_DAYS) * 15);
-    const t = dayFloat / TOTAL_DAYS;
-    const sCurve = t * t * (3 - 2 * t);
-    const linear = t;
-    const blend = sCurve * 0.75 + linear * 0.25;
-    return Math.max(START_N, Math.floor(START_N + blend * (TARGET_USERS - START_N)));
-  }
-  // Обратная совместимость: usersOnDay теперь через float
-  function usersOnDay(day){ return usersAtFloat(day); }
-
-  // Текущее число пользователей — непрерывно, растёт каждую минуту
-  function currentUsers(){
-    const now = new Date();
-    const msFromStart = now - START_DATE;
-    if(msFromStart < 0) return START_N;
-    const dayFloat = msFromStart / 86400000;
-    return usersAtFloat(dayFloat);
-  }
-
-  // Сколько присоединилось за последние 24 часа
-  function joinedToday(){
-    const now = new Date();
-    const msFromStart = now - START_DATE;
-    if(msFromStart < 0) return 0;
-    const dayFloat = msFromStart / 86400000;
-    const current = usersAtFloat(dayFloat);
-    const yesterday = usersAtFloat(Math.max(0, dayFloat - 1));
-    return Math.max(0, current - yesterday);
-  }
-
-  // Форматирование числа с пробелами: 1 234
-  function fmt(n){
-    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  }
-
-  // Дней до даты
-  function daysUntil(date){
-    const ms = date - new Date();
-    return Math.max(0, Math.ceil(ms / 86400000));
-  }
-
-  // Прогноз — за сколько дней при текущей скорости дойдём до цели
-  function etaToTarget(){
-    const current = currentUsers();
-    if(current >= TARGET_USERS) return 'Цель достигнута!';
-    const today = Math.max(1, joinedToday());
-    const daysLeft = Math.ceil((TARGET_USERS - current) / today);
-    if(daysLeft > 99) return 'прогноз: ~3 месяца';
-    if(daysLeft > 60) return 'прогноз: ~2 месяца';
-    if(daysLeft > 30) return 'прогноз: ~' + Math.round(daysLeft/7) + ' недели';
-    if(daysLeft > 14) return 'прогноз: ~' + Math.round(daysLeft/7) + ' нед.';
-    return 'прогноз: ~' + daysLeft + ' дн.';
-  }
-
-  // Рисуем мини-график последних 14 дней (или меньше если запуск недавний)
-  function renderChart(){
-    const svg = document.getElementById('lock-chart-svg');
-    if(!svg) return;
-
-    const now = new Date();
-    const dayFloat = (now - START_DATE) / 86400000;
-    const currentDay = Math.floor(dayFloat);
-
-    // Показываем последние 14 дней (или сколько прошло, если меньше)
-    const daysToShow = Math.min(14, Math.max(2, currentDay + 1));
-    const startDay = currentDay - daysToShow + 1;
-
-    const points = [];
-    for(let i = 0; i < daysToShow; i++){
-      const day = startDay + i;
-      const value = usersOnDay(day);
-      points.push({ day, value });
-    }
-
-    // Шкалирование
-    const maxVal = Math.max(...points.map(p => p.value), 100);
-    const minVal = Math.min(...points.map(p => p.value));
-    const W = 300, H = 60, padX = 4, padY = 6;
-    const xStep = (W - padX*2) / Math.max(1, daysToShow - 1);
-
-    const coords = points.map((p, i) => {
-      const x = padX + i * xStep;
-      const y = H - padY - ((p.value - minVal) / Math.max(1, maxVal - minVal)) * (H - padY*2);
-      return { x, y };
-    });
-
-    // Линия (smooth)
-    let path = '';
-    coords.forEach((c, i) => {
-      if(i === 0) path += 'M' + c.x.toFixed(1) + ',' + c.y.toFixed(1);
-      else {
-        const prev = coords[i-1];
-        const cpx = (prev.x + c.x) / 2;
-        path += ' C' + cpx.toFixed(1) + ',' + prev.y.toFixed(1) + ' ' + cpx.toFixed(1) + ',' + c.y.toFixed(1) + ' ' + c.x.toFixed(1) + ',' + c.y.toFixed(1);
-      }
-    });
-
-    // Заливка под линией
-    const last = coords[coords.length - 1];
-    const first = coords[0];
-    const fillPath = path + ' L' + last.x.toFixed(1) + ',' + H + ' L' + first.x.toFixed(1) + ',' + H + ' Z';
-
-    svg.innerHTML =
-      '<defs><linearGradient id="lockGrad" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0%" stop-color="#C12B26" stop-opacity="0.22"/>' +
-      '<stop offset="100%" stop-color="#C12B26" stop-opacity="0"/>' +
-      '</linearGradient></defs>' +
-      '<path d="' + fillPath + '" fill="url(#lockGrad)"/>' +
-      '<path d="' + path + '" fill="none" stroke="#C12B26" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
-      '<circle cx="' + last.x.toFixed(1) + '" cy="' + last.y.toFixed(1) + '" r="3.2" fill="#C12B26"/>' +
-      '<circle cx="' + last.x.toFixed(1) + '" cy="' + last.y.toFixed(1) + '" r="3.2" fill="#C12B26" opacity="0.4"><animate attributeName="r" values="3.2;7;3.2" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/></circle>';
-  }
-
-  // Анимированный счёт-вверх до целевого значения
-  function animateCount(el, target, duration){
-    const start = parseInt(el.textContent.replace(/\s/g, ''), 10) || 0;
-    const startTime = performance.now();
-    function tick(now){
-      const t = Math.min(1, (now - startTime) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.floor(start + (target - start) * eased);
-      el.textContent = fmt(val);
-      if(t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
-  // Обновляет счётчик в открытой модалке (тихо, без анимации с 0)
-  function refreshLockCounter(){
-    const el = document.getElementById('lock-counter-now');
-    const barEl = document.getElementById('lock-bar-fill');
-    const todayEl = document.getElementById('lock-today-count');
-    const etaEl = document.getElementById('lock-eta');
-    if(!el) return;
-    const users = currentUsers();
-    const today = joinedToday();
-    const percent = Math.min(100, (users / TARGET_USERS) * 100);
-    const prev = parseInt(el.textContent.replace(/\s/g,''), 10) || users;
-    // Плавно подтягиваем если выросло
-    if(users > prev){
-      animateCount(el, users, 800);
-      if(barEl) barEl.style.width = percent + '%';
-    }
-    if(todayEl) todayEl.textContent = fmt(today);
-    if(etaEl) etaEl.textContent = etaToTarget();
-  }
-
-  window.showLockModal = function(section){
-    const data = LOCK_DATA[section];
-    if(!data) return;
-
-    // Заголовок и текст
-    document.getElementById('lock-eyebrow').textContent = data.eyebrow;
-    document.getElementById('lock-band-title').innerHTML = data.title;
-    document.getElementById('lock-band-sub').textContent = data.sub;
-    document.getElementById('lock-date-v').textContent = data.date;
-    const dLeft = daysUntil(data.dateObj);
-    document.getElementById('lock-date-days').textContent =
-      dLeft === 0 ? 'сегодня' :
-      dLeft === 1 ? 'завтра' :
-      'через ' + dLeft + ' ' + (dLeft%10===1 && dLeft%100!==11 ? 'день' : (dLeft%10>=2 && dLeft%10<=4 && (dLeft%100<10||dLeft%100>=20) ? 'дня' : 'дней'));
-
-    // Счётчик — начальные значения
-    const users = currentUsers();
-    const today = joinedToday();
-    const percent = Math.min(100, (users / TARGET_USERS) * 100);
-
-    document.getElementById('lock-counter-now').textContent = '0';
-    document.getElementById('lock-today-count').textContent = fmt(today);
-    document.getElementById('lock-eta').textContent = etaToTarget();
-    document.getElementById('lock-bar-fill').style.width = '0%';
-
-    // Открыть модалку
-    const modal = document.getElementById('lock-modal');
-    modal.classList.add('on');
-    document.body.style.overflow = 'hidden';
-
-    // Анимация при открытии — плавно от 0 до текущего
-    setTimeout(function(){
-      animateCount(document.getElementById('lock-counter-now'), users, 1400);
-      document.getElementById('lock-bar-fill').style.width = percent + '%';
-      renderChart();
-    }, 220);
-
-    // Живой тик: обновляем счётчик каждые 30 сек пока модалка открыта
-    clearInterval(window._lockTick);
-    window._lockTick = setInterval(function(){
-      refreshLockCounter();
-      renderChart();
-    }, 30000);
-  };
-
-  window.hideLockModal = function(e){
-    if(e && e.target !== document.getElementById('lock-modal')) return;
-    document.getElementById('lock-modal').classList.remove('on');
-    document.body.style.overflow = '';
-    clearInterval(window._lockTick);
-  };
-
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') window.hideLockModal();
-  });
-})();
 
 /* ═════════ MANIFEST INLINE ═════════
    manifest.json встроен как data-URI — внешний файл не нужен.
@@ -8459,7 +8125,9 @@ const _store=(function(){
     theme_color:'#1E140D',
     icons:[
       {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23C12B26"/><text x="50" y="68" text-anchor="middle" font-size="56" font-family="Georgia,serif" fill="%23F6EFE1">Г</text></svg>',
-       sizes:'any',type:'image/svg+xml'}
+       sizes:'any',type:'image/svg+xml'},
+      {src:'/logo-512.png',sizes:'512x512',type:'image/png',purpose:'any'},
+      {src:'/apple-touch-icon.png',sizes:'180x180',type:'image/png',purpose:'any'}
     ]
   };
   const blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
@@ -8523,7 +8191,16 @@ const _store=(function(){
 ═══════════════════════════ */
 
 // 1. Restore saved language FIRST (before renders)
-currentLang = _store.get('vdk-lang') === 'zh' ? 'zh' : 'ru';
+// ?lang=zh in the URL (used by hreflang="zh") takes priority over the stored preference.
+(function(){
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  if(urlLang === 'zh' || urlLang === 'ru'){
+    currentLang = urlLang;
+    try{_store.set('vdk-lang', urlLang);}catch(e){}
+  } else {
+    currentLang = _store.get('vdk-lang') === 'zh' ? 'zh' : 'ru';
+  }
+})();
 
 // 2. CMS Bridge already ran above — data is ready
 
@@ -8546,9 +8223,8 @@ applyLang(currentLang);
 // 5. ROUTER + SEO INJECTORS
 // ════════════════════════════════════════════════════════════════════════════
 
-// Stub: route/routeLock доступны сразу, до инициализации IIFE
+// Stub: route доступен сразу, до инициализации IIFE
 if(typeof window.route !== 'function') window.route = function(ev,s){ if(ev)ev.preventDefault(); if(typeof go==='function')go(s); return false; };
-if(typeof window.routeLock !== 'function') window.routeLock = function(ev,k){ if(ev)ev.preventDefault(); if(typeof showLockModal==='function')showLockModal(k); return false; };
 
 (function(){
   'use strict';
@@ -8569,9 +8245,9 @@ if(typeof window.routeLock !== 'function') window.routeLock = function(ev,k){ if
 
   const META = {
     home:    { t:'ГорницаВДК — городской гид Владивостока: куда пойти, где есть морепродукты, события',
-               d:'ГорницаВДК — городской гид по Владивостоку: 16 маршрутов с тайм-кодом, 30 локаций, свежие морепродукты, события и встречи. Знание местных, проверенные адреса.' },
-    routes:  { t:'Маршруты по Владивостоку пешком — 16 троп с тайм-кодом · ГорницаВДК',
-               d:'16 пеших маршрутов по Владивостоку с точным тайм-кодом, точками и подсказками от местных. Городские прогулки, мысы, форты, закатные виды. От 2 до 6 часов.' },
+               d:'ГорницаВДК — городской гид по Владивостоку: 15 маршрутов с тайм-кодом, 30 локаций, свежие морепродукты, события и встречи. Знание местных, проверенные адреса.' },
+    routes:  { t:'Маршруты по Владивостоку пешком — 15 троп с тайм-кодом · ГорницаВДК',
+               d:'15 пеших маршрутов по Владивостоку с точным тайм-кодом, точками и подсказками от местных. Городские прогулки, мысы, форты, закатные виды. От 2 до 6 часов.' },
     places:  { t:'Локации Владивостока — 30 мест, которые стоит знать · ГорницаВДК',
                d:'30 проверенных мест Владивостока: смотровые площадки, мысы, набережные, парки, исторические точки. Атмосферные описания, координаты, лучшее время.' },
     seafood: { t:'Морепродукты Владивостока — свежий улов с прилавка · ГорницаВДК',
@@ -8607,15 +8283,6 @@ if(typeof window.routeLock !== 'function') window.routeLock = function(ev,k){ if
     if (location.pathname !== url) history.pushState({ screen: screen }, '', url);
     setMeta(screen);
     if (window.ym) try { ym(109310273, 'hit', SITE + url, { title: document.title }); } catch(e){}
-    return false;
-  };
-
-  // Для locked-секций
-  window.routeLock = function(ev, key, alsoCloseDrawer){
-    if (ev && (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1)) return true;
-    if (ev) ev.preventDefault();
-    if (typeof showLockModal === 'function') showLockModal(key);
-    if (alsoCloseDrawer && typeof closeDrawer === 'function') closeDrawer();
     return false;
   };
 
@@ -8869,8 +8536,10 @@ window.addEventListener('load',function(){
   document.head.appendChild(lnk);
 });
 
-// 7. Yandex.Metrika — загружаем асинхронно после загрузки страницы
-window.addEventListener('load', function(){
+// 7. Yandex.Metrika — только после согласия пользователя (баннер cookie-consent)
+function startMetrika(){
+  if(window._ymStarted)return;
+  window._ymStarted=true;
   (function(m,e,t,r,i,k,a){
     m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();
@@ -8878,6 +8547,25 @@ window.addEventListener('load', function(){
     k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a);
   })(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=109310273','ym');
   ym(109310273,'init',{webvisor:true,clickmap:true,ecommerce:'dataLayer',accurateTrackBounce:true,trackLinks:true});
+}
+function consentAccept(){
+  try{localStorage.setItem('vdk-consent','accepted');}catch(e){}
+  var b=document.getElementById('consent-banner');if(b)b.classList.remove('on');
+  startMetrika();
+}
+function consentDecline(){
+  try{localStorage.setItem('vdk-consent','declined');}catch(e){}
+  var b=document.getElementById('consent-banner');if(b)b.classList.remove('on');
+}
+window.addEventListener('load', function(){
+  var consent;
+  try{consent=localStorage.getItem('vdk-consent');}catch(e){consent=null;}
+  if(consent==='accepted'){
+    startMetrika();
+  }else if(consent!=='declined'){
+    var b=document.getElementById('consent-banner');
+    if(b)setTimeout(function(){b.classList.add('on');},800);
+  }
 });
 
 // Service Worker — снимаем регистрацию старых SW которые могли закешировать VPN-only версию

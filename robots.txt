@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════
 # ГорницаВДК · robots.txt
-# Положить в корень сайта: https://gornitsa.ru/robots.txt
+# Положить в корень сайта: https://gornicavdk.ru/robots.txt
 # ═══════════════════════════════════════════════════════════════
 
 User-agent: *
@@ -41,7 +41,7 @@ Allow: /
 Disallow: /gornitsa-admin.html
 Disallow: /admin/
 Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&fbclid&gclid&_openstat /
-Host: gornitsa.ru
+Host: gornicavdk.ru
 
 User-agent: YandexBot
 Allow: /
@@ -68,6 +68,6 @@ User-agent: Google-Extended
 Allow: /
 
 # ─── SITEMAPS ───
-Sitemap: https://gornitsa.ru/sitemap.xml
-Sitemap: https://gornitsa.ru/sitemap-places.xml
-Sitemap: https://gornitsa.ru/sitemap-routes.xml
+Sitemap: https://gornicavdk.ru/sitemap.xml
+Sitemap: https://gornicavdk.ru/sitemap-places.xml
+Sitemap: https://gornicavdk.ru/sitemap-routes.xml
