@@ -1,0 +1,7 @@
+{
+  "name": "gornitsa-vdk",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
