@@ -3,5 +3,10 @@
   "private": true,
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test tests/explore.test.cjs",
+    "build:preview": "node scripts/build-preview.cjs",
+    "data:export": "node scripts/export-explore-data.cjs"
   }
 }

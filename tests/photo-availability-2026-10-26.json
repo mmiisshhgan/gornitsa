@@ -1,0 +1,186 @@
+{
+  "date": "2026-10-26",
+  "scope": "First image only for each of the 30 imported places; HTTP availability, not rights or semantic validation.",
+  "results": [
+    {
+      "id": "ВЛ-01",
+      "name": "Орлиное гнездо",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-02",
+      "name": "Нагорный парк",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-03",
+      "name": "Токаревская кошка",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-04",
+      "name": "Подлодка С-56",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-05",
+      "name": "Набережная Цесаревича",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-06",
+      "name": "Смотровая Бурачка",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-07",
+      "name": "Мыс Тобизина",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-08",
+      "name": "Сопка Крестовая",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-09",
+      "name": "Набережная 7 футов",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-10",
+      "name": "Остров Русский",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-11",
+      "name": "Покровский парк",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-12",
+      "name": "Морской вокзал",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-13",
+      "name": "Кунгасный пляж",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-14",
+      "name": "Гора Русская",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-15",
+      "name": "Первый городской пляж",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-16",
+      "name": "Набережная Спортивной гавани",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-17",
+      "name": "Арка цесаревича · Адмиральский сквер",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-18",
+      "name": "Театральный сквер",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-19",
+      "name": "Светланская улица",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-20",
+      "name": "Улица Адмирала Фокина",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-21",
+      "name": "Миллионка",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-22",
+      "name": "Жариковский сквер",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-23",
+      "name": "Полуденный выстрел",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-24",
+      "name": "Сопка Холодильник",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-25",
+      "name": "Видовая Назимова",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-26",
+      "name": "Парк Минного городка",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-27",
+      "name": "Парк Победы",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-28",
+      "name": "Сквер Невельского",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-29",
+      "name": "Бухта Фёдорова",
+      "status": 200,
+      "type": "image/jpeg"
+    },
+    {
+      "id": "ВЛ-30",
+      "name": "Сопка Шошина",
+      "status": 200,
+      "type": "image/jpeg"
+    }
+  ]
+}
